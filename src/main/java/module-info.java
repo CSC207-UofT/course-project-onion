@@ -1,4 +1,4 @@
-module com.onionshop.onionstarter {
+module com.onionshop {
     requires javafx.controls;
     requires javafx.fxml;
 
@@ -6,6 +6,6 @@ module com.onionshop.onionstarter {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
 
-    opens com.onionshop to javafx.fxml;
+    opens com.onionshop.controllers to javafx.fxml;
     exports com.onionshop;
 }

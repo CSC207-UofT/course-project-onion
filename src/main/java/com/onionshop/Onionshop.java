@@ -10,14 +10,14 @@ import java.io.IOException;
 public class Onionshop extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Onionshop.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ProjectExplorer.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Onionshop");
         stage.setScene(scene);
         stage.show();
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
