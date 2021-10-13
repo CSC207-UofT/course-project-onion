@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.canvas.Canvas?>
+
+<?import javafx.scene.control.Button?>
+
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Slider?>
+<GridPane fx:controller="com.onionshop.DrawingController"
+          xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10">
+    <padding><Insets right="25" bottom="10"/></padding>
+
+    <HBox style="-fx-background-color: #c9c9c9">
+        <padding><Insets top="10" right="5" bottom="10" left="5"/></padding>
+        <Button fx:id="brushPen" text="Pen" onAction="#onBrushPenClick" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                  GridPane.columnSpan="1"/>
+
+        <ColorPicker accessibleText="Tool Size" fx:id="projectColorPicker" onAction="#setDrawingColor" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                     GridPane.columnSpan="1"/>
+
+        <Slider fx:id="toolSizeSlider" onDragDetected="#onToolSizeSliderMove"/>
+    </HBox>
+
+    <Canvas fx:id="projectDrawing" onMouseDragged="#onCanvasMouseDragged" GridPane.columnIndex="0" GridPane.rowIndex="1"
+            height="300" width="400" style=" -fx-border-color:black; -fx-border-width: 1;"/>
+
+</GridPane>
+
