@@ -2,11 +2,11 @@ package com.onionshop;
 
 public abstract class Brush {
 
-    /*
+    /**
      * Private instance variables
      *      - a String named brushShape
      *      - an int named brushSize
-     */
+     **/
 
     private String brushShape;
     private int brushSize;
