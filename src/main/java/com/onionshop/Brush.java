@@ -11,7 +11,7 @@ public abstract class Brush {
     private String brushShape;
     private int brushSize;
 
-    public Brush(String brushShape, int brushSize, String defaultColour, String currentColour) {
+    public Brush(String brushShape, int brushSize) {
         this.brushShape = brushShape;
         this.brushSize = 1;
     }
