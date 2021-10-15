@@ -1,4 +1,4 @@
-package com.onionshop;
+package com.onionshop.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;

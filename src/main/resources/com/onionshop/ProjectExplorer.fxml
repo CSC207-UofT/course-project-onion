@@ -24,13 +24,13 @@
                     <Font name="Comic Sans MS" size="20.0"/>
                 </font>
             </Label>
-            <Button text="Open" fx:id="btnOpen"
+            <Button text="Open" fx:id="btnOpen" onAction="#onBtnOpenClick"
                     style="-fx-padding: 8px 13px 3px; -fx-background-insets: 5px 10px 0;">
                 <font>
                     <Font name="Comic Sans MS" size="12.0"/>
                 </font>
             </Button>
-            <Button fx:id="btnNewProject" text="New Project" style="-fx-padding: 8px 13px 3px; -fx-background-insets: 5px 10px 0;">
+            <Button fx:id="btnNewProject" onAction="#onBtnNewProjectClick" text="New Project" style="-fx-padding: 8px 13px 3px; -fx-background-insets: 5px 10px 0;">
                 <font>
                     <Font name="Comic Sans MS" size="12.0"/>
                 </font>
