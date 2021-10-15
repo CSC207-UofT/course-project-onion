@@ -5,7 +5,7 @@ Used to hold a pixel's RGB value
  */
 package com.onionshop;
 
-class Pixel {
+public class Pixel {
     // The RGB values of the pixel, {red, green, blue}
     protected int[] RGB = new int[3];
 
