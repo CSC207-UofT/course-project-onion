@@ -21,6 +21,21 @@ public class Colour extends Pixel {
         this.name = name;
     }
 
+    public Pixel getPixel() {
+        return new Pixel(this.RGB);
+    }
+
+    @Override
+    public void setRGB(int[] newRGB) {
+        for (int i = 0; i < 3; i++) {
+            super.RGB[i] = newRGB[i];
+            if (RGB[i] > 255) {
+                RGB[i] = 255;
+            } else if (RGB[i] < 0) {
+                RGB[i] = 0;
+            }
+        }
+    }
     /*
     Safely modifies RGB values of Pixel instance
 
