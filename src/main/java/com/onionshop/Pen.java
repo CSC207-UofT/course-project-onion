@@ -9,8 +9,8 @@ public class Pen extends Brush implements Tool{
     private int[][] pixelsEffectedByBrush;
 
     /**
-     * Construct a Pen (Child of class Brush) that has the properties brush shape
-     * that is round by default, and brush size that is 1 by default.
+     * Construct a Pen (Child of class Brush) that has the properties brush shape (round by default, all lower case),
+     * and brush size (1 by default).
      *
      * @param brushShape    String of the shape of the brush, all lower case, default is round
      * @param brushSize     int of the size of the brush, represents pixel size, default is 1 (px)
