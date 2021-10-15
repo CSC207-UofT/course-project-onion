@@ -3,6 +3,7 @@ package com.onionshop;
 public abstract class Brush {
     private String brushShape;
     private int brushSize;
+    private int[][] pixelsEffectedByBrush;
 
     /**
      * Construct a Brush that has the properties brush shape and brush size.
