@@ -1,5 +1,8 @@
 package com.onionshop.controllers;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+
 public class ProjectExplorerController {
     /**
      * Keep track of most recent projects (txt, csv).
@@ -8,6 +11,12 @@ public class ProjectExplorerController {
      * Creates new project -> open new project scene using NewProjectController.
      *
      */
+
+    @FXML
+    public Button btnNewProject;
+
+    @FXML
+    public Button btnOpen;
 
     private Object[] recentProjects;
 
