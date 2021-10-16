@@ -1,9 +1,5 @@
 # Onionshop Specification
 
-## Summary
-
-A drawing program that has a canvas which takes mouse or tablet input and outputs line strokes (drawing). When the left mouse button is pressed and held down, this should result in a line to appear on the canvas tracing the path of the mouse movements on the canvas. Users can choose between different drawing tools from the toolbar, including pen, eraser, and shape tool.
-
 The colour palette can be used to switch between different RGB colours. Users can choose colours from a colour wheel, and add and remove frequently used colours to the colour palette.
 
 Users can undo and redo their strokes upto 5 times.
