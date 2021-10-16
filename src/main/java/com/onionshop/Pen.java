@@ -22,11 +22,11 @@ public class Pen extends Brush implements Tool{
         this.calculateEffectedPixels();
     }
 
-    @Override
     public void calculateEffectedPixels() {
         //Hardcoding a small offset sphere just for phase 0. Code for calculating the circle is below for future phases
 
-        pixelsEffectedByBrush = new int[5][2];
+        pixelsEffectedByBrush = new int[121][2];
+        /*
         pixelsEffectedByBrush[0][0] = 0;
         pixelsEffectedByBrush[0][1] = 1;
 
@@ -41,6 +41,15 @@ public class Pen extends Brush implements Tool{
 
         pixelsEffectedByBrush[4][0] = 0;
         pixelsEffectedByBrush[4][1] = 0;
+        */
+        int counter = 0;
+        for (int x = -5; x < 6; x++) {
+            for (int y = -5; y < 6; y++) {
+                pixelsEffectedByBrush[counter][0] = x;
+                pixelsEffectedByBrush[counter][1] = y;
+                counter++;
+            }
+        }
 
 
         /*
@@ -57,27 +66,22 @@ public class Pen extends Brush implements Tool{
         } */
     }
 
-    @Override
     public void makeSelectable() {
         //TODO: will implement this later once we know exactly what's going on with JavaFX
     }
 
-    @Override
     public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y) {
         // Creating a new array to store the pixels that are updated in this method. These will then
         // Be sent back up to javafx to be rendered on the canvas.
         int[][] pixelsToUpdate = new int[pixelsEffectedByBrush.length][2];
 
-        // Set everything to -1, -1. This so we can determine which pixels were changed without having to resize
-        // the array many times
-        Arrays.fill(pixelsToUpdate, new int[]{-1, -1});
-
         for (int offset = 0; offset < pixelsEffectedByBrush.length; offset++) {
             //Check if the pixels are in the canvas
             if (x + pixelsEffectedByBrush[offset][0] > 0 && x + pixelsEffectedByBrush[offset][0] < currentCanvas.width
                     && y + pixelsEffectedByBrush[offset][1] > 0 &&
-                    pixelsEffectedByBrush[offset][1] < currentCanvas.height) {
+                    y + pixelsEffectedByBrush[offset][1] < currentCanvas.height) {
                 //If they are, update the updated pixels list and the canvas itself
+
                 pixelsToUpdate[offset][0] = x + pixelsEffectedByBrush[offset][0];
                 pixelsToUpdate[offset][1] = y + pixelsEffectedByBrush[offset][1];
                 currentCanvas.drawingCanvas[x + pixelsEffectedByBrush[offset][0]]

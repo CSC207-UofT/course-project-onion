@@ -1,25 +1,20 @@
 package com.onionshop.events;
 
-import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import com.onionshop.DrawingManager;
 import javafx.scene.input.MouseEvent;
 
-/**
- *
- */
 public class CanvasEvents {
-    @FXML
-    private Canvas projectDrawing;
+    DrawingManager currentDrawingManager;
 
-    /**
-     * Takes in a mouse event and pass the x,y coordinates down
-     */
-    public double[] DrawingEvent(MouseEvent canvasMouseClicked){
-        double[] arr = new double[2];
-        arr[0] = canvasMouseClicked.getX();
-        arr[1] = canvasMouseClicked.getY();
-
-        return arr;
+    public CanvasEvents(DrawingManager projectDrawingManager){
+        this.currentDrawingManager = projectDrawingManager;
     }
+
+    public int[][] processControllerDataForDrawingManager(MouseEvent inputMouseData) {
+        int x = (int)inputMouseData.getX();
+        int y = (int)inputMouseData.getY();
+        int[][] pixelsToReturn = currentDrawingManager.updateCanvasAfterStroke(x, y);
+        return pixelsToReturn;
+    }
+
 }

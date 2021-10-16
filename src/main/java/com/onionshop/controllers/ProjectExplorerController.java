@@ -2,24 +2,16 @@ package com.onionshop.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
 
 public class ProjectExplorerController {
     /**
-     * Keep track of most recent projects (txt, csv).
-     * Open projects from recent projects.
-     * Import .onion project files from file explorer
-     * Creates new project -> open new project scene using NewProjectController.
-     *
+     * Controller for the project explorer scene
+     * In this scene users can choose between:
+     * - Open projects from recent projects.
+     * - Import .onion project files from file explorer
+     * - Create new project -> open new project scene using NewProjectController.
      */
 
     @FXML
@@ -33,7 +25,7 @@ public class ProjectExplorerController {
      */
     @FXML
     private void onBtnNewProjectClick(ActionEvent event) {
-        switchScene(event,"/com/onionshop/NewProject.fxml");
+        SceneSwitcher.switchScene(getClass(), event,"/com/onionshop/NewProject.fxml");
     }
 
 
@@ -43,18 +35,6 @@ public class ProjectExplorerController {
      */
     @FXML
     public void onBtnOpenClick() {
-    }
-
-    private void switchScene(ActionEvent event, String fxml) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
-            Scene scene = new Scene(fxmlLoader.load());;
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     
 }

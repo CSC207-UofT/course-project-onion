@@ -6,15 +6,16 @@ Implements static save and load functionality for .onion files and Project seria
 package com.onionshop;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class OnionFileLoader {
 
-    /*
+    /**
         Saves Project instance serialization to .onion file type
-        @param currentProject: the Project instance of which a serialization will be saved
+        @param project: the Project instance of which a serialization will be saved
         @return true if save was successful, false if the save failed
      */
     public static boolean saveProject(Project project) throws IOException {
@@ -34,11 +35,35 @@ public class OnionFileLoader {
         }
     }
 
-    /*
-    Converts a .onion file to a Project instance
 
-    @param path: the location of the .onion file
-    @return: returns a Project instance if there are no files errors, returns null if there are errors
+    /**
+     Returns whether the path is a valid directory (meaning it exists, is readable and
+     writable)
+     @param pathString: the path to be checked
+     @return whether the path is a valid directory
+     */
+    public static boolean isDirectoryValid(String pathString) {
+        File file = new File(pathString);
+        return file.exists() && file.canRead() && file.canWrite();
+    }
+
+
+    /**
+     * Return whether the file already exists
+     Saves Project instance serialization to .onion file type
+     @param pathString: the path to be checked
+     @return whether the file already exists in the specified pathString
+     */
+    public static boolean doesFileAlreadyExist(String pathString) {
+        File file = new File(pathString);
+        return file.exists();
+    }
+
+    /**
+     * Converts a .onion file to a Project instance
+     *
+     * @param path: the location of the .onion file
+     * @return: returns a Project instance if there are no files errors, returns null if there are errors
      */
     public static Project loadProject(String path) {
         String line;
