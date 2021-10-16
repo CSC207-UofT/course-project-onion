@@ -2,6 +2,7 @@ package com.onionshop.controllers;
 
 import com.onionshop.*;
 import com.onionshop.events.CanvasEvents;
+import com.onionshop.managers.ProjectManager;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -27,6 +28,8 @@ public class ProjectStateController {
     @FXML
     private Slider toolSizeSlider;
 
+    // These are all Test objects for setting up the drawing manager. We will actually integrate this with the
+    // project creation workflow for phase 1.
     private Pen currentPen = new Pen("round", 1);
     private Colour currentColour = new Colour("Black", new int[] {0, 0, 0});
     private ToolStateManager projectToolStateManager = new ToolStateManager(currentPen, currentColour);
