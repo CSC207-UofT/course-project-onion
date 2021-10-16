@@ -6,6 +6,7 @@ Implements static save and load functionality for .onion files and Project seria
 package com.onionshop;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -29,22 +30,6 @@ public class OnionFileLoader {
             return true;
         } catch (IOException ex) {
             System.out.println("Error writing to file '" + project.getPath() + "'");
-            return false;
-        }
-    }
-
-    /*
-        Create project Saves Project instance serialization to .onion file type
-        @param currentProject: the Project instance of which a serialization will be saved
-        @return true if save was successful, false if the save failed
-     */
-    public static boolean saveProjectAs(Project project) throws IOException {
-        File newProject = new File(project.getPath());
-        if (newProject.createNewFile()) {
-            System.out.println("File created: " + newProject.getName());
-            return saveProject(project);
-        } else {
-            System.out.println("File already exists.");
             return false;
         }
     }

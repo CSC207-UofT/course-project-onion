@@ -26,6 +26,6 @@ public class ProjectManager {
     public void newProject(NewProjectEvent newProjectEvent) throws IOException {
             String path = newProjectEvent.getDirectory() + '/' + newProjectEvent.getProjectName() + ".onion";
             currentProject = new Project(path, newProjectEvent.getWidth(), newProjectEvent.getHeight());
-            OnionFileLoader.saveProjectAs(currentProject);
+            OnionFileLoader.saveProject(currentProject);
     }
 }
