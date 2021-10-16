@@ -61,10 +61,10 @@ public class ToolStateManager {
     /**
      * Updates the current colour using user input of <changes>.
      *
-     * @param changes           RGB value of Colour
+     * @param newRGB            new RGB value of Colour
      */
-    public void updateCurrentColourState(int[] changes) {
-        this.currentColourState.modify(changes);
+    public void updateCurrentColourState(int[] newRGB) {
+        this.currentColourState.setRGB(newRGB);
     }
 
     /**
