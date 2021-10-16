@@ -6,10 +6,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class ToolStateManagerTest {
+    /**
+     * This class is a junit test class that test specifically the ToolStateManager.
+     */
     Tool tool;
     Colour colour;
     ToolStateManager manager;
 
+    /**
+     * The Test set up for before each test, the current tool is Pen for now.
+     *
+     * @throws Exception
+     */
     @BeforeEach
     public void setUp() throws Exception {
         int[] c = {1, 2, 3};
@@ -18,6 +26,9 @@ public class ToolStateManagerTest {
         manager = new ToolStateManager(tool, colour);
     }
 
+    /**
+     * This test tests the method updateCurrentToolState which updates the pen class' brush shape and brush size.
+     */
     @Test
     public void testUpdateCurrentToolState() {
         manager.updateCurrentToolState("square", 300);
@@ -25,24 +36,27 @@ public class ToolStateManagerTest {
         assertEquals(300, ((Pen) manager.getCurrentToolState()).getBrushSize());
     }
 
+    /**
+     * This test tests the constructor method updateCurrentToolState which only updates the pen class' brush size.
+     */
     @Test
     public void testUpdateCurrentToolStateOnlyBrushSize() {
         manager.updateCurrentToolState(23);
         assertEquals(23, ((Pen) manager.getCurrentToolState()).getBrushSize());
     }
 
+    /**
+     * This test tests the constructor method updateCurrentToolState which only updates the pen class' brush shape.
+     */
     @Test
     public void testUpdateCurrentToolStateOnlyBrushShape() {
         manager.updateCurrentToolState("round");
         assertEquals("round", ((Pen) manager.getCurrentToolState()).getBrushShape());
     }
 
-    @Test
-    public void testCurrentColourState() {
-        int[] c_value = new int[] {1, 2, 3};
-        assertArrayEquals(c_value, manager.getCurrentColourState().getRGB());
-    }
-
+    /**
+     * This test tests the method updateCurrentColourState which updates the current RBG colour to a different one.
+     */
     @Test
     public void testUpdateCurrentColourState() {
         int[] new_c = {3, 6, 7};
