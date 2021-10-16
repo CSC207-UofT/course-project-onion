@@ -1,4 +1,4 @@
-#Phase 0
+# Phase 0
 
 This is a directory for phase 0 of the course project. 
 
