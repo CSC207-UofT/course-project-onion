@@ -19,9 +19,6 @@ public class ToolStateManagerTest {
 
     @Test
     public void testUpdateCurrentToolState() {
-        // dummy assertion, should definitely evaluate as true
-        assert(manager.getCurrentToolState() instanceof Brush);
+        assert(manager.getCurrentToolState() instanceof Tool);
     }
-
-
 }
