@@ -1,9 +1,16 @@
 package com.onionshop.controllers;
 
-import com.onionshop.Brush;
-import com.onionshop.Colour;
-import com.onionshop.Pixel;
-import com.onionshop.Project;
+import com.onionshop.*;
+import com.onionshop.events.CanvasEvents;
+import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Slider;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 /**
  * records the action -> trigger methods -> send data to backend
@@ -11,6 +18,62 @@ import com.onionshop.Project;
  * drawing on canvas and selecting a colour(to be implemented).
  */
 public class ProjectStateController {
+    @FXML
+    private Button brushPen;
+    @FXML
+    private ColorPicker projectColorPicker;
+    @FXML
+    private Canvas projectDrawing;
+    @FXML
+    private Slider toolSizeSlider;
+
+    private Pen currentPen = new Pen("round", 1);
+    private Colour currentColour = new Colour("Black", new int[] {0, 0, 0});
+    private ToolStateManager projectToolStateManager = new ToolStateManager(currentPen, currentColour);
+    private Project tempProject = new Project("TestPath", 400, 300);
+    private DrawingManager projectDrawingManager = new DrawingManager(currentPen, currentColour, tempProject);
+
+
+    private CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
+
+
+    @FXML
+    protected void onBrushPenClick() {
+        brushPen.setText("Pen: Selected");
+    }
+
+    /**
+     * Updates the color of the pen used by the graphics context when the color picker is used
+     */
+    @FXML
+    protected void setDrawingColor() {
+        //GraphicsContext drawingGraphicsContext = projectDrawing.getGraphicsContext2D();
+        //drawingGraphicsContext.setFill(projectColorPicker.getValue());
+    }
+
+    /** A function that draws ovals as the user clicks and drags their mouse across the canvas
+     *
+     * @param canvasMouseLocation - A mouseEvent passed in containing the x and y coordinates of the mouse
+     */
+    @FXML
+    protected void onCanvasMouseDragged(MouseEvent canvasMouseLocation) {
+        int[][] updatedPixels = canvasInputProcessor.processControllerDataForDrawingManager(canvasMouseLocation);
+
+        Color currentCanvasColour = Color.BLACK;
+
+        PixelWriter canvasPixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
+        for (int i = 0; i < updatedPixels.length; i++) {
+            canvasPixelWriter.setColor(updatedPixels[i][0], updatedPixels[i][1], currentCanvasColour);
+        }
+    }
+
+    /**
+     * Changes the brushes size when the user drags the slider
+     */
+    @FXML
+    protected void onToolSizeSliderMove() {
+        //toolSize = toolSizeSlider.getValue();
+    }
 
     /**
      * Takes in a ToolbarEvent, update the tool accordingly
@@ -22,28 +85,11 @@ public class ProjectStateController {
 
     /**
      * Takes in an event that changes the size of brush, update the brush size accordingly
-     * @param brush: the brush object
+     *
      */
-    public void BrushSizeUpdate(Brush brush, int newSize){
-        brush.setBrushSize(newSize);
-
+    public void BrushSizeUpdate(){
     }
 
-    /**
-     * Update the canvas using the data passed down
-     * @param canvas : a 2d-array of Pixel objects representing each pixel of the drawing canvas
-     * @param pixels: a 2d-array of locations of pixels that need to be updated (in phase0 they are all updated to black)
-     */
-
-    public void CanvasUpdate(Pixel[][] canvas, int[][] pixels){
-        //for(int i=0; i< pixels.length; i++){
-
-
-
-        //}
-
-
-    }
 
     /**
      * Takes in an event that picks a colour and updates the colour
