@@ -15,7 +15,7 @@ public class Project {
     private String path;
 
     // An array that holds default and user created colours
-    Colour[] colourPalette; //TODO: implement later (maybe add default colours)
+    Colour[] colourPalette = {new Colour("black", new int[]{0, 0, 0})}; //TODO: implement later, right now we just have one default colour
 
     //2d array representing each pixel of the drawing canvas with Pixel
     Pixel[][] drawingCanvas;
