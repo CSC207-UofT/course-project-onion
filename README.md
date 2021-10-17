@@ -33,7 +33,7 @@ This is a directory for the project. Setup instructions are below the links sect
 10) In VM options, enter:
 
 
-    --module-path "<INSERT-JAVAFX-PATH-HERE>" --add-modules=javafx.controls,javafx.fxml
+    `--module-path "<INSERT-JAVAFX-PATH-HERE>" --add-modules=javafx.controls,javafx.fxml`
 
 Ensure you remove the `<` and `>`. Point the path into the lib folder inside `javafx-sdk-11.0.2`.
 
