@@ -29,11 +29,14 @@ The user can then press CTRL + Z to undo their change.
 You must download and configure the JavaFX 11.0.2 SDK for your local machine. Full instructions are available on the README in the root directory of the project repository: https://github.com/CSC207-UofT/course-project-onion/blob/main/README.md
 
 ### Summary of implementation
-Upon running the onionshop program, the user goes to the New Project Flow when creating a new project. After the project instance is created, the user is directed to the Drawing Flow when drawing something on the canvas. 
+For the skeleton program, we have implemented 2 flows/scenarios in our project, including creating a new project, and drawing on the canvas with the pen tool. 
 
-New Project Flow: ProjectExplorerController(Controller) outputs directory of recently opened projects for the user to navigate. If the user opens a recent file it will send the file to ProjectManager(Use Case) which handles the file loading as the current project. If the user creates a new project, NewProjectController(Controller) will handle it and create an instance of NewProjectEvents(Use Case), which is used by ProjectManager(Use Case) to create an empty project as a .onion file. The file is saved through OnionFileLoader(Entity). The Project class(Entity) takes the responsibility to store the save address.
+In the User Interface, we currently have three screens implemented (roughly) using fxml, the Project Explorer screen, the New Project screen, and the Main Canvas/Drawing screen. 
 
-Drawing Flow: ProjectStateController(Controller) stores the current tool, colour and canvas. As the user clicks and drags the mouse through the canvas, an instance of CanvasEvents(Use Case) is created. The pen stroke data is passed on to DrawingManager(Use Case) and Pen(Entity) will update the pixels affected on the canvas. The changed pixel data will then be passed back to ProjectStateController to update the current canvas.
+**New Project Flow:** On the Project Explorer (UI) screen the user can click on the New Project button. This event is handled by the ProjectExplorerController (controller) which then uses the SceneSwitcher (controller layer) to switch to the New Project (UI) screen. Here the user will enter the properties of the project including the project name, canvas width, canvas height, and directory the project will be saved to. The events on this screen are handled by the NewProjectController (controller) which will take the input from the user and create a NewProjectEvent (use case layer) which is then passed to the ProjectManager.newProject method. The ProjectManager (use case) will then convert NewProjectEvent into a Project (entity), and OnionFileLoader (use case) to create the .onion file in the correct directory. 
+
+**Drawing Flow (In Progress):** The events on the Main Canvas/Drawing screen (UI) are handled by the ProjectStateController (controller). The mouse drag events are converted to CanvasEvents (use case layer) which are then handled by the DrawingManager (use case). The pen stroke data is passed on to DrawingManager and Pen (entity) will update the pixels affected on the canvas. The changed pixel data will then be passed back to ProjectStateController to update the current canvas.
+
 
 ## Open question your group is struggling with
 - What is the best way to handle the state of the program (the currently selected tool and colour for instance)? 
