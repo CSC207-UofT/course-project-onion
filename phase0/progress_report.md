@@ -16,11 +16,11 @@ The Onionshop CRC model is divided into four specifications: User Interface, Con
 ## Scenario walk-through Summary: 
 The scenario walk-through outlines the case in which the user creates a new project and makes a pen stroke. 
 
-A given user will start the program and see the project explorer window open. 
-In this window, the user selects the “New project” button and then is shown the “Create project” window. Here, a user can specify the requirements of the project. 
-After doing so, the user selects “CREATE PROJECT”, which opens the drawing window. 
-The user can then select the pen tool, and then click and draw intuitively on the canvas, creating a pen stroke. Once this drawing action is completed, a copy of the current canvas is saved for undo and redo actions.
-The user can then press CTRL + Z to undo their change.
+1) A given user will start the program and see the project explorer window open. 
+2) In this window, the user selects the “New project” button and then is shown the “Create project” window. Here, a user can specify the requirements of the project. 
+3) After doing so, the user selects “CREATE PROJECT”, which opens the drawing window. 
+4) The user can then select the pen tool, and then click and draw intuitively on the canvas, creating a pen stroke. Once this drawing action is completed, a copy of the current canvas is saved for undo and redo actions. 
+5) The user can then press CTRL + Z to undo their change.
 
 
 ## Skeleton program Summary:
