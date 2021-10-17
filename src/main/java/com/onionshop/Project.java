@@ -15,7 +15,8 @@ public class Project {
     private String path;
 
     // An array that holds default and user created colours
-    Colour[] colourPalette = {new Colour("black", new int[]{0, 0, 0})}; //TODO: implement later, right now we just have one default colour
+    Colour[] colourPalette = {new Colour("black", new int[]{0, 0, 0})};
+    //TODO: implement later, right now we just have one default colour
 
     //2d array representing each pixel of the drawing canvas with Pixel
     Pixel[][] drawingCanvas;
@@ -80,13 +81,26 @@ public class Project {
         path = newPath;
         //TODO (optional): add a checker to see if the path is valid and writable
     }
+
+    public void addColour(Colour newColour) {
+        Colour[] newCP = new Colour[colourPalette.length + 1];
+        for (int i=0; i< colourPalette.length; i++) {
+            newCP[i] = colourPalette[i];
+        }
+        newCP[newCP.length - 1] = newColour;
+
+        this.colourPalette = newCP;
+    }
+
+
+
     /*
     Serializes this Project instance to .onion file format
 
     @return: returns serialized Project in onion format
      */
     public String[] Serialize() {
-        int numberOfLines = this.width * this.height + colourPalette.length + 5;
+        int numberOfLines = this.width * this.height + colourPalette.length + 6;
         int lineNumber = 0;
         String[] serialization = new String[numberOfLines];
 
@@ -97,7 +111,7 @@ public class Project {
         serialization[1] = "width:" + String.valueOf(width);
         serialization[2] = "height:" + String.valueOf(height);
         serialization[3] = "[saved colours]";
-        lineNumber += 3;
+        lineNumber += 4;
 
         //adding saved colours -> <name>:R,G,B
         for (Colour colour : colourPalette) {

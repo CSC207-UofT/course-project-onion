@@ -90,10 +90,12 @@ public class OnionFileLoader {
 
         //getting width and height
         int lineNumber = 1;
-        int width = Integer.parseInt(lines.get(lineNumber).substring(lines.indexOf(":")));
+        line = lines.get(lineNumber);
+        int width = Integer.parseInt(line.substring(line.indexOf(':') + 1));
         lineNumber++;
-        int height = Integer.parseInt(lines.get(lineNumber).substring(lines.indexOf(":")));
-        lineNumber++;
+        line = lines.get(lineNumber);
+        int height = Integer.parseInt(line.substring(line.indexOf(':') + 1));
+        lineNumber += 2;
 
         Project loadedProject = new Project(path, width, height);
         loadedProject.updatePath(path);
@@ -101,12 +103,13 @@ public class OnionFileLoader {
         //getting saved colours
         ArrayList<Colour> colourPalette = new ArrayList<>();
         while (!Objects.equals(line = lines.get(lineNumber), "[pixels]")) {
-            String name = line.substring(0, line.indexOf(":"));
-            String stringRGB = line.substring(line.indexOf(":") + 1);
+            String name = line.substring(0, line.indexOf(':'));
+            System.out.println(line);
+            String stringRGB = line.substring(line.indexOf(':') + 1);
             int[] RGB = new int[]{
-                    Integer.parseInt(stringRGB.substring(0, stringRGB.indexOf(","))),
-                    Integer.parseInt(stringRGB.substring(stringRGB.indexOf(",") + 1, stringRGB.lastIndexOf(","))),
-                    Integer.parseInt(stringRGB.substring(stringRGB.lastIndexOf(",") + 1))
+                    Integer.parseInt(stringRGB.substring(0, stringRGB.indexOf(','))),
+                    Integer.parseInt(stringRGB.substring(stringRGB.indexOf(',') + 1, stringRGB.lastIndexOf(','))),
+                    Integer.parseInt(stringRGB.substring(stringRGB.lastIndexOf(',') + 1))
             };
             colourPalette.add(new Colour(name, RGB));
             lineNumber++;
@@ -120,9 +123,9 @@ public class OnionFileLoader {
             for (int y = 0; y < height; y++) {
                 line = lines.get(lineNumber);
                 int[] RGB = new int[]{
-                        Integer.parseInt(line.substring(0, line.indexOf(","))),
-                        Integer.parseInt(line.substring(line.indexOf(",") + 1, line.lastIndexOf(","))),
-                        Integer.parseInt(line.substring(line.lastIndexOf(",") + 1))
+                        Integer.parseInt(line.substring(0, line.indexOf(','))),
+                        Integer.parseInt(line.substring(line.indexOf(',') + 1, line.lastIndexOf(','))),
+                        Integer.parseInt(line.substring(line.lastIndexOf(',') + 1))
                 };
                 drawingCanvas[x][y] = new Pixel(RGB);
                 lineNumber++;
