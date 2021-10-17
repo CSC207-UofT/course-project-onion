@@ -51,7 +51,7 @@ Ensure you remove the `<` and `>`. Point the path into the lib folder inside `ja
 
 12) Leave program arguments blank.
 
-13) Click apply, 
+13) Click apply, then click ok.
 
 14) Navigate to Onionshop.java under “src\main\java\com\onionshop”.
 
