@@ -1,16 +1,5 @@
 # Onionshop Specification
 
-## Summary
-
-The colour palette can be used to switch between different RGB colours. Users can choose colours from a colour wheel, and add and remove frequently used colours to the colour palette.
-
-Users can undo and redo their strokes upto 5 times.
-
-Drawings can be saved to files with the extension .onion, and reopened later to continue editing. When the program is initially started users will have the option to open one of their most recent projects, browse their file system for the project they want to open, or start a new project.
-
-
-## Full
-
 Onionshop is a drawing program that has a canvas which takes mouse or tablet input and outputs line strokes (drawing). Drawings can be saved to files with the extension .onion, and reopened later to continue editing.
 
 The first window the user will encounter is the Project Explorer which gives them the options to open a .onion file from their file explorer, open a recently edited file, or create a new .onion project.
