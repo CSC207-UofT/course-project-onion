@@ -1,5 +1,7 @@
 # Onionshop Specification
 
+## Summary
+
 The colour palette can be used to switch between different RGB colours. Users can choose colours from a colour wheel, and add and remove frequently used colours to the colour palette.
 
 Users can undo and redo their strokes upto 5 times.
