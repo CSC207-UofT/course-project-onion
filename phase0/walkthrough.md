@@ -1,16 +1,5 @@
 # Scenario Walkthrough
 
-## Summary
-
-1) A given user will start the program and see the project explorer window open. 
-2) In this window, the user selects the “New project” button and then is shown the “Create project” window. Here, a user can specify the requirements of the project. 
-3) After doing so, the user selects “CREATE PROJECT”, which opens the drawing window. 
-4) The user can then select the pen tool, and then click and draw intuitively on the canvas, creating a pen stroke. Once this drawing action is completed, a copy of the current canvas is saved for undo and redo actions. 
-5) The user can then press CTRL + Z to undo their change.
-
-
-## Full
-
 This walkthrough outlines the process of creating a new project and making a pen stroke.
 
 ### 1. Starting the program
