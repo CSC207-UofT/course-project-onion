@@ -1,10 +1,81 @@
 package com.onionshop.controllers;
+import com.onionshop.OnionFileLoader;
+import com.onionshop.Project;
+import com.onionshop.events.NewProjectEvent;
+import com.onionshop.managers.ProjectManager;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+
+import java.io.File;
+import java.util.Objects;
 
 public class NewProjectController {
     /**
-     * A controller that create a new project.
-     * Users need to text their project name, the width and height of canvas they want to create,
-     * and select the folder they want to save the project.
+     * Controller for the new project scene
+     * In this scene, users input data for their new project including project
+     * name, canvas width and height, as well as the directory that their project
+     * will be saved to.
      */
 
+    @FXML
+    public TextField txtProjectName;
+    @FXML
+    public TextField txtCanvasWidth;
+    @FXML
+    public TextField txtCanvasHeight;
+
+    @FXML
+    public Button btnSubmit;
+
+    @FXML
+    public Button btnChooseDir;
+
+    @FXML
+    public Label outDirName;
+
+    private String savDir;
+
+    /**
+        When the submit button is clicked, and each field has valid input (integer values for height
+        and width, valid directory path), create a new project.
+        @param event: the click event context
+    */
+    @FXML
+    public void onBtnSubmitClick(ActionEvent event) {
+        try {
+            if (savDir != null && !savDir.equals("") && OnionFileLoader.isDirectoryValid(savDir)) {
+                String projectName = txtProjectName.getCharacters().toString();
+                int width = Integer.parseInt(txtCanvasWidth.getCharacters().toString());
+                int height = Integer.parseInt(txtCanvasHeight.getCharacters().toString());
+
+                // If there are no errors above, create a new project
+                NewProjectEvent newProjectEvent = new NewProjectEvent(projectName, savDir, width, height);
+                ProjectManager.getInstance().newProject(newProjectEvent);
+
+                // switch to the canvas scene
+                SceneSwitcher.switchScene(getClass(), event, "/com/onionshop/main-canvas-view.fxml");
+            } else {
+                System.out.println("Error: File directory was not given or invalid");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     When the "Choose Directory" button is clicked, users will be able to choose a directory from
+     their file explorer to save their project to.
+     */
+    @FXML
+    public void onBtnChooseDirClick() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(null);
+        savDir = selectedDirectory.getAbsolutePath();
+        outDirName.setText(outDirName.getText() + savDir);
+    }
 }

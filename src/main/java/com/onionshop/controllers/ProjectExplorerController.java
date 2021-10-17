@@ -1,39 +1,40 @@
 package com.onionshop.controllers;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+
+
 public class ProjectExplorerController {
     /**
-     * Keep track of most recent projects (txt, csv).
-     * Open projects from recent projects.
-     * Import .onion project files from file explorer
-     * Creates new project -> open new project scene using NewProjectController.
-     *
+     * Controller for the project explorer scene
+     * In this scene users can choose between:
+     * - Open projects from recent projects.
+     * - Import .onion project files from file explorer
+     * - Create new project -> open new project scene using NewProjectController.
      */
 
-    private Object[] recentProjects;
+    @FXML
+    public Button btnNewProject;
+
+    @FXML
+    public Button btnOpen;
 
     /**
-     * Opens a project give a project object.
-     * @param project a project object.
+     * Changes the view to the NewProject scene
      */
-    public void openProject(Object project) {
-
+    @FXML
+    private void onBtnNewProjectClick(ActionEvent event) {
+        SceneSwitcher.switchScene(getClass(), event,"/com/onionshop/NewProject.fxml");
     }
 
-    /**
-     * Imports .onion project files from file explorer.
-     *
+
+    /*
+     * Todo: when you click open, the file explorer should popup, and the selected
+     *  .onion file should be loaded on to the canvas
      */
-    public void openFileExplorer() {
-
+    @FXML
+    public void onBtnOpenClick() {
     }
-
-    /**
-     *  Creates a new project.
-     *
-     * @return TODO: fill this in.
-     */
-    public Object createNewProject() {
-        return null;
-    }
-
+    
 }
