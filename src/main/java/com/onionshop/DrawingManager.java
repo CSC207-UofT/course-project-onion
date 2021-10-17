@@ -35,7 +35,8 @@ public class DrawingManager {
      * @return A list of pixels to update. This list only contains the pixel location, not the color data.
      */
     public int[][] updateCanvasAfterStroke(int x, int y) {
-        return this.currentlySelectedTool.draw(currentProject, currentlySelectedColour, x, y);
+        int[][] pixelsToReturn = this.currentlySelectedTool.draw(currentProject, currentlySelectedColour, x, y);
+        return pixelsToReturn;
     }
 
     /**
