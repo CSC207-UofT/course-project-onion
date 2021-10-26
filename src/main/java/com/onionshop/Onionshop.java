@@ -7,6 +7,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
+/* ++++++++++ O N I O N S H O P ++++++++++
+ *               |///  \\\
+ *             + ++++++++ +
+ *           +++/  /  | \  \ +
+ *         |+++/  /   |  \  \ \
+ *         |+++|  |   |   |  ||
+ *          |++++\ \  |  /   /+
+ *            ++++++  | / /+
+ *               ````````
+ */
 public class Onionshop extends Application {
     @Override
     public void start(Stage stage) throws IOException {
