@@ -1,4 +1,4 @@
-package com.onionshop;
+package com.onionshop.managers;
 
 
 import com.onionshop.managers.ProjectManager;
@@ -27,8 +27,8 @@ public class DrawingManager {
      * @return A list of pixels to update. This list only contains the pixel location, not the color data.
      */
     public int[][] updateCanvasAfterStroke(int x, int y) {
-        Project curProject = ProjectManager.getInstance().getCurrentProject();
-        int[][] pixelsToReturn = ToolStateManager.getInstance().getCurrentToolState().draw(curProject,
+        int[][] pixelsToReturn = ToolStateManager.getInstance().getCurrentToolState().draw(
+                ProjectManager.getInstance().getCurrentProject(),
                 ToolStateManager.getInstance().getCurrentColourState(), x, y);
         return pixelsToReturn;
     }
