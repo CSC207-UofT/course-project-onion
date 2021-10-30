@@ -21,12 +21,12 @@ public class Project {
     //2d array representing each pixel of the drawing canvas with Pixel
     Pixel[][] drawingCanvas;
 
-    /*
-    Creates instance of project
-
-    @param path: location of .onion project file
-    @param width: width of drawing
-    @param height: height of drawing
+    /**
+     * Creates instance of project
+     *
+     * @param path:   location of .onion project file
+     * @param width:  width of drawing
+     * @param height: height of drawing
      */
     public Project(String path, int width, int height) {
         this.path = path;
@@ -41,13 +41,14 @@ public class Project {
         }
 
     }
-    /*
-    Creates instance of project with a given background colour
 
-    @param path: location of .onion project file
-    @param width: width of drawing
-    @param height: height of drawing
-    @param backgroundRGB: colour of drawing canvas background
+    /**
+     * Creates instance of project with a given background colour
+     *
+     * @param path:          location of .onion project file
+     * @param width:         width of drawing
+     * @param height:        height of drawing
+     * @param backgroundRGB: colour of drawing canvas background
      */
     public Project(String path, int width, int height, int[] backgroundRGB) {
         this.path = path;
@@ -63,19 +64,19 @@ public class Project {
 
     }
 
-    /*
-    Gets path of project
-
-    @return path: the path of the current project .onion file
+    /**
+     * Gets path of project
+     *
+     * @return path: the path of the current project .onion file
      */
     public String getPath() {
         return path;
     }
 
-    /*
-    Sets new path
-
-    @param newPath: the new path to which this.path will be set
+    /**
+     * Sets new path
+     *
+     * @param newPath: the new path to which this.path will be set
      */
     public void updatePath(String newPath) {
         path = newPath;
@@ -84,7 +85,7 @@ public class Project {
 
     public void addColour(Colour newColour) {
         Colour[] newCP = new Colour[colourPalette.length + 1];
-        for (int i=0; i< colourPalette.length; i++) {
+        for (int i = 0; i < colourPalette.length; i++) {
             newCP[i] = colourPalette[i];
         }
         newCP[newCP.length - 1] = newColour;
@@ -93,11 +94,10 @@ public class Project {
     }
 
 
-
-    /*
-    Serializes this Project instance to .onion file format
-
-    @return: returns serialized Project in onion format
+    /**
+     * Serializes this Project instance to .onion file format
+     *
+     * @return: returns serialized Project in onion format
      */
     public String[] Serialize() {
         int numberOfLines = this.width * this.height + colourPalette.length + 6;

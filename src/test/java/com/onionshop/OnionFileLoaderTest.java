@@ -14,22 +14,27 @@ class OnionFileLoaderTest {
     static void setUp() throws IOException {
         savePath = new File(".").getCanonicalPath() + "/src/test/resources/project_save_test.onion";
         project = new Project(savePath, 2, 2);
-        OnionFileLoader.saveProject(project);
     }
 
-    @AfterAll
-    static void tearDown() throws IOException {
+    @AfterEach
+    void cleanUpEach() {
         (new File(savePath)).delete();
     }
 
     @Test
     void saveProject() throws IOException {
-        (new File(savePath)).delete();
         assert(OnionFileLoader.saveProject(project));
     }
 
     @Test
-    void loadProject() throws IOException {
+    void loadProject() throws Exception {
+        OnionFileLoader.saveProject(project);
         assertArrayEquals(project.Serialize(), OnionFileLoader.loadProject(savePath).Serialize());
+    }
+
+    @Test
+    void doesFileAlreadyExist() throws IOException {
+        OnionFileLoader.saveProject(project);
+        assert(OnionFileLoader.doesFileAlreadyExist(savePath));
     }
 }
