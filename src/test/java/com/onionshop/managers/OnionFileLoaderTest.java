@@ -1,5 +1,6 @@
-package com.onionshop;
+package com.onionshop.managers;
 
+import com.onionshop.entities.Project;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
@@ -29,7 +30,7 @@ class OnionFileLoaderTest {
     @Test
     void loadProject() throws Exception {
         OnionFileLoader.saveProject(project);
-        assertArrayEquals(project.Serialize(), OnionFileLoader.loadProject(savePath).Serialize());
+        assertArrayEquals(project.serialize(), OnionFileLoader.loadProject(savePath).serialize());
     }
 
     @Test
