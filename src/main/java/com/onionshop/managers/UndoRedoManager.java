@@ -1,8 +1,8 @@
-package com.onionshop;
+package com.onionshop.managers;
 
 import java.util.Stack;
 
-import com.onionshop.managers.ProjectManager;
+import com.onionshop.entities.Pixel;
 
 public class UndoRedoManager {
     /**

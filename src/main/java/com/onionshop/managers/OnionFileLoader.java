@@ -3,11 +3,13 @@ Implements static save and load functionality for .onion files and Project seria
 
 @author Finn Williams
  */
-package com.onionshop;
+package com.onionshop.managers;
+
+import com.onionshop.entities.Colour;
+import com.onionshop.entities.Pixel;
+import com.onionshop.entities.Project;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -24,7 +26,7 @@ public class OnionFileLoader {
             FileWriter writer = new FileWriter(project.getPath());
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
 
-            for (String line : project.Serialize()) {
+            for (String line : project.serialize()) {
                 bufferedWriter.write(line);
                 bufferedWriter.newLine();
             }
@@ -72,7 +74,7 @@ public class OnionFileLoader {
         String[] lines = getFileLines(path);
         Project loadedProject = generateProjectInstance(lines);
         loadedProject.colourPalette = generateColourPalette(lines);
-        loadedProject.drawingCanvas = generatePixelArray(loadedProject.width, loadedProject.height, lines);
+        loadedProject.drawingCanvas = generatePixelArray(loadedProject.getWidth(), loadedProject.getHeight(), lines);
         return loadedProject;
     }
 
@@ -124,9 +126,9 @@ public class OnionFileLoader {
      * Creates a Colour array from the saved colours read from lines
      *
      * @param lines array of Strings where array[i] is the i-th line of a file
-     * @return array of saved colours read from lines
+     * @return arrayList of saved colours read from lines
      */
-    private static Colour[] generateColourPalette(String[] lines) throws Exception {
+    private static ArrayList<Colour> generateColourPalette(String[] lines) throws Exception {
         ArrayList<Colour> colourPalette = new ArrayList<>();
         int lineNumber = getIndexOfString("[saved colours]", lines) + 1;
         String line;
@@ -141,7 +143,7 @@ public class OnionFileLoader {
             colourPalette.add(new Colour(name, RGB));
             lineNumber++;
         }
-        return colourPalette.toArray(new Colour[0]); //This might not work
+        return colourPalette;
     }
 
     /**

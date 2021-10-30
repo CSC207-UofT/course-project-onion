@@ -1,6 +1,6 @@
 package com.onionshop.events;
 
-import com.onionshop.DrawingManager;
+import com.onionshop.managers.DrawingManager;
 import javafx.scene.input.MouseEvent;
 
 public class CanvasEvents {

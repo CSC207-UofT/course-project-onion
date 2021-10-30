@@ -1,13 +1,8 @@
 package com.onionshop.managers;
 
-import com.onionshop.Pixel;
-import com.onionshop.Project;
-import com.onionshop.UndoRedoManager;
-import com.onionshop.controllers.SceneSwitcher;
+import com.onionshop.entities.Pixel;
+import com.onionshop.entities.Project;
 import com.onionshop.events.NewProjectEvent;
-import com.onionshop.OnionFileLoader;
-
-import java.io.IOException;
 
 public class ProjectManager {
     /**

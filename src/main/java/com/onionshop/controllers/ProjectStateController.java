@@ -1,11 +1,13 @@
 package com.onionshop.controllers;
 
-import com.onionshop.*;
+import com.onionshop.entities.Colour;
+import com.onionshop.entities.Pen;
+import com.onionshop.entities.Project;
 import com.onionshop.events.CanvasEvents;
-import com.onionshop.managers.ProjectManager;
+import com.onionshop.managers.DrawingManager;
+import com.onionshop.managers.ToolStateManager;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;

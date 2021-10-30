@@ -3,7 +3,7 @@ Used to hold a pixel's RGB value
 
 @author Finn Williams
  */
-package com.onionshop;
+package com.onionshop.entities;
 
 public class Pixel {
     // The RGB values of the pixel, {red, green, blue}

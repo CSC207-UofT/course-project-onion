@@ -1,6 +1,5 @@
 package com.onionshop.controllers;
-import com.onionshop.OnionFileLoader;
-import com.onionshop.Project;
+import com.onionshop.managers.OnionFileLoader;
 import com.onionshop.events.NewProjectEvent;
 import com.onionshop.managers.ProjectManager;
 import javafx.event.ActionEvent;
@@ -8,11 +7,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 
 import java.io.File;
-import java.util.Objects;
 
 public class NewProjectController {
     /**
