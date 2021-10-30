@@ -6,6 +6,9 @@ This is a storage class, all elements that are made public are intended to be ed
  */
 package com.onionshop;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class Project {
     // Drawing width in pixels
     final int width;
@@ -15,11 +18,10 @@ public class Project {
     private String path;
 
     // An array that holds default and user created colours
-    Colour[] colourPalette = {new Colour("black", new int[]{0, 0, 0})};
-    //TODO: implement later, right now we just have one default colour
+    public ArrayList<Colour> colourPalette;
 
     //2d array representing each pixel of the drawing canvas with Pixel
-    Pixel[][] drawingCanvas;
+    public Pixel[][] drawingCanvas;
 
     /**
      * Creates instance of project
@@ -32,6 +34,8 @@ public class Project {
         this.path = path;
         this.width = width;
         this.height = height;
+
+        this.colourPalette.add(new Colour("black", new int[]{0, 0, 0})); //default pen colour
 
         this.drawingCanvas = new Pixel[width][height];
         for (int x = 0; x < width; x++) {
@@ -55,10 +59,12 @@ public class Project {
         this.width = width;
         this.height = height;
 
+        this.colourPalette.add(new Colour("black", new int[]{0, 0, 0})); //default pen colour
+
         this.drawingCanvas = new Pixel[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                drawingCanvas[x][y] = new Pixel(backgroundRGB); //White by default
+                drawingCanvas[x][y] = new Pixel(backgroundRGB);
             }
         }
 
@@ -67,7 +73,7 @@ public class Project {
     /**
      * Gets path of project
      *
-     * @return path: the path of the current project .onion file
+     * @return returns the path of the current project .onion file
      */
     public String getPath() {
         return path;
@@ -76,31 +82,62 @@ public class Project {
     /**
      * Sets new path
      *
-     * @param newPath: the new path to which this.path will be set
+     * @param newPath the new path to which this.path will be set
      */
-    public void updatePath(String newPath) {
-        path = newPath;
-        //TODO (optional): add a checker to see if the path is valid and writable
-    }
-
-    public void addColour(Colour newColour) {
-        Colour[] newCP = new Colour[colourPalette.length + 1];
-        for (int i = 0; i < colourPalette.length; i++) {
-            newCP[i] = colourPalette[i];
+    public void updatePath(String newPath) throws Exception {
+        if (OnionFileLoader.isDirectoryValid(newPath)) {
+            path = newPath;
+        } else {
+            throw new Exception("Invalid path was given: " + newPath);
         }
-        newCP[newCP.length - 1] = newColour;
 
-        this.colourPalette = newCP;
     }
 
+    /**
+     * Adds a new custom colour to the colour palette
+     *
+     * @param newColour the new Colour instance to be added
+     */
+    public void addColour(Colour newColour) {
+        this.colourPalette.add(newColour);
+    }
+
+    /**
+     * Removes the given Colour instance from the colourPalette
+     * @param colour Colour instance to be removed
+     */
+    public void removeColour(Colour colour) {
+        colourPalette.remove(colour);
+    }
+
+    /**
+     * Removes the colour of the given name from colourPalette
+     * @param colourName the name of the colour to be removed
+     */
+    public void removeColour(String colourName) {
+        for (Colour c : colourPalette) {
+            if (Objects.equals(c.name, colourName)) {
+                colourPalette.remove(c);
+                return;
+            }
+        }
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 
     /**
      * Serializes this Project instance to .onion file format
      *
-     * @return: returns serialized Project in onion format
+     * @return serialization returns serialized Project in onion format
      */
     public String[] Serialize() {
-        int numberOfLines = this.width * this.height + colourPalette.length + 6;
+        int numberOfLines = this.width * this.height + colourPalette.size() + 6;
         int lineNumber = 0;
         String[] serialization = new String[numberOfLines];
 
@@ -134,7 +171,6 @@ public class Project {
                 lineNumber++;
             }
         }
-
         serialization[lineNumber] = "[end]";
 
         return serialization;
