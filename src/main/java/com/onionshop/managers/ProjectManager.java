@@ -44,4 +44,12 @@ public class ProjectManager {
             throw new IndexOutOfBoundsException("Updated drawingCanvas does not match initialized drawingCanvas size");
         }
     }
+
+    /**
+     * Returns the current project
+     * @return the Current Project
+     */
+    public Project getCurrentProject() {
+        return currentProject;
+    }
 }
