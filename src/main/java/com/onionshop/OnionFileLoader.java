@@ -124,9 +124,9 @@ public class OnionFileLoader {
      * Creates a Colour array from the saved colours read from lines
      *
      * @param lines array of Strings where array[i] is the i-th line of a file
-     * @return array of saved colours read from lines
+     * @return arrayList of saved colours read from lines
      */
-    private static Colour[] generateColourPalette(String[] lines) throws Exception {
+    private static ArrayList<Colour> generateColourPalette(String[] lines) throws Exception {
         ArrayList<Colour> colourPalette = new ArrayList<>();
         int lineNumber = getIndexOfString("[saved colours]", lines) + 1;
         String line;
@@ -141,7 +141,7 @@ public class OnionFileLoader {
             colourPalette.add(new Colour(name, RGB));
             lineNumber++;
         }
-        return colourPalette.toArray(new Colour[0]); //This might not work
+        return colourPalette;
     }
 
     /**
