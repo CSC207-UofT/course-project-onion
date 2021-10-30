@@ -1,13 +1,34 @@
 package com.onionshop;
 
+import com.onionshop.managers.ProjectManager;
+
 public class ToolStateManager {
     /**
      * This class holds the current state of the tools and colours used on canvas, and updates them according to
      * user inputs.
      */
 
+    private final static ToolStateManager instance = new ToolStateManager();
     private Tool currentToolState;
     private Colour currentColourState;
+
+    /**
+     * Returns the instance of ProjectManager
+     * @return the instance of this singleton global ProjectManager
+     */
+    public static ToolStateManager getInstance() {
+        return instance;
+    }
+
+    /**
+     * Initiates a ToolStateManager with a default round brush and a default black color
+     *
+     */
+    public ToolStateManager() {
+        this.currentToolState = new Pen("round", 10);
+        this.currentColourState = new Colour("Black", new int[] {0, 0, 0});
+    }
+
 
     /**
      * Initiates a ToolStateManager with the current tool state and the current colour state.

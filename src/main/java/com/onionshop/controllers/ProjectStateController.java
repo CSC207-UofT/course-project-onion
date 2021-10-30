@@ -28,16 +28,8 @@ public class ProjectStateController {
     @FXML
     private Slider toolSizeSlider;
 
-    // These are all Test objects for setting up the drawing manager. We will actually integrate this with the
-    // project creation workflow for phase 1.
-    private Pen currentPen = new Pen("round", 1);
-    private Colour currentColour = new Colour("Black", new int[] {0, 0, 0});
-    private ToolStateManager projectToolStateManager = new ToolStateManager(currentPen, currentColour);
-    private Project tempProject = new Project("TestPath", 400, 300);
-    private DrawingManager projectDrawingManager = new DrawingManager(currentPen, currentColour, tempProject);
-
-
-    private CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
+    private final DrawingManager projectDrawingManager = new DrawingManager();
+    private final CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
 
 
     @FXML
@@ -82,7 +74,7 @@ public class ProjectStateController {
      * Takes in a ToolbarEvent, update the tool accordingly
      * To be implemented after phase0
      */
-    public void ToolUpdate(){
+    public void toolUpdate(){
 
     }
 
@@ -90,7 +82,7 @@ public class ProjectStateController {
      * Takes in an event that changes the size of brush, update the brush size accordingly
      *
      */
-    public void BrushSizeUpdate(){
+    public void brushSizeUpdate(){
     }
 
 
@@ -99,7 +91,7 @@ public class ProjectStateController {
      * @param colour: the colour object
      * @param newColour : integer array of the RGB value of the new colour
      */
-    public void ColourUpdate(Colour colour, int[] newColour){
+    public void colourUpdate(Colour colour, int[] newColour){
         colour.setRGB(newColour);
     }
 
