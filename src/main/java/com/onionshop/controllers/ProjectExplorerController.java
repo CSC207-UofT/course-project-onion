@@ -29,9 +29,9 @@ public class ProjectExplorerController {
     }
 
 
-    /*
-     * Todo: when you click open, the file explorer should popup, and the selected
-     *  .onion file should be loaded on to the canvas
+    /**
+     * Allows user to choose a .onion file to import into Onionshop for editing.
+     * Switches to Main Canvas Scene
      */
     @FXML
     public void onBtnOpenClick() {
