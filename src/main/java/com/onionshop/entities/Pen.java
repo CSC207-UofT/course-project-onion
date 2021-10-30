@@ -1,9 +1,6 @@
-package com.onionshop;
+package com.onionshop.entities;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-public class Pen extends Brush implements Tool{
+public class Pen extends Brush implements Tool {
     private String brushShape;
     private int brushSize;
     private int[][] pixelsEffectedByBrush;

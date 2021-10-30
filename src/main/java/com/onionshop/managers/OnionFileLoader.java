@@ -3,11 +3,13 @@ Implements static save and load functionality for .onion files and Project seria
 
 @author Finn Williams
  */
-package com.onionshop;
+package com.onionshop.managers;
+
+import com.onionshop.entities.Colour;
+import com.onionshop.entities.Pixel;
+import com.onionshop.entities.Project;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -24,7 +26,7 @@ public class OnionFileLoader {
             FileWriter writer = new FileWriter(project.getPath());
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
 
-            for (String line : project.Serialize()) {
+            for (String line : project.serialize()) {
                 bufferedWriter.write(line);
                 bufferedWriter.newLine();
             }
@@ -72,7 +74,7 @@ public class OnionFileLoader {
         String[] lines = getFileLines(path);
         Project loadedProject = generateProjectInstance(lines);
         loadedProject.colourPalette = generateColourPalette(lines);
-        loadedProject.drawingCanvas = generatePixelArray(loadedProject.width, loadedProject.height, lines);
+        loadedProject.drawingCanvas = generatePixelArray(loadedProject.getWidth(), loadedProject.getHeight(), lines);
         return loadedProject;
     }
 

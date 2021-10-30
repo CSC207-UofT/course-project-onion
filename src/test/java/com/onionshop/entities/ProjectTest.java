@@ -1,4 +1,4 @@
-package com.onionshop;
+package com.onionshop.entities;
 import org.junit.jupiter.api.*;
 import java.util.Arrays;
 
@@ -28,7 +28,7 @@ public class ProjectTest {
 
     @Test
     public void serializeTest() {
-        String[] lines = p.Serialize();
+        String[] lines = p.serialize();
         String[] expected = {
                 "[dimensions]",
                 "width:2",

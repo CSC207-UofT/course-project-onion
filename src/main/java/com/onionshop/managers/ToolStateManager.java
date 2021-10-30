@@ -1,4 +1,8 @@
-package com.onionshop;
+package com.onionshop.managers;
+
+import com.onionshop.entities.Brush;
+import com.onionshop.entities.Colour;
+import com.onionshop.entities.Tool;
 
 public class ToolStateManager {
     /**
