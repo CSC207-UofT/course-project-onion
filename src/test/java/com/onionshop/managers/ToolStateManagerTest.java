@@ -1,5 +1,9 @@
-package com.onionshop;
+package com.onionshop.managers;
 
+import com.onionshop.entities.Colour;
+import com.onionshop.entities.Pen;
+import com.onionshop.entities.Tool;
+import com.onionshop.managers.ToolStateManager;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

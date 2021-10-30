@@ -4,7 +4,9 @@ Used to store user defined/chosen colours and default colours for the colour pal
 @author Finn Williams
  */
 
-package com.onionshop;
+package com.onionshop.entities;
+
+import com.onionshop.entities.Pixel;
 
 public class Colour extends Pixel {
     //name of the colour, defined by user of default

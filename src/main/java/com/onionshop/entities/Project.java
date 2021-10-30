@@ -4,7 +4,9 @@ This is a storage class, all elements that are made public are intended to be ed
 
 @author Finn Williams
  */
-package com.onionshop;
+package com.onionshop.entities;
+
+import com.onionshop.managers.OnionFileLoader;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -136,7 +138,7 @@ public class Project {
      *
      * @return serialization returns serialized Project in onion format
      */
-    public String[] Serialize() {
+    public String[] serialize() {
         int numberOfLines = this.width * this.height + colourPalette.size() + 6;
         int lineNumber = 0;
         String[] serialization = new String[numberOfLines];

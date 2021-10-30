@@ -1,5 +1,9 @@
-package com.onionshop;
+package com.onionshop.managers;
 
+
+import com.onionshop.entities.Colour;
+import com.onionshop.entities.Project;
+import com.onionshop.entities.Tool;
 
 public class DrawingManager {
     /**
