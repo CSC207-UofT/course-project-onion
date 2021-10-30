@@ -51,4 +51,9 @@ public abstract class Brush {
     public void setBrushSize(int brushSize) {
         this.brushSize = brushSize;
     }
+
+    public abstract int[][] draw(Project currentCanvas, Colour currentColour, int x, int y);
+
+    public abstract void calculateEffectedPixels();
+
 }

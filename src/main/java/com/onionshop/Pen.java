@@ -22,7 +22,7 @@ public class Pen extends Brush implements Tool{
         this.calculateEffectedPixels();
     }
 
-    public void calculateEffectedPixels() {
+    @Override public void calculateEffectedPixels() {
         //Hardcoding a small offset sphere just for phase 0. Code for calculating the circle is below for future phases
 
         pixelsEffectedByBrush = new int[121][2];
@@ -70,7 +70,7 @@ public class Pen extends Brush implements Tool{
         //TODO: will implement this later once we know exactly what's going on with JavaFX
     }
 
-    public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y) {
+    @Override public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y) {
         // Creating a new array to store the pixels that are updated in this method. These will then
         // Be sent back up to javafx to be rendered on the canvas.
         int[][] pixelsToUpdate = new int[pixelsEffectedByBrush.length][2];
