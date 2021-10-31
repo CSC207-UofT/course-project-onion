@@ -73,4 +73,17 @@ public abstract class Brush implements Tool {
 
         return pixelsToUpdate;
     }
+
+    public void calculateEffectedPixels() {
+        int counter = 0;
+        for (int x = -5; x < 6; x++) {
+            for (int y = -5; y < 6; y++) {
+                this.pixelsEffectedByBrush[counter][0] = x;
+                this.pixelsEffectedByBrush[counter][1] = y;
+                counter++;
+            }
+        }
+
+    }
+
 }
