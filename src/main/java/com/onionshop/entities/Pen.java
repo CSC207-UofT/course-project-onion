@@ -19,50 +19,6 @@ public class Pen extends Brush implements Tool {
         this.calculateEffectedPixels();
     }
 
-    public void calculateEffectedPixels() {
-        //Hardcoding a small offset sphere just for phase 0. Code for calculating the circle is below for future phases
-
-        pixelsEffectedByBrush = new int[121][2];
-        /*
-        pixelsEffectedByBrush[0][0] = 0;
-        pixelsEffectedByBrush[0][1] = 1;
-
-        pixelsEffectedByBrush[1][0] = 1;
-        pixelsEffectedByBrush[1][1] = 0;
-
-        pixelsEffectedByBrush[2][0] = 0;
-        pixelsEffectedByBrush[2][1] = -1;
-
-        pixelsEffectedByBrush[3][0] = -1;
-        pixelsEffectedByBrush[3][1] = 0;
-
-        pixelsEffectedByBrush[4][0] = 0;
-        pixelsEffectedByBrush[4][1] = 0;
-        */
-        int counter = 0;
-        for (int x = -5; x < 6; x++) {
-            for (int y = -5; y < 6; y++) {
-                pixelsEffectedByBrush[counter][0] = x;
-                pixelsEffectedByBrush[counter][1] = y;
-                counter++;
-            }
-        }
-
-
-        /*
-        This is code for later. This isn't currently working
-        double radius = Math.pow(brushSize / Math.PI, 0.5);
-        int[][] potentialPixels = new int[(int)radius*2 + 2][(int)radius*2 + 2];
-        int currentArrayInd = 0;
-
-        for (int x = 0; x < potentialPixels.length; x++) {
-            for (int y = 0; y < potentialPixels.length; y++) {
-                if (Math.pow(x - radius, 2) + Math.pow(y - radius, 2) <= Math.pow(radius, 2)) {
-                }
-            }
-        } */
-    }
-
     public void makeSelectable() {
         //TODO: will implement this later once we know exactly what's going on with JavaFX
     }
