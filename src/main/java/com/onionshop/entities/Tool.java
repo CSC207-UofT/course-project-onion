@@ -1,4 +1,4 @@
-package com.onionshop;
+package com.onionshop.entities;
 
 public interface Tool {
     /**

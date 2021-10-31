@@ -1,4 +1,11 @@
-package com.onionshop;
+package com.onionshop.managers;
+
+import com.onionshop.entities.Brush;
+import com.onionshop.entities.Pen;
+import com.onionshop.entities.Colour;
+import com.onionshop.entities.Tool;
+
+import com.onionshop.managers.ProjectManager;
 
 public class ToolStateManager {
     /**
@@ -6,8 +13,27 @@ public class ToolStateManager {
      * user inputs.
      */
 
+    private final static ToolStateManager instance = new ToolStateManager();
     private Tool currentToolState;
     private Colour currentColourState;
+
+    /**
+     * Returns the instance of ProjectManager
+     * @return the instance of this singleton global ProjectManager
+     */
+    public static ToolStateManager getInstance() {
+        return instance;
+    }
+
+    /**
+     * Initiates a ToolStateManager with a default round brush and a default black color
+     *
+     */
+    public ToolStateManager() {
+        this.currentToolState = new Pen("round", 10);
+        this.currentColourState = new Colour("Black", new int[] {0, 0, 0});
+    }
+
 
     /**
      * Initiates a ToolStateManager with the current tool state and the current colour state.

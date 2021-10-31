@@ -4,7 +4,12 @@ This is a storage class, all elements that are made public are intended to be ed
 
 @author Finn Williams
  */
-package com.onionshop;
+package com.onionshop.entities;
+
+import com.onionshop.managers.OnionFileLoader;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class Project {
     // Drawing width in pixels
@@ -15,22 +20,24 @@ public class Project {
     private String path;
 
     // An array that holds default and user created colours
-    Colour[] colourPalette = {new Colour("black", new int[]{0, 0, 0})}; //TODO: implement later, right now we just have one default colour
+    public ArrayList<Colour> colourPalette;
 
     //2d array representing each pixel of the drawing canvas with Pixel
-    Pixel[][] drawingCanvas;
+    public Pixel[][] drawingCanvas;
 
-    /*
-    Creates instance of project
-
-    @param path: location of .onion project file
-    @param width: width of drawing
-    @param height: height of drawing
+    /**
+     * Creates instance of project
+     *
+     * @param path:   location of .onion project file
+     * @param width:  width of drawing
+     * @param height: height of drawing
      */
     public Project(String path, int width, int height) {
         this.path = path;
         this.width = width;
         this.height = height;
+
+        this.colourPalette.add(new Colour("black", new int[]{0, 0, 0})); //default pen colour
 
         this.drawingCanvas = new Pixel[width][height];
         for (int x = 0; x < width; x++) {
@@ -40,53 +47,99 @@ public class Project {
         }
 
     }
-    /*
-    Creates instance of project with a given background colour
 
-    @param path: location of .onion project file
-    @param width: width of drawing
-    @param height: height of drawing
-    @param backgroundRGB: colour of drawing canvas background
+    /**
+     * Creates instance of project with a given background colour
+     *
+     * @param path:          location of .onion project file
+     * @param width:         width of drawing
+     * @param height:        height of drawing
+     * @param backgroundRGB: colour of drawing canvas background
      */
     public Project(String path, int width, int height, int[] backgroundRGB) {
         this.path = path;
         this.width = width;
         this.height = height;
 
+        this.colourPalette.add(new Colour("black", new int[]{0, 0, 0})); //default pen colour
+
         this.drawingCanvas = new Pixel[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                drawingCanvas[x][y] = new Pixel(backgroundRGB); //White by default
+                drawingCanvas[x][y] = new Pixel(backgroundRGB);
             }
         }
 
     }
 
-    /*
-    Gets path of project
-
-    @return path: the path of the current project .onion file
+    /**
+     * Gets path of project
+     *
+     * @return returns the path of the current project .onion file
      */
     public String getPath() {
         return path;
     }
 
-    /*
-    Sets new path
-
-    @param newPath: the new path to which this.path will be set
+    /**
+     * Sets new path
+     *
+     * @param newPath the new path to which this.path will be set
      */
-    public void updatePath(String newPath) {
-        path = newPath;
-        //TODO (optional): add a checker to see if the path is valid and writable
+    public void updatePath(String newPath) throws Exception {
+        if (OnionFileLoader.isDirectoryValid(newPath)) {
+            path = newPath;
+        } else {
+            throw new Exception("Invalid path was given: " + newPath);
+        }
+
     }
-    /*
-    Serializes this Project instance to .onion file format
 
-    @return: returns serialized Project in onion format
+    /**
+     * Adds a new custom colour to the colour palette
+     *
+     * @param newColour the new Colour instance to be added
      */
-    public String[] Serialize() {
-        int numberOfLines = this.width * this.height + colourPalette.length + 5;
+    public void addColour(Colour newColour) {
+        this.colourPalette.add(newColour);
+    }
+
+    /**
+     * Removes the given Colour instance from the colourPalette
+     * @param colour Colour instance to be removed
+     */
+    public void removeColour(Colour colour) {
+        colourPalette.remove(colour);
+    }
+
+    /**
+     * Removes the colour of the given name from colourPalette
+     * @param colourName the name of the colour to be removed
+     */
+    public void removeColour(String colourName) {
+        for (Colour c : colourPalette) {
+            if (Objects.equals(c.name, colourName)) {
+                colourPalette.remove(c);
+                return;
+            }
+        }
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * Serializes this Project instance to .onion file format
+     *
+     * @return serialization returns serialized Project in onion format
+     */
+    public String[] serialize() {
+        int numberOfLines = this.width * this.height + colourPalette.size() + 6;
         int lineNumber = 0;
         String[] serialization = new String[numberOfLines];
 
@@ -97,7 +150,7 @@ public class Project {
         serialization[1] = "width:" + String.valueOf(width);
         serialization[2] = "height:" + String.valueOf(height);
         serialization[3] = "[saved colours]";
-        lineNumber += 3;
+        lineNumber += 4;
 
         //adding saved colours -> <name>:R,G,B
         for (Colour colour : colourPalette) {
@@ -120,7 +173,6 @@ public class Project {
                 lineNumber++;
             }
         }
-
         serialization[lineNumber] = "[end]";
 
         return serialization;
