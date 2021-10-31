@@ -1,9 +1,7 @@
 package com.onionshop.managers;
 
 
-import com.onionshop.entities.Colour;
-import com.onionshop.entities.Project;
-import com.onionshop.entities.Tool;
+import com.onionshop.managers.ProjectManager;
 
 public class DrawingManager {
     /**
@@ -11,21 +9,11 @@ public class DrawingManager {
      * information to calculate and update the pixels that are effected as the user draws on the canvas
      */
 
-    private Tool currentlySelectedTool;
-    private Colour currentlySelectedColour;
-    private final Project currentProject;
-
     /**
      * Instantiates the drawing manager with the current project, the default Tool, and the default colour.
      *
-     * @param selectedTool The currently selected or default tool for the project
-     * @param selectedColour The currently selected or default colour for the project
-     * @param curProject The current project
      */
-    public DrawingManager(Tool selectedTool, Colour selectedColour, Project curProject) {
-        currentlySelectedTool = selectedTool;
-        currentlySelectedColour = selectedColour;
-        currentProject = curProject;
+    public DrawingManager() {
     }
 
     /**
@@ -39,47 +27,10 @@ public class DrawingManager {
      * @return A list of pixels to update. This list only contains the pixel location, not the color data.
      */
     public int[][] updateCanvasAfterStroke(int x, int y) {
-        int[][] pixelsToReturn = this.currentlySelectedTool.draw(currentProject, currentlySelectedColour, x, y);
+        int[][] pixelsToReturn = ToolStateManager.getInstance().getCurrentToolState().draw(
+                ProjectManager.getInstance().getCurrentProject(),
+                ToolStateManager.getInstance().getCurrentColourState(), x, y);
         return pixelsToReturn;
     }
 
-    /**
-     * Sets the currently selected tool
-     * @param newCurrentlySelectedTool The new tool to set currentlySelectedTool as
-     */
-    public void setCurrentlySelectedTool(Tool newCurrentlySelectedTool) {
-        this.currentlySelectedTool = newCurrentlySelectedTool;
-    }
-
-    /**
-     * Sets the currently selected colour
-     * @param newCurrentlySelectedColour The new colour to set currentlySelectedColour as
-     */
-    public void setCurrentlySelectedColour(Colour newCurrentlySelectedColour) {
-        this.currentlySelectedColour = newCurrentlySelectedColour;
-    }
-
-    /**
-     * Returns the currently selected tool
-     * @return The currently selected tool
-     */
-    public Tool getCurrentlySelectedTool() {
-        return currentlySelectedTool;
-    }
-
-    /**
-     * Returns the currently selected project
-     * @return The currently selected project
-     */
-    public Project getCurrentProject() {
-        return currentProject;
-    }
-
-    /**
-     * Returns the currently selected colour
-     * @return The currently selected colour
-     */
-    public Colour getCurrentlySelectedColour() {
-        return currentlySelectedColour;
-    }
 }
