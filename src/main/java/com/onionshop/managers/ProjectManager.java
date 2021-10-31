@@ -4,6 +4,8 @@ import com.onionshop.entities.Pixel;
 import com.onionshop.entities.Project;
 import com.onionshop.events.NewProjectEvent;
 
+import java.io.File;
+
 public class ProjectManager {
     /**
         Manages the currently opened project.
@@ -33,6 +35,15 @@ public class ProjectManager {
         } else {
             throw new Exception("Error: File with that name already exists!");
         }
+    }
+
+    /**
+     * Loads the selectedOnionFile as the currentProject
+     * @param selectedOnionFile a .onion file
+     */
+    public void loadProject(File selectedOnionFile) throws Exception {
+        currentProject = OnionFileLoader.loadProject(selectedOnionFile.getAbsolutePath());
+        System.out.println("Project Loaded");
     }
 
     public void updateDrawingCanvas(Pixel[][] newCanvas) {

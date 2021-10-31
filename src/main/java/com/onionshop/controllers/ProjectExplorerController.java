@@ -1,8 +1,13 @@
 package com.onionshop.controllers;
 
+import com.onionshop.managers.ProjectManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+
+import java.io.File;
 
 
 public class ProjectExplorerController {
@@ -29,12 +34,28 @@ public class ProjectExplorerController {
     }
 
 
-    /*
-     * Todo: when you click open, the file explorer should popup, and the selected
-     *  .onion file should be loaded on to the canvas
+    /**
+     * Allows user to choose a .onion file to import into Onionshop for editing.
+     * Switches to Main Canvas Scene
      */
     @FXML
-    public void onBtnOpenClick() {
+    public void onBtnOpenClick(ActionEvent event) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+
+            // Set extension filter
+            FileChooser.ExtensionFilter extFilter =
+                    new FileChooser.ExtensionFilter("ONION files (*.onion)", "*.onion");
+            fileChooser.getExtensionFilters().add(extFilter);
+
+            File selectedFile = fileChooser.showOpenDialog(null);
+            ProjectManager.getInstance().loadProject(selectedFile);
+
+            SceneSwitcher.switchScene(getClass(), event,"/com/onionshop/main-canvas-view.fxml");
+        } catch (Exception exception) {
+            System.out.println("Error: Could not load project");
+            exception.printStackTrace();
+        }
     }
     
 }
