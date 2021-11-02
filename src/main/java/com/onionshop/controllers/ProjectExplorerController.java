@@ -3,6 +3,7 @@ package com.onionshop.controllers;
 import com.onionshop.managers.ProjectManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -51,7 +52,8 @@ public class ProjectExplorerController {
             File selectedFile = fileChooser.showOpenDialog(null);
             ProjectManager.getInstance().loadProject(selectedFile);
 
-            SceneSwitcher.switchScene(getClass(), event,"/com/onionshop/main-canvas-view.fxml");
+            Scene mainCanvasScene = SceneSwitcher.switchScene(getClass(), event,"/com/onionshop/main-canvas-view.fxml");
+            SceneSwitcher.setKeyEventHandler(mainCanvasScene);
         } catch (Exception exception) {
             System.out.println("Error: Could not load project");
             exception.printStackTrace();
