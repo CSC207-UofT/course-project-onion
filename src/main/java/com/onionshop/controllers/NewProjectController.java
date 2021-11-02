@@ -4,6 +4,7 @@ import com.onionshop.events.NewProjectEvent;
 import com.onionshop.managers.ProjectManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -55,7 +56,8 @@ public class NewProjectController {
                 ProjectManager.getInstance().newProject(newProjectEvent);
 
                 // switch to the canvas scene
-                SceneSwitcher.switchScene(getClass(), event, "/com/onionshop/main-canvas-view.fxml");
+                Scene mainCanvasScene = SceneSwitcher.switchScene(getClass(), event, "/com/onionshop/main-canvas-view.fxml");
+                SceneSwitcher.setKeyEventHandler(mainCanvasScene);
             } else {
                 System.out.println("Error: File directory was not given or invalid");
             }

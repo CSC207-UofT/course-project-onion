@@ -37,6 +37,8 @@ public class Project {
         this.width = width;
         this.height = height;
 
+        this.colourPalette = new ArrayList<Colour>();
+
         this.colourPalette.add(new Colour("black", new int[]{0, 0, 0})); //default pen colour
 
         this.drawingCanvas = new Pixel[width][height];
