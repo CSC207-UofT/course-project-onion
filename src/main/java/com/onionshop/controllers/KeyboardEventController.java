@@ -22,7 +22,7 @@ public class KeyboardEventController implements EventHandler<KeyEvent> {
      * Handles keyboard inputs.
      */
 
-    private final UndoRedoManager UndoRedo = new UndoRedoManager();
+    private final UndoRedoManager UndoRedo = ProjectManager.getInstance().getUndoRedoState();
     private final ProjectManager projectManager = ProjectManager.getInstance();
     KeyCombination Undo = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
     KeyCombination Redo = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
