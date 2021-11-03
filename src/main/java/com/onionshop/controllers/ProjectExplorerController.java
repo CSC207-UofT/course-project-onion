@@ -52,8 +52,7 @@ public class ProjectExplorerController {
             File selectedFile = fileChooser.showOpenDialog(null);
             ProjectManager.getInstance().loadProject(selectedFile);
 
-            Scene mainCanvasScene = SceneSwitcher.switchScene(getClass(), event,"/com/onionshop/main-canvas-view.fxml");
-            SceneSwitcher.setKeyEventHandler(mainCanvasScene);
+            SceneSwitcher.switchSceneWithKeyEventsInit(getClass(), event,"/com/onionshop/main-canvas-view.fxml");
         } catch (Exception exception) {
             System.out.println("Error: Could not load project");
             exception.printStackTrace();

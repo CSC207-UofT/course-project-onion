@@ -32,8 +32,17 @@ public class SceneSwitcher {
         }
     }
 
-    public static void setKeyEventHandler(Scene scene) {
-        scene.setOnKeyPressed(new KeyboardEventController());
+    /**
+     Switches the scenes from the current event to the given fxml file
+     Sets up the key event handler for the scene the given event occurs in
+     @param currentClass: the class that this method was called from
+     @param event:        the click event context
+     @param fxml:         the file path to the fxml file that contains the scene we want to switch to
+     */
+    public static void switchSceneWithKeyEventsInit(Class currentClass, ActionEvent event, String fxml) {
+        Scene scene = switchScene(currentClass, event, fxml);
+        if (scene != null) {
+            scene.setOnKeyPressed(new KeyboardEventController());
+        }
     }
-
 }
