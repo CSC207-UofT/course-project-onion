@@ -9,55 +9,43 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="400.0" prefWidth="600.0"
-            style="-fx-background-color: #333;"
             xmlns="http://javafx.com/javafx/11"
             xmlns:fx="http://javafx.com/fxml/1"
+            styleClass="scene-container"
             fx:controller="com.onionshop.controllers.ProjectExplorerController">
-    <children>
-        <HBox AnchorPane.leftAnchor="10.0"
-              AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-            <Label text="Project Explorer" textFill="WHITE" style="-fx-padding: 0 20px 0 0">
-                <font>
-                    <Font name="Comic Sans MS" size="20.0"/>
-                </font>
-            </Label>
-            <Button text="Open" fx:id="btnOpen" onAction="#onBtnOpenClick"
-                    style="-fx-padding: 8px 13px 3px; -fx-background-insets: 5px 10px 0;">
-                <font>
-                    <Font name="Comic Sans MS" size="12.0"/>
-                </font>
-            </Button>
-            <Button fx:id="btnNewProject" onAction="#onBtnNewProjectClick" text="New Project" style="-fx-padding: 8px 13px 3px; -fx-background-insets: 5px 10px 0;">
-                <font>
-                    <Font name="Comic Sans MS" size="12.0"/>
-                </font>
-            </Button>
-        </HBox>
-        <VBox style="-fx-background-color: #555;" prefHeight="300.0" prefWidth="400.0" AnchorPane.leftAnchor="20.0"
-              AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="50.0">
-            <Label text="Most Recent Projects" textFill="WHITE" style="-fx-padding: 10px">
-                <font>
-                    <Font name="Comic Sans MS" size="18.0"/>
-                </font>
-            </Label>
-            <Label text="Project 1, Late modified on MM/DD/YYYY" textFill="ccc" style="-fx-padding: 10px">
-                <font>
-                    <Font name="Comic Sans MS" size="18.0" />
-                </font>
-            </Label>
-            <Label text="Project 2, Late modified on MM/DD/YYYY" textFill="ccc" style="-fx-padding: 10px">
-                <font>
-                    <Font name="Comic Sans MS" size="18.0"/>
-                </font>
-            </Label>
-            <Label text="Project 3, Late modified on MM/DD/YYYY" textFill="ccc" style="-fx-padding: 10px">
-                <font>
-                    <Font name="Comic Sans MS" size="18.0"/>
-                </font>
-            </Label>
-        </VBox>
-    </children>
+    <stylesheets>
+        <URL value="@ProjectExplorer.css"/>
+    </stylesheets>
+    <HBox AnchorPane.leftAnchor="10.0"
+          AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" styleClass="header-container">
+        <Label text="Project Explorer"  styleClass="heading">
+        </Label>
+        <Button text="Open" fx:id="btnOpen" onAction="#onBtnOpenClick"
+                styleClass="open-new-btn">
+        </Button>
+        <Button fx:id="btnNewProject" onAction="#onBtnNewProjectClick"
+                text="New Project" styleClass="open-new-btn">
+        </Button>
+    </HBox>
+    <VBox styleClass="most-recent-container" prefHeight="300.0"
+          prefWidth="400.0" AnchorPane.leftAnchor="20.0"
+          AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="50.0"
+          spacing="20">
+        <Label text="Most Recent Projects" styleClass="most-recent-heading">
+        </Label>
+        <Label text="Project 1, Last modified on MM/DD/YYYY" styleClass="most-recent-item">
+        </Label>
+        <Label text="Project 2, Last modified on MM/DD/YYYY" styleClass="most-recent-item">
+        </Label>
+        <Label text="Project 3, Last modified on MM/DD/YYYY" styleClass="most-recent-item">
+        </Label>
+        <Label text="Project 4, Last modified on MM/DD/YYYY" styleClass="most-recent-item">
+        </Label>
+        <Label text="Project 5, Last modified on MM/DD/YYYY" styleClass="most-recent-item">
+        </Label>
+    </VBox>
 </AnchorPane>

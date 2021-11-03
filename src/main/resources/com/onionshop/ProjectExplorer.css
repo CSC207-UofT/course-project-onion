@@ -1,0 +1,52 @@
+.open-new-btn {
+    -fx-padding: 8px 13px 3px;
+    -fx-background-insets: 5px 10px 0;
+    -fx-font-size: 14.0;
+    -fx-font-weight: bold;
+    -fx-background-color: #FFF2DA;
+    -fx-text-fill: #86CCA5;
+}
+
+.open-new-btn:hover {
+    -fx-background-color: #86CCA5;
+    -fx-opacity: 70%;
+    -fx-text-fill: #FFF2DA;
+}
+
+.most-recent-item {
+    -fx-padding: 0 10px;
+    -fx-font-size: 18.0;
+    -fx-text-fill: #9A75B2;
+}
+
+.most-recent-container {
+    -fx-background-color: #E7C1FF;
+    -fx-background-radius: 20px;
+}
+
+.header-container {
+    -fx-border-insets: 0 0 20px;
+}
+
+
+.heading {
+    -fx-padding: 0 0 0 10px;
+    -fx-font-size: 20.0;
+    -fx-font-weight: bolder;
+    -fx-text-fill: #7EB295;
+}
+
+.scene-container {
+    -fx-background-color: #FFF2DA;
+    -fx-font-family: "Comic Sans MS";
+}
+
+.most-recent-heading {
+    -fx-padding: 10px;
+    -fx-font-size: 18.0;
+    -fx-font-weight: bold;
+    -fx-text-fill: #E7C1FF;
+    -fx-background-color: #9A75B2;
+    -fx-background-radius: 20px 20px 0 0;
+    -fx-max-width: Infinity;
+}
