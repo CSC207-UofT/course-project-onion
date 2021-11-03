@@ -85,6 +85,11 @@ public class ProjectStateController implements Initializable {
         brushPen.setText("Pen: Selected");
     }
 
+    @FXML
+    protected void onShapeRectangleClick() {
+        brushPen.setText("Pen: Selected");
+    }
+
     /**
      * Updates the color of the pen used by the graphics context when the color picker is used
      */
