@@ -13,11 +13,6 @@ public class Eraser extends Brush {
         this.calculateEffectedPixels();
     }
 
-    @Override
-    public void makeSelectable() {
-        // TODO: Needs to be implemented
-    }
-
     /**
      * Draws the colour white onto the project canvas.
      *

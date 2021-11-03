@@ -12,8 +12,4 @@ public class Pen extends Brush {
         super("round", 1);
         this.calculateEffectedPixels();
     }
-
-    public void makeSelectable() {
-        //TODO: will implement this later once we know exactly what's going on with JavaFX
-    }
 }
