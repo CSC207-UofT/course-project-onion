@@ -46,6 +46,10 @@ public class ProjectManager {
         System.out.println("Project:" + selectedOnionFile.getAbsolutePath() + " loaded");
     }
 
+    public UndoRedoManager getUndoRedoState() {
+        return undoRedoState;
+    }
+
     /**
      * Saves  currentProject current changes to the .onion file at currentProject.path
      */
