@@ -9,23 +9,34 @@
 
 .open-new-btn:hover {
     -fx-background-color: #86CCA5;
-    -fx-opacity: 70%;
+    -fx-opacity: 0.7;
     -fx-text-fill: #FFF2DA;
+    -fx-cursor: hand;
 }
 
 .most-recent-item {
-    -fx-padding: 0 10px;
+    -fx-padding: 0 20px 5px;
     -fx-font-size: 18.0;
+    -fx-border-width: 5px;
     -fx-text-fill: #9A75B2;
+    -fx-max-width: Infinity;
+}
+
+.most-recent-item:hover {
+    -fx-background-color: #9A75B2;
+    -fx-text-fill: #E7C1FF;
+    -fx-opacity: 0.7;
+    -fx-cursor: hand;
 }
 
 .most-recent-container {
+    -fx-background-insets: 0 0 -20px 0;
     -fx-background-color: #E7C1FF;
     -fx-background-radius: 20px;
 }
 
 .header-container {
-    -fx-border-insets: 0 0 20px;
+    -fx-max-width: Infinity;
 }
 
 
@@ -34,6 +45,9 @@
     -fx-font-size: 20.0;
     -fx-font-weight: bolder;
     -fx-text-fill: #7EB295;
+    -fx-text-alignment: left;
+    -fx-pref-width: 400px;
+    -fx-max-width: Infinity;
 }
 
 .scene-container {
@@ -42,7 +56,7 @@
 }
 
 .most-recent-heading {
-    -fx-padding: 10px;
+    -fx-padding: 10px 20px;
     -fx-font-size: 18.0;
     -fx-font-weight: bold;
     -fx-text-fill: #E7C1FF;
