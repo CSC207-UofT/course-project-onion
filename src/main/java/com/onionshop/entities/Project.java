@@ -127,12 +127,28 @@ public class Project {
         }
     }
 
+    /**
+     * Returns this project's canvas width
+     @return this project's width
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * Returns this project's canvas height
+     @return this project's height
+     */
     public int getHeight() {
         return height;
+    }
+
+    /**
+     * Returns the pixel located at the given x-y coordinates of this projects drawing canvas
+     @return the pixel located at the given x-y coordinates
+     */
+    public Pixel getPixelByCoord(int x, int y) {
+        return this.drawingCanvas[x][y];
     }
 
     /**

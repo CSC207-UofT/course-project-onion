@@ -56,8 +56,7 @@ public class NewProjectController {
                 ProjectManager.getInstance().newProject(newProjectEvent);
 
                 // switch to the canvas scene
-                Scene mainCanvasScene = SceneSwitcher.switchScene(getClass(), event, "/com/onionshop/main-canvas-view.fxml");
-                SceneSwitcher.setKeyEventHandler(mainCanvasScene);
+                SceneSwitcher.switchSceneWithKeyEventsInit(getClass(), event, "/com/onionshop/main-canvas-view.fxml");
             } else {
                 System.out.println("Error: File directory was not given or invalid");
             }
