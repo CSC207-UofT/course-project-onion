@@ -14,7 +14,7 @@
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
 <GridPane fx:controller="com.onionshop.controllers.ProjectStateController"
-          xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10">
+          xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10" style="-fx-font-family: 'Comic Sans MS'">
     <padding><Insets right="25" bottom="10"/></padding>
 
     <HBox style="-fx-background-color: #c9c9c9">
