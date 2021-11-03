@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.stage.DirectoryChooser;
 
 import java.io.File;
@@ -75,5 +76,6 @@ public class NewProjectController {
         File selectedDirectory = directoryChooser.showDialog(null);
         savDir = selectedDirectory.getAbsolutePath();
         outDirName.setText(outDirName.getText() + savDir);
+        outDirName.setTooltip(new Tooltip(savDir));
     }
 }
