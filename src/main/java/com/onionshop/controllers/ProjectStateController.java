@@ -33,15 +33,18 @@ public class ProjectStateController implements Initializable {
     @FXML
     private Button brushPen;
     @FXML
-    private ColorPicker projectColorPicker;
+    private ColorPicker projectColourPicker;
     @FXML
     private Canvas projectDrawing;
     @FXML
     private Slider toolSizeSlider;
+    @FXML
+    private Button addToColourPalette;
 
     private final DrawingManager projectDrawingManager = new DrawingManager();
     private final CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
     private final ProjectManager projectManager = ProjectManager.getInstance();
+    private Color currentCanvasColour = Color.BLACK;
 
 
 
@@ -89,9 +92,16 @@ public class ProjectStateController implements Initializable {
      * Updates the color of the pen used by the graphics context when the color picker is used
      */
     @FXML
-    protected void setDrawingColor() {
-        //GraphicsContext drawingGraphicsContext = projectDrawing.getGraphicsContext2D();
-        //drawingGraphicsContext.setFill(projectColorPicker.getValue());
+    protected void setDrawingColour() {
+        currentCanvasColour = projectColourPicker.getValue();
+        canvasInputProcessor.processSelectedColour(currentCanvasColour);
+        projectDrawing.getGraphicsContext2D().setFill(currentCanvasColour);
+    }
+
+    @FXML
+    protected void onAddToColourPalette() {
+        Color selectedColour = projectColourPicker.getValue();
+        canvasInputProcessor.processColourToAddToPalette(selectedColour);
     }
 
     /** A function that draws ovals as the user clicks and drags their mouse across the canvas
@@ -102,7 +112,6 @@ public class ProjectStateController implements Initializable {
     protected void onCanvasMouseDragged(MouseEvent canvasMouseLocation) {
         int[][] updatedPixels = canvasInputProcessor.processControllerDataForDrawingManager(canvasMouseLocation);
 
-        Color currentCanvasColour = Color.BLACK;
 
         PixelWriter canvasPixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
         for (int i = 0; i < updatedPixels.length; i++) {
@@ -134,12 +143,4 @@ public class ProjectStateController implements Initializable {
     }
 
 
-    /**
-     * Takes in an event that picks a colour and updates the colour
-     * @param colour: the colour object
-     * @param newColour : integer array of the RGB value of the new colour
-     */
-    public void colourUpdate(Colour colour, int[] newColour){
-        colour.setRGB(newColour);
-    }
 }

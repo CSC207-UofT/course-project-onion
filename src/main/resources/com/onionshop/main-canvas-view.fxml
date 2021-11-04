@@ -18,8 +18,11 @@
         <Button fx:id="brushPen" text="Pen" onAction="#onBrushPenClick" GridPane.columnIndex="0" GridPane.rowIndex="0"
                   GridPane.columnSpan="1"/>
 
-        <ColorPicker accessibleText="Tool Size" fx:id="projectColorPicker" onAction="#setDrawingColor" GridPane.columnIndex="1" GridPane.rowIndex="0"
+        <ColorPicker accessibleText="Tool Size" fx:id="projectColourPicker" onAction="#setDrawingColour" GridPane.columnIndex="1" GridPane.rowIndex="0"
                      GridPane.columnSpan="1"/>
+
+        <Button fx:id="addToColourPalette" text="Add Selected Colour to Palette" onAction="#onAddToColourPalette" GridPane.columnIndex="2" GridPane.rowIndex="0"
+                GridPane.columnSpan="1"/>
 
         <Slider fx:id="toolSizeSlider" onDragDetected="#onToolSizeSliderMove"/>
     </HBox>

@@ -1,6 +1,7 @@
 package com.onionshop.managers;
 
 
+import com.onionshop.entities.Colour;
 import com.onionshop.managers.ProjectManager;
 
 public class DrawingManager {
@@ -13,6 +14,9 @@ public class DrawingManager {
      * Instantiates the drawing manager with the current project, the default Tool, and the default colour.
      *
      */
+    ToolStateManager toolStateManager = ToolStateManager.getInstance();
+    ProjectManager projectManager = ProjectManager.getInstance();
+
     public DrawingManager() {
     }
 
@@ -27,10 +31,18 @@ public class DrawingManager {
      * @return A list of pixels to update. This list only contains the pixel location, not the color data.
      */
     public int[][] updateCanvasAfterStroke(int x, int y) {
-        int[][] pixelsToReturn = ToolStateManager.getInstance().getCurrentToolState().draw(
-                ProjectManager.getInstance().getCurrentProject(),
-                ToolStateManager.getInstance().getCurrentColourState(), x, y);
+        int[][] pixelsToReturn = toolStateManager.getCurrentToolState().draw(
+                projectManager.getCurrentProject(),
+                toolStateManager.getCurrentColourState(), x, y);
         return pixelsToReturn;
+    }
+
+    public void updateSelectedColour(Colour selectedColour) {
+        toolStateManager.setCurrentColourState(selectedColour);
+    }
+
+    public void addColourToPalette(Colour selectedColour) {
+        projectManager.getCurrentProject().addColour(selectedColour);
     }
 
 }
