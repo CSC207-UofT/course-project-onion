@@ -3,7 +3,7 @@ package com.onionshop.entities;
 public abstract class Brush implements Tool {
     private String brushShape;
     private int brushSize;
-    private int[][] pixelsEffectedByBrush;
+    protected int[][] pixelsEffectedByBrush;
 
     /**
      * Construct a Brush that has the properties brush shape and brush size.
@@ -75,6 +75,8 @@ public abstract class Brush implements Tool {
     }
 
     public void calculateEffectedPixels() {
+        pixelsEffectedByBrush = new int[121][2];
+
         int counter = 0;
         for (int x = -5; x < 6; x++) {
             for (int y = -5; y < 6; y++) {
@@ -83,7 +85,6 @@ public abstract class Brush implements Tool {
                 counter++;
             }
         }
-
     }
 
 }

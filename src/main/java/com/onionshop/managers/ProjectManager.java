@@ -43,7 +43,19 @@ public class ProjectManager {
      */
     public void loadProject(File selectedOnionFile) throws Exception {
         currentProject = OnionFileLoader.loadProject(selectedOnionFile.getAbsolutePath());
-        System.out.println("Project Loaded");
+        System.out.println("Project:" + selectedOnionFile.getAbsolutePath() + " loaded");
+    }
+
+    public UndoRedoManager getUndoRedoState() {
+        return undoRedoState;
+    }
+
+    /**
+     * Saves  currentProject current changes to the .onion file at currentProject.path
+     */
+    public void saveProject() throws Exception {
+        OnionFileLoader.saveProject(currentProject);
+        System.out.println("Project:" + currentProject.getPath() + " saved");
     }
 
     public void updateDrawingCanvas(Pixel[][] newCanvas) {

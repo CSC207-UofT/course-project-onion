@@ -2,11 +2,16 @@ package com.onionshop.controllers;
 
 import com.onionshop.entities.Colour;
 import com.onionshop.entities.Pen;
+import com.onionshop.entities.Pixel;
 import com.onionshop.entities.Project;
 import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
+import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -15,12 +20,16 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 /**
  * records the action -> trigger methods -> send data to backend
  * Actions include: selecting a tool on the toolbar(ToolbarEvents - to be implemented), updating brush/pen sizes(Pen),
  * drawing on canvas and selecting a colour(to be implemented).
  */
-public class ProjectStateController {
+public class ProjectStateController implements Initializable {
     @FXML
     private Button brushPen;
     @FXML
@@ -32,7 +41,44 @@ public class ProjectStateController {
 
     private final DrawingManager projectDrawingManager = new DrawingManager();
     private final CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
+    private final ProjectManager projectManager = ProjectManager.getInstance();
 
+
+
+    /**
+     * This function is called when this scene is first initialized
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initCanvas();
+    }
+
+    /**
+     * Initializes the canvas with current project's saved pixels
+     * Sets the height and width of the canvas
+     */
+    private void initCanvas() {
+        Project currentProject = projectManager.getCurrentProject();
+
+        int canvasHeight = currentProject.getHeight();
+        int canvasWidth = currentProject.getWidth();
+
+        // set width and height of the canvas UI
+        projectDrawing.setHeight(canvasHeight);
+        projectDrawing.setWidth(canvasWidth);
+
+        PixelWriter pixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
+
+        // set canvas pixels to match the pixels of the current project
+        for (int x = 0; x < canvasWidth; x++) {
+            for (int y = 0; y < canvasHeight; y++) {
+                int[] rgb = currentProject.getPixelByCoord(x, y).getRGB();
+                Color color = Color.rgb(rgb[0], rgb[1], rgb[2], 1);
+                pixelWriter.setColor(x, y, color);
+            }
+        }
+
+    }
 
     @FXML
     protected void onBrushPenClick() {
@@ -96,8 +142,4 @@ public class ProjectStateController {
     public void colourUpdate(Colour colour, int[] newColour){
         colour.setRGB(newColour);
     }
-
-
-
-
 }

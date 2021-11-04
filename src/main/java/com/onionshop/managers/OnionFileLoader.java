@@ -72,7 +72,7 @@ public class OnionFileLoader {
      */
     public static Project loadProject(String path) throws Exception {
         String[] lines = getFileLines(path);
-        Project loadedProject = generateProjectInstance(lines);
+        Project loadedProject = generateProjectInstance(lines, path);
         loadedProject.colourPalette = generateColourPalette(lines);
         loadedProject.drawingCanvas = generatePixelArray(loadedProject.getWidth(), loadedProject.getHeight(), lines);
         return loadedProject;
@@ -115,10 +115,10 @@ public class OnionFileLoader {
      * @param lines array of Strings where array[i] is the i-th line of a file
      * @return Project instane with width and height read from lines and empty path
      */
-    private static Project generateProjectInstance(String[] lines) {
+    private static Project generateProjectInstance(String[] lines, String path) {
         int width = Integer.parseInt(lines[1].substring(lines[1].indexOf(':') + 1));
         int height = Integer.parseInt(lines[2].substring(lines[2].indexOf(':') + 1));
-        return new Project("", width, height);
+        return new Project(path, width, height);
     }
 
     /**

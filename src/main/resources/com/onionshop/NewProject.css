@@ -1,0 +1,50 @@
+.scene-container {
+    -fx-background-color: #7EB295;
+    -fx-font-family: "Comic Sans MS";
+    -fx-padding: 10px 30px;
+}
+
+.main-heading {
+    -fx-font-size: 20;
+    -fx-text-fill: #FFF2DA;
+    -fx-font-weight: bolder;
+}
+
+.sub-heading {
+    -fx-font-size: 15;
+    -fx-text-fill: #FFF2DA;
+    -fx-font-weight: bolder;
+}
+
+.canvas-prop {
+    -fx-font-size: 12;
+    -fx-text-fill: #FFF2DA;
+    -fx-padding: 0 0 0 30px;
+    -fx-font-weight: bolder;
+}
+
+.text-box {
+    -fx-font-size: 12;
+    -fx-text-fill: #9A75B2;
+    -fx-font-weight: bold;
+}
+
+.btn {
+    -fx-padding: 5px;
+    -fx-font-size: 15px;
+    -fx-background-color: #FFF2DA;
+    -fx-text-fill: #9A75B2;
+    -fx-font-weight: bolder;
+}
+
+.btn:hover {
+    -fx-background-color: #9A75B2;
+    -fx-text-fill: #FFF2DA;
+    -fx-opacity: 0.8;
+    -fx-cursor: hand;
+}
+
+.out-dir {
+    -fx-font-size: 12;
+    -fx-text-fill: #FFF2DA;
+}
