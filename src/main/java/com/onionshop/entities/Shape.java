@@ -4,6 +4,8 @@ public abstract class Shape implements Tool {
     private String shapeType;
     protected int[][] pixelsEffectedByShape;
     private int brushSize;
+    protected int[] startingCoordinate;
+    protected int[] endingCoordinate;
 
     public Shape(String shapeType, int brushSize) {
         this.shapeType = shapeType;
@@ -48,38 +50,32 @@ public abstract class Shape implements Tool {
         return pixelsToUpdate;
     }
 
-    public void calculateEffectedPixels() {
-        pixelsEffectedByShape = new int[121][2];
-
-        int counter = 0;
-        for (int x = -5; x < 6; x++) {
-            for (int y = -5; y < 6; y++) {
-                this.pixelsEffectedByShape[counter][0] = x;
-                this.pixelsEffectedByShape[counter][1] = y;
-                counter++;
-            }
-        }
-    }
-
     /**
      *  Calculates the distance between two pixels
      */
-    void calculateDistanceBetweenPixels(int[] firstPixelCoordinate, int[] secondPixelCoordinate) {
-        // fixed line thickness for now
-        int lineThickness = 2;
-
+    public int[] calculateStartEndDistance() {
+        int[] distances = new int[2];
         // the x distance between the two pixels
-        int xDistance = Math.abs(secondPixelCoordinate[0] - firstPixelCoordinate[0]);
-
+        int xDistance = startingCoordinate[0] - endingCoordinate[0];
         // the y distance between the two pixels
-        int yDistance = Math.abs(secondPixelCoordinate[1] - firstPixelCoordinate[1]);
+        int yDistance = startingCoordinate[1] - endingCoordinate[1];
 
-        // Pythagorean Theorem time to get the hypotenuse
-        double hypotenuse = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+        distances[0] = xDistance;
+        distances[1] = yDistance;
 
-        //
+        return distances;
+    }
 
+    public double calculateSlope() {
+        // fixed line thickness for now
+        int lineThickness = 1;
 
+        int[] distances = calculateStartEndDistance();
+
+        // the slope is rise/run
+        double slope = distances[0] / distances[1];
+
+        return slope;
     }
 
 }
