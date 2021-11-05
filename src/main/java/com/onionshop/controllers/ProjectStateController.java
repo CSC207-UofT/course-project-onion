@@ -8,6 +8,7 @@ import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,6 +31,10 @@ import java.util.ResourceBundle;
  * drawing on canvas and selecting a colour(to be implemented).
  */
 public class ProjectStateController implements Initializable {
+    public Button eraser;
+    public Button rectangle;
+    public Button circle;
+    public Button line;
     @FXML
     private Button brushPen;
     @FXML
@@ -83,6 +88,7 @@ public class ProjectStateController implements Initializable {
     @FXML
     protected void onBrushPenClick() {
         brushPen.setText("Pen: Selected");
+        eraser.setText("Eraser");
     }
 
     /**
@@ -141,5 +147,21 @@ public class ProjectStateController implements Initializable {
      */
     public void colourUpdate(Colour colour, int[] newColour){
         colour.setRGB(newColour);
+    }
+
+    public void onEraserClick(ActionEvent actionEvent) {
+        eraser.setText("Eraser: Selected");
+        brushPen.setText("Pen");
+    }
+
+    
+
+    public void onLineToolClick(ActionEvent actionEvent) {
+    }
+
+    public void onCircleToolClick(ActionEvent actionEvent) {
+    }
+
+    public void onRectangleToolClick(ActionEvent actionEvent) {
     }
 }
