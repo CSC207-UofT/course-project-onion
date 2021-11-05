@@ -1,31 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.canvas.Canvas?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.Button?>
+<GridPane hgap="10" style="-fx-font-family: 'Comic Sans MS'" vgap="10" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.onionshop.controllers.ProjectStateController">
+    <padding><Insets bottom="10" right="25" /></padding>
 
-<?import javafx.scene.control.ColorPicker?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Slider?>
-<GridPane fx:controller="com.onionshop.controllers.ProjectStateController"
-          xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10" style="-fx-font-family: 'Comic Sans MS'">
-    <padding><Insets right="25" bottom="10"/></padding>
+    <Canvas fx:id="projectDrawing" height="300" onMouseDragged="#onCanvasMouseDragged" style=" -fx-border-color:black; -fx-border-width: 1;" width="400" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+   <ToolBar prefHeight="40.0" prefWidth="200.0">
+      <ColorPicker fx:id="projectColorPicker" accessibleText="Tool Size" onAction="#setDrawingColor" prefHeight="24.0"
+                   prefWidth="104.0"/>
+      <Button fx:id="brushPen" onAction="#onBrushPenClick" prefHeight="26.0" prefWidth="26.0">
+         <font>
+            <Font size="10.0"/>
+         </font>
+         <graphic>
+            <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../../../../../img/pencil_img.png"/>
+            </ImageView>
+         </graphic>
+      </Button>
 
-    <HBox style="-fx-background-color: #c9c9c9">
-        <padding><Insets top="10" right="5" bottom="10" left="5"/></padding>
-        <Button fx:id="brushPen" text="Pen" onAction="#onBrushPenClick" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                  GridPane.columnSpan="1"/>
+      <Button fx:id="eraser" onAction="#onEraserClick" prefHeight="26.0" prefWidth="26.0">
+         <font>
+            <Font size="10.0"/>
+         </font>
+         <graphic>
+            <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../../../../../img/eraser_img.png"/>
+            </ImageView>
+         </graphic>
+      </Button>
+      <GridPane prefHeight="41.0" prefWidth="104.0">
+         <columnConstraints>
+            <ColumnConstraints/>
+            <ColumnConstraints/>
+            <ColumnConstraints/>
+            <ColumnConstraints/>
+            <ColumnConstraints/>
+            <ColumnConstraints/>
+            <ColumnConstraints/>
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints/>
+            <RowConstraints/>
+         </rowConstraints>
+         <Button fx:id="rectangle" onAction="#onRectangleToolClick" mnemonicParsing="false" prefHeight="26.0"
+                 prefWidth="35.0" GridPane.columnIndex="6">
+            <graphic>
+               <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../../../../../img/rectangle_img.png"/>
+               </ImageView>
+            </graphic>
+         </Button>
+         <Button fx:id="circle" onAction="#onCircleToolClick" mnemonicParsing="false" prefHeight="25.0"
+                 prefWidth="36.0" GridPane.columnIndex="5">
+            <graphic>
+               <ImageView fitHeight="13.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../../../../../img/circle_img.png"/>
+               </ImageView>
+            </graphic>
+         </Button>
+         <Button fx:id="line" onAction="#onLineToolClick" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0"
+                 GridPane.columnIndex="4">
+            <graphic>
+               <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../../../../../img/line_img.png"/>
+               </ImageView>
+            </graphic>
+         </Button>
+         <Label prefHeight="16.0" prefWidth="39.0" text="Shapes" GridPane.columnIndex="5" GridPane.rowIndex="1">
+            <font>
+               <Font size="10.0"/>
+            </font>
+         </Label>
+      </GridPane>
 
-        <ColorPicker accessibleText="Tool Size" fx:id="projectColorPicker" onAction="#setDrawingColor" GridPane.columnIndex="1" GridPane.rowIndex="0"
-                     GridPane.columnSpan="1"/>
-
-        <Slider fx:id="toolSizeSlider" onDragDetected="#onToolSizeSliderMove"/>
-    </HBox>
-
-    <Canvas fx:id="projectDrawing" onMouseDragged="#onCanvasMouseDragged" GridPane.columnIndex="0" GridPane.rowIndex="1"
-            height="300" width="400" style=" -fx-border-color:black; -fx-border-width: 1;"/>
+      <Slider fx:id="toolSizeSlider" max="70.0" onDragDetected="#onToolSizeSliderMove" prefHeight="14.0"
+              prefWidth="99.0"/>
+   </ToolBar>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
 
 </GridPane>
-
