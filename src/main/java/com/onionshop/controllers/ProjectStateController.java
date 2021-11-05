@@ -8,7 +8,7 @@ import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
-import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseEvent;
@@ -32,8 +31,12 @@ import java.util.ResourceBundle;
  * drawing on canvas and selecting a colour(to be implemented).
  */
 public class ProjectStateController implements Initializable {
+    public Button eraser;
+    public Button rectangle;
+    public Button circle;
+    public Button line;
     @FXML
-    private ComboBox toolSelection;
+    private Button brushPen;
     @FXML
     private ColorPicker projectColorPicker;
     @FXML
@@ -45,6 +48,8 @@ public class ProjectStateController implements Initializable {
     private final CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
     private final ProjectManager projectManager = ProjectManager.getInstance();
 
+
+
     /**
      * This function is called when this scene is first initialized
      */
@@ -52,7 +57,7 @@ public class ProjectStateController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initCanvas();
     }
-    
+
     /**
      * Initializes the canvas with current project's saved pixels
      * Sets the height and width of the canvas
@@ -77,6 +82,13 @@ public class ProjectStateController implements Initializable {
                 pixelWriter.setColor(x, y, color);
             }
         }
+
+    }
+
+    @FXML
+    protected void onBrushPenClick() {
+        brushPen.setText("Pen: Selected");
+        eraser.setText("Eraser");
     }
 
     /**
@@ -135,5 +147,21 @@ public class ProjectStateController implements Initializable {
      */
     public void colourUpdate(Colour colour, int[] newColour){
         colour.setRGB(newColour);
+    }
+
+    public void onEraserClick(ActionEvent actionEvent) {
+        eraser.setText("Eraser: Selected");
+        brushPen.setText("Pen");
+    }
+
+    
+
+    public void onLineToolClick(ActionEvent actionEvent) {
+    }
+
+    public void onCircleToolClick(ActionEvent actionEvent) {
+    }
+
+    public void onRectangleToolClick(ActionEvent actionEvent) {
     }
 }
