@@ -4,6 +4,8 @@ package com.onionshop.managers;
 import com.onionshop.entities.Colour;
 import com.onionshop.managers.ProjectManager;
 
+import java.util.Objects;
+
 public class DrawingManager {
     /**
      * This class holds the currently selected Colour, tool and project for the backend of Onionshop. It uses this
@@ -43,6 +45,20 @@ public class DrawingManager {
 
     public void addColourToPalette(Colour selectedColour) {
         projectManager.getCurrentProject().addColour(selectedColour);
+    }
+
+    public int[] selectColourFromPalette(String colorId) {
+        for (Colour currentColour : projectManager.getCurrentProject().colourPalette) {
+            if (Objects.equals(currentColour.name, colorId)) {
+                toolStateManager.setCurrentColourState(currentColour);
+                return currentColour.getRGB();
+            }
+        }
+
+        System.out.println("ERROR :: FAILED TO FIND COLOUR IN BACKEND COLOUR PALETTE :: colorId - " + colorId);
+
+        toolStateManager.setCurrentColourState(new Colour("", new int[] {0, 0, 0}));
+        return new int[]{0, 0, 0};
     }
 
 }

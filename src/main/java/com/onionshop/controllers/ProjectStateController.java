@@ -8,10 +8,11 @@ import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
+import javafx.event.EventHandler;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -19,9 +20,11 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.layout.FlowPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.EventObject;
 import java.util.ResourceBundle;
 
 /**
@@ -40,6 +43,8 @@ public class ProjectStateController implements Initializable {
     private Slider toolSizeSlider;
     @FXML
     private Button addToColourPalette;
+    @FXML
+    private FlowPane colourPalette;
 
     private final DrawingManager projectDrawingManager = new DrawingManager();
     private final CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
@@ -93,16 +98,25 @@ public class ProjectStateController implements Initializable {
      */
     @FXML
     protected void setDrawingColour() {
-        currentCanvasColour = projectColourPicker.getValue();
-        canvasInputProcessor.processSelectedColour(currentCanvasColour);
+        currentCanvasColour = canvasInputProcessor.processSelectedColour(projectColourPicker.getValue());
         projectDrawing.getGraphicsContext2D().setFill(currentCanvasColour);
     }
 
     @FXML
     protected void onAddToColourPalette() {
-        Color selectedColour = projectColourPicker.getValue();
-        canvasInputProcessor.processColourToAddToPalette(selectedColour);
+        String selectedColourHex = canvasInputProcessor.processColourToAddToPalette(projectColourPicker.getValue());
+        Button c1 = new Button("");
+        c1.setStyle("-fx-background-color: " + selectedColourHex);
+        c1.setId(selectedColourHex);
+
+        EventHandler<MouseEvent> colourSelectHandler =
+                colourButton -> currentCanvasColour =
+                        canvasInputProcessor.selectColourFromPalette((Button)colourButton.getSource());
+
+        c1.setOnMouseClicked(colourSelectHandler);
+        colourPalette.getChildren().add(c1);
     }
+
 
     /** A function that draws ovals as the user clicks and drags their mouse across the canvas
      *
