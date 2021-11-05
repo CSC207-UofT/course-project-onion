@@ -61,4 +61,25 @@ public abstract class Shape implements Tool {
         }
     }
 
+    /**
+     *  Calculates the distance between two pixels
+     */
+    void calculateDistanceBetweenPixels(int[] firstPixelCoordinate, int[] secondPixelCoordinate) {
+        // fixed line thickness for now
+        int lineThickness = 2;
+
+        // the x distance between the two pixels
+        int xDistance = Math.abs(secondPixelCoordinate[0] - firstPixelCoordinate[0]);
+
+        // the y distance between the two pixels
+        int yDistance = Math.abs(secondPixelCoordinate[1] - firstPixelCoordinate[1]);
+
+        // Pythagorean Theorem time to get the hypotenuse
+        double hypotenuse = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+
+        //
+
+
+    }
+
 }

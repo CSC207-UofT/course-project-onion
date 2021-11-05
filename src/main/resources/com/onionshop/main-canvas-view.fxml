@@ -19,13 +19,11 @@
 
     <HBox style="-fx-background-color: #c9c9c9">
         <padding><Insets top="10" right="5" bottom="10" left="5"/></padding>
-        <Button fx:id="brushPen" text="Pen" onAction="#onBrushPenClick" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                  GridPane.columnSpan="1"/>
 
-        <ComboBox fx:id="toolSelection" layoutX="15.0" layoutY="33.0" prefWidth="90.0" promptText="choose">
+        <ComboBox fx:id="toolSelection" layoutX="15.0" layoutY="33.0" prefWidth="90.0" promptText="Pen">
             <items>
                 <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="Pen" />
+                    <String fx:value="Pen"/>
                     <String fx:value="Eraser" />
                     <String fx:value="Line" />
                     <String fx:value="Circle" />
