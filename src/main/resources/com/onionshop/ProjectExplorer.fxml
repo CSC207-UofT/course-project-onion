@@ -8,7 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0"
+            prefHeight="460.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/11"
             xmlns:fx="http://javafx.com/fxml/1"
             styleClass="scene-container"
@@ -33,20 +33,26 @@
           spacing="20">
         <Label text="Fresh Onions" styleClass="most-recent-heading">
         </Label>
-        <Label text="Project 1, Last modified on MM/DD/YYYY"
-               styleClass="most-recent-item">
-        </Label>
-        <Label text="Project 2, Last modified on MM/DD/YYYY"
-               styleClass="most-recent-item">
-        </Label>
-        <Label text="Project 3, Last modified on MM/DD/YYYY"
-               styleClass="most-recent-item">
-        </Label>
-        <Label text="Project 4, Last modified on MM/DD/YYYY"
-               styleClass="most-recent-item">
-        </Label>
-        <Label text="Project 5, Last modified on MM/DD/YYYY"
-               styleClass="most-recent-item">
-        </Label>
+
+        <VBox styleClass="most-recent-item" onMouseClicked="#openMostRecentProject1">
+            <Label fx:id="mostRecentName1" styleClass="most-recent-name"/>
+            <Label fx:id="mostRecentPath1" styleClass="most-recent-path"/>
+        </VBox>
+        <VBox styleClass="most-recent-item" onMouseClicked="#openMostRecentProject2">
+            <Label fx:id="mostRecentName2" styleClass="most-recent-name"/>
+            <Label fx:id="mostRecentPath2" styleClass="most-recent-path"/>
+        </VBox>
+        <VBox styleClass="most-recent-item" onMouseClicked="#openMostRecentProject3">
+            <Label fx:id="mostRecentName3" styleClass="most-recent-name"/>
+            <Label fx:id="mostRecentPath3" styleClass="most-recent-path"/>
+        </VBox>
+        <VBox styleClass="most-recent-item" onMouseClicked="#openMostRecentProject4">
+            <Label fx:id="mostRecentName4" styleClass="most-recent-name"/>
+            <Label fx:id="mostRecentPath4" styleClass="most-recent-path"/>
+        </VBox>
+        <VBox styleClass="most-recent-item" onMouseClicked="#openMostRecentProject5">
+            <Label fx:id="mostRecentName5" styleClass="most-recent-name"/>
+            <Label fx:id="mostRecentPath5" styleClass="most-recent-path"/>
+        </VBox>
     </VBox>
 </AnchorPane>
