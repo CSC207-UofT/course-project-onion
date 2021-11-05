@@ -39,14 +39,29 @@ public class DrawingManager {
         return pixelsToReturn;
     }
 
+    /**
+     * Selects the inputted colour
+     *
+     * @param selectedColour The colour to select
+     */
     public void updateSelectedColour(Colour selectedColour) {
         toolStateManager.setCurrentColourState(selectedColour);
     }
 
+    /**
+     * Adds the inputted colour to the palette
+     *
+     * @param selectedColour The colour to add to the palette
+     */
     public void addColourToPalette(Colour selectedColour) {
         projectManager.getCurrentProject().addColour(selectedColour);
     }
 
+    /**
+     * Selects the inputted colour from the colour palette, and returns black if the colour cannot be found
+     * @param colourId The colour to find in the colour palette and select
+     * @return The selected colour
+     */
     public int[] selectColourFromPalette(String colourId) {
         for (Colour currentColour : projectManager.getCurrentProject().colourPalette) {
             if (Objects.equals(currentColour.name, colourId)) {
@@ -61,8 +76,14 @@ public class DrawingManager {
         return new int[]{0, 0, 0};
     }
 
+    /**
+     * Removes the selected colour from the colour palette
+     *
+     * @param colourId The hex value of the colour to remove (This is the colour's name in the palette)
+     */
     public void removeColourFromPalette(String colourId) {
         int indexToRemove = -1;
+        //Iterates through the palette to select the colour
         for (int i = 0; i < projectManager.getCurrentProject().colourPalette.size(); i++) {
             if (Objects.equals(projectManager.getCurrentProject().colourPalette.get(i).name, colourId)) {
                 indexToRemove = i;

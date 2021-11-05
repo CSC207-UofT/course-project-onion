@@ -110,30 +110,36 @@ public class ProjectStateController implements Initializable {
         projectDrawing.getGraphicsContext2D().setFill(currentCanvasColour);
     }
 
+    /**
+     * This controller adds a colour to the palette when the user clicks the "Add Colour to Palette Button". This
+     * involves creating a button that will act as the colour swatch. The user can click on this swatch to select a
+     * colour and right click on it to remove the colour from the palette.
+     */
     @FXML
     protected void onAddToColourPalette() {
+        //This adds the colour to the backend palette and returns the string hex value of the colour which is used for
+        //the button id.
         String selectedColourHex = canvasInputProcessor.processColourToAddToPalette(projectColourPicker.getValue());
         Button colourSwatch = new Button("");
         colourSwatch.setStyle("-fx-background-color: " + selectedColourHex);
         colourSwatch.setId(selectedColourHex);
 
+        //This is the event handler for the swatch, which selects or removes the colour
         EventHandler<MouseEvent> colourSelectHandler =
                 colourButton -> {
+                    //Left click selects the colour
                     if (colourButton.getButton() == MouseButton.PRIMARY){
                         currentCanvasColour = canvasInputProcessor.selectColourFromPalette((Button)colourButton.getSource());
                     }
+                    //Right click removes the colour
                     else if (colourButton.getButton() == MouseButton.SECONDARY) {
                         canvasInputProcessor.removeColourFromPalette((Button)colourButton.getSource());
                         colourPalette.getChildren().remove(colourSwatch);
                     }
                 };
-
-        //EventHandler<MouseEvent> colourSelectHandler =
-        //      colourButton -> currentCanvasColour =
-        //            canvasInputProcessor.selectColourFromPalette((Button)colourButton.getSource());
-
-
         colourSwatch.setOnMouseClicked(colourSelectHandler);
+
+        //Adds the colour swatch/button to the palette
         colourPalette.getChildren().add(colourSwatch);
     }
 
