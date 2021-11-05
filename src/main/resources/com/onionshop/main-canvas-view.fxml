@@ -14,12 +14,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.layout.FlowPane?>
 <GridPane hgap="10" style="-fx-font-family: 'Comic Sans MS'" vgap="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.onionshop.controllers.ProjectStateController">
     <padding><Insets bottom="10" right="25" /></padding>
 
-    <Canvas fx:id="projectDrawing" height="300" onMouseDragged="#onCanvasMouseDragged" style=" -fx-border-color:black; -fx-border-width: 1;" width="400" GridPane.columnIndex="0" GridPane.rowIndex="1" />
    <ToolBar prefHeight="40.0" prefWidth="200.0">
-      <ColorPicker fx:id="projectColorPicker" accessibleText="Tool Size" onAction="#setDrawingColor" prefHeight="24.0" prefWidth="104.0" />
+      <ColorPicker fx:id="projectColourPicker" accessibleText="Tool Size" onAction="#setDrawingColour" prefHeight="24.0" prefWidth="104.0" />
       <Button fx:id="brushPen" onAction="#onBrushPenClick" prefHeight="26.0" prefWidth="26.0">
          <font>
             <Font size="10.0" />
@@ -84,6 +84,11 @@
       </GridPane>
 
       <Slider fx:id="toolSizeSlider" max="70.0" onDragDetected="#onToolSizeSliderMove" prefHeight="14.0" prefWidth="99.0" />
+
+
+      <Button fx:id="addToColourPalette" text="Add Selected Colour to Palette" onAction="#onAddToColourPalette" GridPane.columnIndex="2" GridPane.rowIndex="0"
+                       GridPane.columnSpan="1"/>
+
    </ToolBar>
    <columnConstraints>
       <ColumnConstraints />
@@ -92,5 +97,14 @@
       <RowConstraints />
       <RowConstraints />
    </rowConstraints>
+
+
+     <Label fx:id="colourPaletteLabel" text="Colour Palette (Right click to remove colours)" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+      <FlowPane hgap="10" vgap="10" fx:id="colourPalette" GridPane.columnIndex="3" GridPane.rowIndex="1">
+
+      </FlowPane>
+      <Canvas fx:id="projectDrawing" height="300" onMouseDragged="#onCanvasMouseDragged" style=" -fx-border-color:black; -fx-border-width: 1;" width="400" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+
+
 
 </GridPane>
