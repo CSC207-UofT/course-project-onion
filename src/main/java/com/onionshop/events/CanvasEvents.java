@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 
 public class CanvasEvents {
     DrawingManager currentDrawingManager;
+    private final float conversionValue = 255;
 
     public CanvasEvents(DrawingManager projectDrawingManager){
         this.currentDrawingManager = projectDrawingManager;
@@ -21,19 +22,20 @@ public class CanvasEvents {
     }
 
     public Color processSelectedColour(Color userSelectedColour) {
-        int[] colourArray = new int[]{(int)(userSelectedColour.getRed()*256),
-                (int)(userSelectedColour.getGreen()*256), (int)(userSelectedColour.getBlue()*256)};
+        int[] colourArray = new int[]{(int)(userSelectedColour.getRed()*conversionValue ),
+                (int)(userSelectedColour.getGreen()*conversionValue ), (int)(userSelectedColour.getBlue()*conversionValue )};
         Colour selectedColour = new Colour(" ", colourArray);
         currentDrawingManager.updateSelectedColour(selectedColour);
-        Color finalSelectedColour = new Color(colourArray[0]/256.0, colourArray[1]/256.0,
-                colourArray[2]/256.0, 1);
+        Color finalSelectedColour = new Color(colourArray[0]/conversionValue , colourArray[1]/conversionValue ,
+                colourArray[2]/conversionValue , 1);
         return finalSelectedColour;
     }
 
 
     public String processColourToAddToPalette(Color userSelectedColour) {
-        int[] colourArray = new int[]{(int)(userSelectedColour.getRed()*256),
-                (int)(userSelectedColour.getGreen()*256), (int)(userSelectedColour.getBlue()*256)};
+        int[] colourArray = new int[]{(int)(userSelectedColour.getRed()*conversionValue ),
+                (int)(userSelectedColour.getGreen()*conversionValue ),
+                (int)(userSelectedColour.getBlue()*conversionValue )};
         String hexColour = String.format("#%02x%02x%02x", colourArray[0], colourArray[1], colourArray[2]);
         Colour selectedColour = new Colour(hexColour, colourArray);
         currentDrawingManager.addColourToPalette(selectedColour);
@@ -43,7 +45,14 @@ public class CanvasEvents {
     public Color selectColourFromPalette(Button colourButton){
         String colourId = colourButton.getId();
         int[] rgbColour = currentDrawingManager.selectColourFromPalette(colourId);
-        return new Color(rgbColour[0]/256.0, rgbColour[1]/256.0, rgbColour[2]/256.0, 1);
+        return new Color(rgbColour[0]/conversionValue,
+                rgbColour[1]/conversionValue,
+                rgbColour[2]/conversionValue, 1);
+    }
+
+    public void removeColourFromPalette(Button colourButton) {
+        String colourId = colourButton.getId();
+        currentDrawingManager.removeColourFromPalette(colourId);
     }
 
 

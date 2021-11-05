@@ -47,18 +47,36 @@ public class DrawingManager {
         projectManager.getCurrentProject().addColour(selectedColour);
     }
 
-    public int[] selectColourFromPalette(String colorId) {
+    public int[] selectColourFromPalette(String colourId) {
         for (Colour currentColour : projectManager.getCurrentProject().colourPalette) {
-            if (Objects.equals(currentColour.name, colorId)) {
+            if (Objects.equals(currentColour.name, colourId)) {
                 toolStateManager.setCurrentColourState(currentColour);
                 return currentColour.getRGB();
             }
         }
 
-        System.out.println("ERROR :: FAILED TO FIND COLOUR IN BACKEND COLOUR PALETTE :: colorId - " + colorId);
+        System.out.println("ERROR :: FAILED TO FIND COLOUR IN BACKEND COLOUR PALETTE :: colorId - " + colourId);
 
         toolStateManager.setCurrentColourState(new Colour("", new int[] {0, 0, 0}));
         return new int[]{0, 0, 0};
+    }
+
+    public void removeColourFromPalette(String colourId) {
+        int indexToRemove = -1;
+        for (int i = 0; i < projectManager.getCurrentProject().colourPalette.size(); i++) {
+            if (Objects.equals(projectManager.getCurrentProject().colourPalette.get(i).name, colourId)) {
+                indexToRemove = i;
+            }
+        }
+
+        if (indexToRemove == -1) {
+            System.out.println("ERROR :: FAILED TO FIND COLOUR IN BACKEND COLOUR PALETTE :: colourId - " + colourId);
+        }
+        else {
+            projectManager.getCurrentProject().colourPalette.remove(indexToRemove);
+        }
+
+
     }
 
 }

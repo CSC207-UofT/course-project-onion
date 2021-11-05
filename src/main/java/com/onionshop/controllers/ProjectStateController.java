@@ -16,8 +16,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.PixelWriter;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.FlowPane;
@@ -45,6 +47,8 @@ public class ProjectStateController implements Initializable {
     private Button addToColourPalette;
     @FXML
     private FlowPane colourPalette;
+    @FXML
+    private Label colourPaletteLabel;
 
     private final DrawingManager projectDrawingManager = new DrawingManager();
     private final CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
@@ -105,16 +109,28 @@ public class ProjectStateController implements Initializable {
     @FXML
     protected void onAddToColourPalette() {
         String selectedColourHex = canvasInputProcessor.processColourToAddToPalette(projectColourPicker.getValue());
-        Button c1 = new Button("");
-        c1.setStyle("-fx-background-color: " + selectedColourHex);
-        c1.setId(selectedColourHex);
+        Button colourSwatch = new Button("");
+        colourSwatch.setStyle("-fx-background-color: " + selectedColourHex);
+        colourSwatch.setId(selectedColourHex);
 
         EventHandler<MouseEvent> colourSelectHandler =
-                colourButton -> currentCanvasColour =
-                        canvasInputProcessor.selectColourFromPalette((Button)colourButton.getSource());
+                colourButton -> {
+                    if (colourButton.getButton() == MouseButton.PRIMARY){
+                        currentCanvasColour = canvasInputProcessor.selectColourFromPalette((Button)colourButton.getSource());
+                    }
+                    else if (colourButton.getButton() == MouseButton.SECONDARY) {
+                        canvasInputProcessor.removeColourFromPalette((Button)colourButton.getSource());
+                        colourPalette.getChildren().remove(colourSwatch);
+                    }
+                };
 
-        c1.setOnMouseClicked(colourSelectHandler);
-        colourPalette.getChildren().add(c1);
+        //EventHandler<MouseEvent> colourSelectHandler =
+          //      colourButton -> currentCanvasColour =
+            //            canvasInputProcessor.selectColourFromPalette((Button)colourButton.getSource());
+
+
+        colourSwatch.setOnMouseClicked(colourSelectHandler);
+        colourPalette.getChildren().add(colourSwatch);
     }
 
 
