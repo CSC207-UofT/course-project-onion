@@ -39,11 +39,11 @@ public class ProjectManager {
 
     /**
      * Loads the selectedOnionFile as the currentProject
-     * @param selectedOnionFile a .onion file
+     * @param selectedOnionFilePath a .onion file
      */
-    public void loadProject(File selectedOnionFile) throws Exception {
-        currentProject = OnionFileLoader.loadProject(selectedOnionFile.getAbsolutePath());
-        System.out.println("Project:" + selectedOnionFile.getAbsolutePath() + " loaded");
+    public void loadProject(String selectedOnionFilePath) throws Exception {
+        currentProject = OnionFileLoader.loadProject(selectedOnionFilePath);
+        System.out.println("Project:" + selectedOnionFilePath + " loaded");
     }
 
     public UndoRedoManager getUndoRedoState() {

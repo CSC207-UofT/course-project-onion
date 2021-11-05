@@ -8,11 +8,12 @@ import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -21,12 +22,11 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.EventObject;
 import java.util.ResourceBundle;
 
 /**
@@ -35,6 +35,10 @@ import java.util.ResourceBundle;
  * drawing on canvas and selecting a colour(to be implemented).
  */
 public class ProjectStateController implements Initializable {
+    public Button eraser;
+    public Button rectangle;
+    public Button circle;
+    public Button line;
     @FXML
     private Button brushPen;
     @FXML
@@ -54,7 +58,6 @@ public class ProjectStateController implements Initializable {
     private final CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
     private final ProjectManager projectManager = ProjectManager.getInstance();
     private Color currentCanvasColour = Color.BLACK;
-
 
 
     /**
@@ -95,6 +98,7 @@ public class ProjectStateController implements Initializable {
     @FXML
     protected void onBrushPenClick() {
         brushPen.setText("Pen: Selected");
+        eraser.setText("Eraser");
     }
 
     /**
@@ -125,8 +129,8 @@ public class ProjectStateController implements Initializable {
                 };
 
         //EventHandler<MouseEvent> colourSelectHandler =
-          //      colourButton -> currentCanvasColour =
-            //            canvasInputProcessor.selectColourFromPalette((Button)colourButton.getSource());
+        //      colourButton -> currentCanvasColour =
+        //            canvasInputProcessor.selectColourFromPalette((Button)colourButton.getSource());
 
 
         colourSwatch.setOnMouseClicked(colourSelectHandler);
@@ -148,6 +152,7 @@ public class ProjectStateController implements Initializable {
             canvasPixelWriter.setColor(updatedPixels[i][0], updatedPixels[i][1], currentCanvasColour);
         }
     }
+
 
     /**
      * Changes the brushes size when the user drags the slider
@@ -173,4 +178,19 @@ public class ProjectStateController implements Initializable {
     }
 
 
+    public void onEraserClick(ActionEvent actionEvent) {
+        eraser.setText("Eraser: Selected");
+        brushPen.setText("Pen");
+    }
+
+    
+
+    public void onLineToolClick(ActionEvent actionEvent) {
+    }
+
+    public void onCircleToolClick(ActionEvent actionEvent) {
+    }
+
+    public void onRectangleToolClick(ActionEvent actionEvent) {
+    }
 }
