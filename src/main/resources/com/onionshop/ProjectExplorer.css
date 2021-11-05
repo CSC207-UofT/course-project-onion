@@ -16,17 +16,25 @@
 
 .most-recent-item {
     -fx-padding: 0 20px 5px;
-    -fx-font-size: 18.0;
     -fx-border-width: 5px;
-    -fx-text-fill: #9A75B2;
     -fx-max-width: Infinity;
 }
 
 .most-recent-item:hover {
-    -fx-background-color: #9A75B2;
-    -fx-text-fill: #E7C1FF;
-    -fx-opacity: 0.7;
+    /*-fx-opacity: 0.6;*/
+    -fx-background-color: #d7aff1;
     -fx-cursor: hand;
+}
+
+.most-recent-name {
+    -fx-text-fill: #9A75B2;
+    -fx-font-size: 15.0;
+    -fx-font-weight: bold;
+}
+
+.most-recent-path {
+    -fx-text-fill: #9A75B2;
+    -fx-font-size: 12.0;
 }
 
 .most-recent-container {
@@ -38,7 +46,6 @@
 .header-container {
     -fx-max-width: Infinity;
 }
-
 
 .heading {
     -fx-padding: 0 0 0 10px;
