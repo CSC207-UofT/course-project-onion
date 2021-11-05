@@ -20,7 +20,7 @@
          </font>
          <graphic>
             <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../../../../img/pencil_img.png"/>
+               <Image url="@/com/onionshop/pencil_img.png"/>
             </ImageView>
          </graphic>
       </Button>
@@ -31,7 +31,7 @@
          </font>
          <graphic>
             <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../../../../img/eraser_img.png"/>
+               <Image url="@/com/onionshop/eraser_img.png"/>
             </ImageView>
          </graphic>
       </Button>
@@ -53,7 +53,7 @@
                  prefWidth="35.0" GridPane.columnIndex="6">
             <graphic>
                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                  <Image url="@../../../../../img/rectangle_img.png"/>
+                  <Image url="@/com/onionshop/rectangle_img.png"/>
                </ImageView>
             </graphic>
          </Button>
@@ -61,7 +61,7 @@
                  prefWidth="36.0" GridPane.columnIndex="5">
             <graphic>
                <ImageView fitHeight="13.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-                  <Image url="@../../../../../img/circle_img.png"/>
+                  <Image url="@/com/onionshop/circle_img.png"/>
                </ImageView>
             </graphic>
          </Button>
@@ -69,7 +69,7 @@
                  GridPane.columnIndex="4">
             <graphic>
                <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
-                  <Image url="@../../../../../img/line_img.png"/>
+                  <Image url="@/com/onionshop/line_img.png"/>
                </ImageView>
             </graphic>
          </Button>
