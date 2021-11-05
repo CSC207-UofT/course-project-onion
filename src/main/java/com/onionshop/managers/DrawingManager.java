@@ -1,7 +1,10 @@
 package com.onionshop.managers;
 
 
+import com.onionshop.entities.Colour;
 import com.onionshop.managers.ProjectManager;
+
+import java.util.Objects;
 
 public class DrawingManager {
     /**
@@ -13,6 +16,9 @@ public class DrawingManager {
      * Instantiates the drawing manager with the current project, the default Tool, and the default colour.
      *
      */
+    ToolStateManager toolStateManager = ToolStateManager.getInstance();
+    ProjectManager projectManager = ProjectManager.getInstance();
+
     public DrawingManager() {
     }
 
@@ -27,10 +33,71 @@ public class DrawingManager {
      * @return A list of pixels to update. This list only contains the pixel location, not the color data.
      */
     public int[][] updateCanvasAfterStroke(int x, int y) {
-        int[][] pixelsToReturn = ToolStateManager.getInstance().getCurrentToolState().draw(
-                ProjectManager.getInstance().getCurrentProject(),
-                ToolStateManager.getInstance().getCurrentColourState(), x, y);
+        int[][] pixelsToReturn = toolStateManager.getCurrentToolState().draw(
+                projectManager.getCurrentProject(),
+                toolStateManager.getCurrentColourState(), x, y);
         return pixelsToReturn;
+    }
+
+    /**
+     * Selects the inputted colour
+     *
+     * @param selectedColour The colour to select
+     */
+    public void updateSelectedColour(Colour selectedColour) {
+        toolStateManager.setCurrentColourState(selectedColour);
+    }
+
+    /**
+     * Adds the inputted colour to the palette
+     *
+     * @param selectedColour The colour to add to the palette
+     */
+    public void addColourToPalette(Colour selectedColour) {
+        projectManager.getCurrentProject().addColour(selectedColour);
+    }
+
+    /**
+     * Selects the inputted colour from the colour palette, and returns black if the colour cannot be found
+     * @param colourId The colour to find in the colour palette and select
+     * @return The selected colour
+     */
+    public int[] selectColourFromPalette(String colourId) {
+        for (Colour currentColour : projectManager.getCurrentProject().colourPalette) {
+            if (Objects.equals(currentColour.name, colourId)) {
+                toolStateManager.setCurrentColourState(currentColour);
+                return currentColour.getRGB();
+            }
+        }
+
+        System.out.println("ERROR :: FAILED TO FIND COLOUR IN BACKEND COLOUR PALETTE :: colorId - " + colourId);
+
+        toolStateManager.setCurrentColourState(new Colour("", new int[] {0, 0, 0}));
+        return new int[]{0, 0, 0};
+    }
+
+    /**
+     * Removes the selected colour from the colour palette
+     *
+     * @param colourId The hex value of the colour to remove (This is the colour's name in the palette)
+     */
+    public void removeColourFromPalette(String colourId) {
+        int indexToRemove = -1;
+        //Iterates through the palette to select the colour
+        for (int i = 0; i < projectManager.getCurrentProject().colourPalette.size(); i++) {
+            if (Objects.equals(projectManager.getCurrentProject().colourPalette.get(i).name, colourId)) {
+                indexToRemove = i;
+            }
+        }
+
+        if (indexToRemove == -1) {
+            System.out.println("ERROR :: FAILED TO FIND COLOUR IN BACKEND COLOUR PALETTE :: colourId - " + colourId);
+        }
+        else {
+            projectManager.getCurrentProject().colourPalette.remove(indexToRemove);
+        }
+
+
     }
 
 }

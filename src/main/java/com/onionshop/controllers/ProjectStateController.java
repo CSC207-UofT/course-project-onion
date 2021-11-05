@@ -9,6 +9,7 @@ import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,9 +17,12 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.PixelWriter;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
@@ -38,16 +42,22 @@ public class ProjectStateController implements Initializable {
     @FXML
     private Button brushPen;
     @FXML
-    private ColorPicker projectColorPicker;
+    private ColorPicker projectColourPicker;
     @FXML
     private Canvas projectDrawing;
     @FXML
     private Slider toolSizeSlider;
+    @FXML
+    private Button addToColourPalette;
+    @FXML
+    private FlowPane colourPalette;
+    @FXML
+    private Label colourPaletteLabel;
 
     private final DrawingManager projectDrawingManager = new DrawingManager();
     private final CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
     private final ProjectManager projectManager = ProjectManager.getInstance();
-
+    private Color currentCanvasColour = Color.BLACK;
 
 
     /**
@@ -95,10 +105,44 @@ public class ProjectStateController implements Initializable {
      * Updates the color of the pen used by the graphics context when the color picker is used
      */
     @FXML
-    protected void setDrawingColor() {
-        //GraphicsContext drawingGraphicsContext = projectDrawing.getGraphicsContext2D();
-        //drawingGraphicsContext.setFill(projectColorPicker.getValue());
+    protected void setDrawingColour() {
+        currentCanvasColour = canvasInputProcessor.processSelectedColour(projectColourPicker.getValue());
+        projectDrawing.getGraphicsContext2D().setFill(currentCanvasColour);
     }
+
+    /**
+     * This controller adds a colour to the palette when the user clicks the "Add Colour to Palette Button". This
+     * involves creating a button that will act as the colour swatch. The user can click on this swatch to select a
+     * colour and right click on it to remove the colour from the palette.
+     */
+    @FXML
+    protected void onAddToColourPalette() {
+        //This adds the colour to the backend palette and returns the string hex value of the colour which is used for
+        //the button id.
+        String selectedColourHex = canvasInputProcessor.processColourToAddToPalette(projectColourPicker.getValue());
+        Button colourSwatch = new Button("");
+        colourSwatch.setStyle("-fx-background-color: " + selectedColourHex);
+        colourSwatch.setId(selectedColourHex);
+
+        //This is the event handler for the swatch, which selects or removes the colour
+        EventHandler<MouseEvent> colourSelectHandler =
+                colourButton -> {
+                    //Left click selects the colour
+                    if (colourButton.getButton() == MouseButton.PRIMARY){
+                        currentCanvasColour = canvasInputProcessor.selectColourFromPalette((Button)colourButton.getSource());
+                    }
+                    //Right click removes the colour
+                    else if (colourButton.getButton() == MouseButton.SECONDARY) {
+                        canvasInputProcessor.removeColourFromPalette((Button)colourButton.getSource());
+                        colourPalette.getChildren().remove(colourSwatch);
+                    }
+                };
+        colourSwatch.setOnMouseClicked(colourSelectHandler);
+
+        //Adds the colour swatch/button to the palette
+        colourPalette.getChildren().add(colourSwatch);
+    }
+
 
     /** A function that draws ovals as the user clicks and drags their mouse across the canvas
      *
@@ -108,13 +152,13 @@ public class ProjectStateController implements Initializable {
     protected void onCanvasMouseDragged(MouseEvent canvasMouseLocation) {
         int[][] updatedPixels = canvasInputProcessor.processControllerDataForDrawingManager(canvasMouseLocation);
 
-        Color currentCanvasColour = Color.BLACK;
 
         PixelWriter canvasPixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
         for (int i = 0; i < updatedPixels.length; i++) {
             canvasPixelWriter.setColor(updatedPixels[i][0], updatedPixels[i][1], currentCanvasColour);
         }
     }
+
 
     /**
      * Changes the brushes size when the user drags the slider
@@ -139,15 +183,6 @@ public class ProjectStateController implements Initializable {
     public void brushSizeUpdate(){
     }
 
-
-    /**
-     * Takes in an event that picks a colour and updates the colour
-     * @param colour: the colour object
-     * @param newColour : integer array of the RGB value of the new colour
-     */
-    public void colourUpdate(Colour colour, int[] newColour){
-        colour.setRGB(newColour);
-    }
 
     public void onEraserClick(ActionEvent actionEvent) {
         eraser.setText("Eraser: Selected");
