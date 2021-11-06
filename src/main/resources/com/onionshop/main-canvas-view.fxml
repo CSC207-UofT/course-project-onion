@@ -76,11 +76,6 @@
                </ImageView>
             </graphic>
          </Button>
-         <Label prefHeight="16.0" prefWidth="39.0" text="Shapes" GridPane.columnIndex="5" GridPane.rowIndex="1">
-            <font>
-               <Font size="10.0" />
-            </font>
-         </Label>
       </GridPane>
 
       <Slider fx:id="toolSizeSlider" max="70.0" onDragDetected="#onToolSizeSliderMove" prefHeight="14.0" prefWidth="99.0" />

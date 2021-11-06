@@ -1,9 +1,6 @@
 package com.onionshop.managers;
 
-import com.onionshop.entities.Brush;
-import com.onionshop.entities.Pen;
-import com.onionshop.entities.Colour;
-import com.onionshop.entities.Tool;
+import com.onionshop.entities.*;
 
 import com.onionshop.managers.ProjectManager;
 
@@ -81,6 +78,8 @@ public class ToolStateManager {
     public void updateCurrentToolState(int brushSize) {
         if (this.currentToolState instanceof Brush) {
             ((Brush) this.currentToolState).setBrushSize(brushSize);
+        } else if (this.currentToolState instanceof Shape) {
+            ((Shape) this.currentToolState).setBrushSize(brushSize);
         }
     }
 

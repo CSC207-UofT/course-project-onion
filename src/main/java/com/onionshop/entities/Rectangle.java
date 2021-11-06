@@ -1,8 +1,8 @@
 package com.onionshop.entities;
 
-public class Circle extends Shape implements Tool {
+public class Rectangle extends Shape implements Tool {
 
-    public Circle(int brushSize) {
+    public Rectangle(int brushSize) {
         super(1);
         this.calculateEffectedPixels();
     }

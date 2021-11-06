@@ -1,27 +1,21 @@
 package com.onionshop.entities;
 
 public abstract class Shape implements Tool {
-    private String shapeType;
     protected int[][] pixelsEffectedByShape;
     private int brushSize;
     protected int[] startingCoordinate;
     protected int[] endingCoordinate;
+    protected int drawStage;
 
-    public Shape(String shapeType, int brushSize) {
-        this.shapeType = shapeType;
+    public Shape(int brushSize) {
         this.brushSize = 1;
-    }
-
-    public String getShapeType() {
-        return shapeType;
+        this.drawStage = 0;
+        this.startingCoordinate = new int[2];
+        this.endingCoordinate = new int[2];
     }
 
     public int getBrushSize() {
         return brushSize;
-    }
-
-    public void setShapeType(String shapeType) {
-        this.shapeType = shapeType;
     }
 
     public void setBrushSize(int brushSize) {
@@ -33,18 +27,48 @@ public abstract class Shape implements Tool {
         // Be sent back up to javafx to be rendered on the canvas.
         int[][] pixelsToUpdate = new int[pixelsEffectedByShape.length][2];
 
-        for (int offset = 0; offset < pixelsEffectedByShape.length; offset++) {
-            //Check if the pixels are in the canvas
-            if (x + pixelsEffectedByShape[offset][0] > 0 && x + pixelsEffectedByShape[offset][0] < currentCanvas.width
-                    && y + pixelsEffectedByShape[offset][1] > 0 &&
-                    y + pixelsEffectedByShape[offset][1] < currentCanvas.height) {
-                //If they are, update the updated pixels list and the canvas itself
+        if (drawStage == 1) {
 
-                pixelsToUpdate[offset][0] = x + pixelsEffectedByShape[offset][0];
-                pixelsToUpdate[offset][1] = y + pixelsEffectedByShape[offset][1];
-                currentCanvas.drawingCanvas[x + pixelsEffectedByShape[offset][0]]
-                        [y + pixelsEffectedByShape[offset][1]].setRGB(currentColour.getRGB());
+            Colour firstCoordinateColour = new Colour("red", new int[]{255, 0, 0});
+
+            for (int offset = 0; offset < pixelsEffectedByShape.length; offset++) {
+                //Check if the pixels are in the canvas
+                if (x + pixelsEffectedByShape[offset][0] > 0 && x + pixelsEffectedByShape[offset][0] < currentCanvas.width
+                        && y + pixelsEffectedByShape[offset][1] > 0 &&
+                        y + pixelsEffectedByShape[offset][1] < currentCanvas.height) {
+                    //If they are, update the updated pixels list and the canvas itself
+
+                    pixelsToUpdate[offset][0] = x + pixelsEffectedByShape[offset][0];
+                    pixelsToUpdate[offset][1] = y + pixelsEffectedByShape[offset][1];
+                    currentCanvas.drawingCanvas[x + pixelsEffectedByShape[offset][0]]
+                            [y + pixelsEffectedByShape[offset][1]].setRGB(firstCoordinateColour.getRGB());
+                }
             }
+            drawStage++;
+
+            this.startingCoordinate[0] = this.startingCoordinate == null ? x : this.startingCoordinate[0];
+            this.startingCoordinate[1] = this.startingCoordinate == null ? y : this.startingCoordinate[1];
+
+        } else if (drawStage == 2) {
+            this.endingCoordinate[0] = this.endingCoordinate == null ? x : this.endingCoordinate[0];
+            this.endingCoordinate[1] = this.endingCoordinate == null ? y : this.endingCoordinate[1];
+
+            this.calculateEffectedPixels();
+
+            for (int offset = 0; offset < pixelsEffectedByShape.length; offset++) {
+                //Check if the pixels are in the canvas
+                if (x + pixelsEffectedByShape[offset][0] > 0 && x + pixelsEffectedByShape[offset][0] < currentCanvas.width
+                        && y + pixelsEffectedByShape[offset][1] > 0 &&
+                        y + pixelsEffectedByShape[offset][1] < currentCanvas.height) {
+                    //If they are, update the updated pixels list and the canvas itself
+
+                    pixelsToUpdate[offset][0] = x + pixelsEffectedByShape[offset][0];
+                    pixelsToUpdate[offset][1] = y + pixelsEffectedByShape[offset][1];
+                    currentCanvas.drawingCanvas[x + pixelsEffectedByShape[offset][0]]
+                            [y + pixelsEffectedByShape[offset][1]].setRGB(currentColour.getRGB());
+                }
+            }
+            drawStage++;
         }
 
         return pixelsToUpdate;
