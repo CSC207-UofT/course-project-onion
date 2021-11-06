@@ -1,9 +1,6 @@
 package com.onionshop.controllers;
 
-import com.onionshop.entities.Colour;
-import com.onionshop.entities.Pen;
-import com.onionshop.entities.Pixel;
-import com.onionshop.entities.Project;
+import com.onionshop.entities.*;
 import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.ProjectManager;
@@ -27,6 +24,7 @@ import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.chrono.Era;
 import java.util.ResourceBundle;
 
 /**
@@ -95,12 +93,6 @@ public class ProjectStateController implements Initializable {
 
     }
 
-    @FXML
-    protected void onBrushPenClick() {
-        brushPen.setText("Pen: Selected");
-        eraser.setText("Eraser");
-    }
-
     /**
      * Updates the color of the pen used by the graphics context when the color picker is used
      */
@@ -152,11 +144,12 @@ public class ProjectStateController implements Initializable {
     protected void onCanvasMouseDragged(MouseEvent canvasMouseLocation) {
         int[][] updatedPixels = canvasInputProcessor.processControllerDataForDrawingManager(canvasMouseLocation);
 
-
         PixelWriter canvasPixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
         for (int i = 0; i < updatedPixels.length; i++) {
             canvasPixelWriter.setColor(updatedPixels[i][0], updatedPixels[i][1], currentCanvasColour);
         }
+
+        System.out.println(ToolStateManager.getInstance().getCurrentToolState());
     }
 
 
@@ -169,34 +162,38 @@ public class ProjectStateController implements Initializable {
     }
 
     /**
-     * Takes in a ToolbarEvent, update the tool accordingly
-     * To be implemented after phase0
-     */
-    public void toolUpdate(){
-
-    }
-
-    /**
      * Takes in an event that changes the size of brush, update the brush size accordingly
      *
      */
     public void brushSizeUpdate(){
+
+    }
+
+    @FXML
+    protected void onBrushPenClick() {
+        Pen currentToolState = new Pen("round", 10);
+        ToolStateManager.getInstance().setCurrentToolState(currentToolState);
+    }
+
+    @FXML
+    public void onEraserClick() {
+        Eraser currentToolState = new Eraser("round", 10);
+        ToolStateManager.getInstance().setCurrentToolState(currentToolState);
     }
 
 
-    public void onEraserClick(ActionEvent actionEvent) {
-        eraser.setText("Eraser: Selected");
-        brushPen.setText("Pen");
+    public void onLineToolClick() {
+        Line currentToolState = new Line(1);
+        ToolStateManager.getInstance().setCurrentToolState(currentToolState);
     }
 
-    
-
-    public void onLineToolClick(ActionEvent actionEvent) {
+    public void onCircleToolClick() {
+        Circle currentToolState = new Circle(1);
+        ToolStateManager.getInstance().setCurrentToolState(currentToolState);
     }
 
-    public void onCircleToolClick(ActionEvent actionEvent) {
-    }
-
-    public void onRectangleToolClick(ActionEvent actionEvent) {
+    public void onRectangleToolClick() {
+        Rectangle currentToolState = new Rectangle(1);
+        ToolStateManager.getInstance().setCurrentToolState(currentToolState);
     }
 }
