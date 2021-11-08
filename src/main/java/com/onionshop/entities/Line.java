@@ -7,8 +7,11 @@ public class Line extends Shape implements Tool {
         this.calculateEffectedPixels();
     }
 
-    private double lineCalculationFormula(int x) {
-        double m = calculateSlope();
+    private double lineCalculationFormula(int x, int[] distances) {
+        double m = calculateSlope(distances);
+
+        System.out.println("what is the slope mate is it working " + m);
+
         return x * m;
     }
 
@@ -26,20 +29,43 @@ public class Line extends Shape implements Tool {
                 }
             }
 
-            drawStage = 1;
+            drawStage ++;
+
         } else if (drawStage == 2) {
+
+            System.out.println("ran?");
+
+            System.out.println("did the coordinates pass start " + this.startingCoordinate[0]);
+            System.out.println("did the coordinates pass start " + this.startingCoordinate[1]);
+
+            System.out.println("did the coordinates pass end " + this.endingCoordinate[0]);
+            System.out.println("did the coordinates pass end " + this.endingCoordinate[1]);
+
             pixelsEffectedByShape = new int[121][2];
 
             // import the start and end coordinate distances
             int[] distances = calculateStartEndDistance();
 
+            System.out.println("What's the distance did it work " + distances[0] + " and " + distances[1]);
+
             // a counter for exiting the while loop when we arrive at the end coordinate
             int xCounter = 0;
+
             // while loop stop condition: when counter arrives at the x distance between start and end coordinates
-            while (xCounter < distances[1]) {
+            while (xCounter < Math.abs(distances[0])) {
+
+                System.out.println("Lets see if this works " + lineCalculationFormula(xCounter, distances));
+                System.out.println(xCounter);
+
                 this.pixelsEffectedByShape[xCounter][0] = startingCoordinate[0] + xCounter;
-                this.pixelsEffectedByShape[xCounter][1] = (int) (startingCoordinate[1] + lineCalculationFormula(xCounter));
+                this.pixelsEffectedByShape[xCounter][1] =
+                        (int) (startingCoordinate[1] + lineCalculationFormula(xCounter, distances));
                 xCounter++;
+            }
+
+            for (int beef = 0; beef < pixelsEffectedByShape.length; beef++) {
+                System.out.println("loopin x " + pixelsEffectedByShape[beef][0]);
+                System.out.println("loopin y " + pixelsEffectedByShape[beef][1]);
             }
 
             assert Math.abs(this.pixelsEffectedByShape[xCounter - 1][0] - endingCoordinate[0]) < 5;

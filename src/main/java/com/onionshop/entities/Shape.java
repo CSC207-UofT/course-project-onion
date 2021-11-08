@@ -44,29 +44,58 @@ public abstract class Shape implements Tool {
                             [y + pixelsEffectedByShape[offset][1]].setRGB(firstCoordinateColour.getRGB());
                 }
             }
+
+            System.out.println("first what " + drawStage);
+
             drawStage++;
 
-            this.startingCoordinate[0] = this.startingCoordinate == null ? x : this.startingCoordinate[0];
-            this.startingCoordinate[1] = this.startingCoordinate == null ? y : this.startingCoordinate[1];
+            System.out.println("should be two now what " + drawStage);
+
+            System.out.println("first " + x);
+            System.out.println("first " + y);
+
+            this.startingCoordinate[0] = this.startingCoordinate != null ? x : this.startingCoordinate[0];
+            this.startingCoordinate[1] = this.startingCoordinate != null ? y : this.startingCoordinate[1];
+
+            System.out.println("first should be x what " + this.startingCoordinate[0]);
+            System.out.println("first should be y what " + this.startingCoordinate[1]);
 
         } else if (drawStage == 2) {
-            this.endingCoordinate[0] = this.endingCoordinate == null ? x : this.endingCoordinate[0];
-            this.endingCoordinate[1] = this.endingCoordinate == null ? y : this.endingCoordinate[1];
 
+            System.out.println("should still be two now what " + drawStage);
+
+            System.out.println("second " + x);
+            System.out.println("second " + y);
+
+            this.endingCoordinate[0] = this.endingCoordinate != null ? x : this.endingCoordinate[0];
+            this.endingCoordinate[1] = this.endingCoordinate != null ? y : this.endingCoordinate[1];
+
+            System.out.println("second should be x what " + this.endingCoordinate[0]);
+            System.out.println("second should be y what " + this.endingCoordinate[1]);
+
+            // stage 2, return pixelsEffectedByShape to be the line and its exact coordinate we want to plot
             this.calculateEffectedPixels();
 
-            for (int offset = 0; offset < pixelsEffectedByShape.length; offset++) {
-                //Check if the pixels are in the canvas
-                if (x + pixelsEffectedByShape[offset][0] > 0 && x + pixelsEffectedByShape[offset][0] < currentCanvas.width
-                        && y + pixelsEffectedByShape[offset][1] > 0 &&
-                        y + pixelsEffectedByShape[offset][1] < currentCanvas.height) {
-                    //If they are, update the updated pixels list and the canvas itself
+            // pixel is getting the exact amount of pixels we have to plot in the pixelsEffectedByShape array
+            for (int pixel = 0; pixel < pixelsEffectedByShape.length; pixel++) {
 
-                    pixelsToUpdate[offset][0] = x + pixelsEffectedByShape[offset][0];
-                    pixelsToUpdate[offset][1] = y + pixelsEffectedByShape[offset][1];
-                    currentCanvas.drawingCanvas[x + pixelsEffectedByShape[offset][0]]
-                            [y + pixelsEffectedByShape[offset][1]].setRGB(currentColour.getRGB());
+                System.out.println("calculated values doing alright? " + pixelsEffectedByShape[pixel][0]);
+                System.out.println("calculated values doing alright? " + pixelsEffectedByShape[pixel][1]);
+
+                // Check if the pixels are in the canvas, we don't need to add pixelsEffectedByShape onto x or y since
+                // the calculation done in calculateEffectedPixels already computed the exact coordinates
+                if (pixelsEffectedByShape[pixel][0] > 0  // x > 0
+                        && pixelsEffectedByShape[pixel][0] < currentCanvas.width  // x < width of canvas
+                        && pixelsEffectedByShape[pixel][1] > 0  // y > 0
+                        && pixelsEffectedByShape[pixel][1] < currentCanvas.height) {  // y < width of canvas
+
+                    //If they are, update the updated pixels list and the canvas itself
+                    pixelsToUpdate[pixel][0] = pixelsEffectedByShape[pixel][0];
+                    pixelsToUpdate[pixel][1] = pixelsEffectedByShape[pixel][1];
+                    currentCanvas.drawingCanvas[pixelsEffectedByShape[pixel][0]]
+                            [pixelsEffectedByShape[pixel][1]].setRGB(currentColour.getRGB());
                 }
+
             }
             drawStage++;
         }
@@ -90,14 +119,9 @@ public abstract class Shape implements Tool {
         return distances;
     }
 
-    public double calculateSlope() {
-        // fixed line thickness for now
-        int lineThickness = 1;
-
-        int[] distances = calculateStartEndDistance();
-
+    public double calculateSlope(int[] distances) {
         // the slope is rise/run
-        double slope = distances[0] / distances[1];
+        double slope = (double) distances[1] / distances[0];
 
         return slope;
     }
