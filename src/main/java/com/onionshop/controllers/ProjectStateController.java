@@ -37,6 +37,7 @@ public class ProjectStateController implements Initializable {
     public Button rectangle;
     public Button circle;
     public Button line;
+
     @FXML
     private Button brushPen;
     @FXML
@@ -53,9 +54,12 @@ public class ProjectStateController implements Initializable {
     private Label colourPaletteLabel;
 
     private final DrawingManager projectDrawingManager = new DrawingManager();
+    private final ToolStateManager toolStateManager = ToolStateManager.getInstance();
     private final CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
     private final ProjectManager projectManager = ProjectManager.getInstance();
     private Color currentCanvasColour = Color.BLACK;
+
+    private int brushSize;
 
 
     /**
@@ -148,8 +152,6 @@ public class ProjectStateController implements Initializable {
         for (int i = 0; i < updatedPixels.length; i++) {
             canvasPixelWriter.setColor(updatedPixels[i][0], updatedPixels[i][1], currentCanvasColour);
         }
-
-        System.out.println(ToolStateManager.getInstance().getCurrentToolState());
     }
 
 
@@ -158,42 +160,51 @@ public class ProjectStateController implements Initializable {
      */
     @FXML
     protected void onToolSizeSliderMove() {
-        //toolSize = toolSizeSlider.getValue();
+        brushSize = (int) Math.round(toolSizeSlider.getValue());
+        toolStateManager.updateCurrentToolState(brushSize);
     }
 
     /**
-     * Takes in an event that changes the size of brush, update the brush size accordingly
-     *
+     * Sets the current tool being used to brush
      */
-    public void brushSizeUpdate(){
-
-    }
-
     @FXML
     protected void onBrushPenClick() {
-        Pen currentToolState = new Pen("round", 10);
-        ToolStateManager.getInstance().setCurrentToolState(currentToolState);
+        Pen currentToolState = new Pen("round", brushSize);
+        toolStateManager.setCurrentToolState(currentToolState);
     }
 
+    /**
+     * Sets the current tool being used to eraser
+     */
     @FXML
     public void onEraserClick() {
-        Eraser currentToolState = new Eraser("round", 10);
-        ToolStateManager.getInstance().setCurrentToolState(currentToolState);
+        Eraser currentToolState = new Eraser("round", brushSize);
+        toolStateManager.setCurrentToolState(currentToolState);
     }
 
 
+    /**
+     * Sets the current tool being used to line
+     */
     public void onLineToolClick() {
-        Line currentToolState = new Line(1);
-        ToolStateManager.getInstance().setCurrentToolState(currentToolState);
+        Line currentToolState = new Line(brushSize);
+        toolStateManager.setCurrentToolState(currentToolState);
     }
 
+
+    /**
+     * Sets the current tool being used to circle
+     */
     public void onCircleToolClick() {
-        Circle currentToolState = new Circle(1);
-        ToolStateManager.getInstance().setCurrentToolState(currentToolState);
+        Circle currentToolState = new Circle(brushSize);
+        toolStateManager.setCurrentToolState(currentToolState);
     }
 
+    /**
+     * Sets the current tool being used to rectangle
+     */
     public void onRectangleToolClick() {
-        Rectangle currentToolState = new Rectangle(1);
-        ToolStateManager.getInstance().setCurrentToolState(currentToolState);
+        Rectangle currentToolState = new Rectangle(brushSize);
+        toolStateManager.setCurrentToolState(currentToolState);
     }
 }
