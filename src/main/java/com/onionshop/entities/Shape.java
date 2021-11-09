@@ -1,67 +1,125 @@
 package com.onionshop.entities;
 
 public abstract class Shape implements Tool {
+
+    /**
+     * The Shape class is an abstract class where individual shapes extends from.
+     * The actual design and implementation of the Shape class and its interaction with its child classes will be
+     * explained below:
+     *
+     * === Expectation of the function of the Shape tool on canvas ===
+     * 1. User clicks on canvas, creates a dot which acts as the starting point of any shape
+     * 2. User clicks again on any point on the canvas again, the shape is drawn in between the start point and this
+     *    point – the end point.
+     *
+     * === How it's implemented ===
+     * startingCoordinate       the first coordinates which the user clicked on
+     * endingCoordinate         the second coordinates which the user clicked on
+     * drawStage                a variable that keeps track of which stage of the shape tool drawing process is
+     *                          currently active
+     *
+     * === drawStage and each stages' purpose ===
+     * When drawStage = 0
+     *      This is the initial stage prior to the user drawing anything on the canvas
+     *
+     * When drawStage = 1
+     *      This is the stage where the user have drawn the first dot, the canvas should display the starting point
+     *      accordingly
+     *
+     * When drawStage = 2
+     *      This is the stage where the user have clicked on the canvas a second time, the canvas should display the
+     *      actual shape by calculation
+     */
+
     protected int[][] pixelsEffectedByShape;
-    private int brushSize;
+    private int lineThickness;
     protected int[] startingCoordinate;
     protected int[] endingCoordinate;
     protected int drawStage;
 
     public Shape(int brushSize) {
-        this.brushSize = 1;
+        this.lineThickness = 1;
         this.drawStage = 0;
         this.startingCoordinate = new int[2];
         this.endingCoordinate = new int[2];
     }
 
-    public int getBrushSize() {
-        return brushSize;
+    /**
+     * Get the current line thickness used on the shapes
+     *
+     * @return      an integer of the thickness of the line
+     */
+    public int getLineThickness() {
+        return lineThickness;
     }
 
-    public void setBrushSize(int brushSize) {
-        this.brushSize = brushSize;
+    /**
+     * Set the current line thickness used on the shapes
+     */
+    public void setLineThickness(int lineThickness) {
+        this.lineThickness = lineThickness;
     }
 
+    /**
+     * Initiated everytime the mouse interact with the canvas, responsible for the output drawn on canvas per each
+     * interaction.
+     *
+     * As a result of the expected functioning of the Shape tool, the draw method is divided to draw different items
+     * (the dot on first stage, the actual shape on second stage).
+     *
+     * @param currentCanvas     The current canvas which the mouse is interacting with
+     * @param currentColour     The current color chosen by the user
+     * @param x                 The x coordinate of the user mouse input
+     * @param y                 The y coordinate of the user mouse input
+     * @return                  AN array collection of arrays of integer coordinates around the (x, y) coordinates in
+     *                          the shape of pixelsEffectedByBrush
+     */
     public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y) {
         // Creating a new array to store the pixels that are updated in this method. These will then
         // Be sent back up to javafx to be rendered on the canvas.
         int[][] pixelsToUpdate = new int[Math.max(currentCanvas.width, currentCanvas.height)][2];
 
+        // Initiated when the user first clicked on the canvas
         if (drawStage == 1) {
-
-            Colour firstCoordinateColour = new Colour("red", new int[]{255, 0, 0});
-
+            // draws the pixelsEffectedByShape which per the calculation of <calculateEffectedPixels> specific for each
+            // shape, is going to be a square on the first drawStage
             for (int offset = 0; offset < pixelsEffectedByShape.length; offset++) {
-                //Check if the pixels are in the canvas
-                if (x + pixelsEffectedByShape[offset][0] > 0 && x + pixelsEffectedByShape[offset][0] < currentCanvas.width
-                        && y + pixelsEffectedByShape[offset][1] > 0 &&
-                        y + pixelsEffectedByShape[offset][1] < currentCanvas.height) {
+                //Check if the pixels are in the canvas, we have the
+                if (x + pixelsEffectedByShape[offset][0] > 0
+                        && x + pixelsEffectedByShape[offset][0] < currentCanvas.width
+                        && y + pixelsEffectedByShape[offset][1] > 0
+                        && y + pixelsEffectedByShape[offset][1] < currentCanvas.height) {
                     //If they are, update the updated pixels list and the canvas itself
-
                     pixelsToUpdate[offset][0] = x + pixelsEffectedByShape[offset][0];
                     pixelsToUpdate[offset][1] = y + pixelsEffectedByShape[offset][1];
                     currentCanvas.drawingCanvas[x + pixelsEffectedByShape[offset][0]]
-                            [y + pixelsEffectedByShape[offset][1]].setRGB(firstCoordinateColour.getRGB());
+                            [y + pixelsEffectedByShape[offset][1]].setRGB(currentColour.getRGB());
                 }
             }
 
+            // increment the drawStage by 1 since we have completed updating method pixelsToUpdate to draw out a dot
             drawStage++;
 
-            this.startingCoordinate[0] = this.startingCoordinate != null ? x : this.startingCoordinate[0];
-            this.startingCoordinate[1] = this.startingCoordinate != null ? y : this.startingCoordinate[1];
+            // store the current (x, y) coordinate into the array of startingCoordinate
+            this.startingCoordinate[0] = x;
+            this.startingCoordinate[1] = y;
 
+        // Initiated when the user makes the second click on the canvas
         } else if (drawStage == 2) {
 
-            this.endingCoordinate[0] = this.endingCoordinate != null ? x : this.endingCoordinate[0];
-            this.endingCoordinate[1] = this.endingCoordinate != null ? y : this.endingCoordinate[1];
+            // store the current (x, y) coordinate into the array of endingCoordinate
+            this.endingCoordinate[0] = x;
+            this.endingCoordinate[1] = y;
 
-            // stage 2, return pixelsEffectedByShape to be the line and its exact coordinate we want to plot
+            // calls the calculateEffectedPixels method on stage 2 which will return pixelsEffectedByShape to be
+            // the specific shape with its exact coordinates we want to plot
             this.calculateEffectedPixels();
 
-            // pixel is getting the exact amount of pixels we have to plot in the pixelsEffectedByShape array
+            // variable <pixel> is getting the exact amount of pixels we have to plot in the pixelsEffectedByShape
+            // array
             for (int pixel = 0; pixel < pixelsEffectedByShape.length; pixel++) {
-                // Check if the pixels are in the canvas, we don't need to add pixelsEffectedByShape onto x or y since
-                // the calculation done in calculateEffectedPixels already computed the exact coordinates
+                // Check if the pixels are in the canvas, the calculation done in calculateEffectedPixels already
+                // computed the exact coordinates
                 if (pixelsEffectedByShape[pixel][0] > 0  // x > 0
                         && pixelsEffectedByShape[pixel][0] < currentCanvas.width  // x < width of canvas
                         && pixelsEffectedByShape[pixel][1] > 0  // y > 0
@@ -75,15 +133,21 @@ public abstract class Shape implements Tool {
                 }
 
             }
+
+            // reset the drawStage to 0 as we have completed updating method pixelsToUpdate to draw out the shape, the
+            // user can now redo the entire process over again
             drawStage = 0;
+            // initiate the calculateEffectedPixels for stage 1 of dot drawing
             this.calculateEffectedPixels();
         }
-
+        // return the array of coordinates as desired which will be drawn by javaFx onto the canvas
         return pixelsToUpdate;
     }
 
     /**
-     *  Calculates the distance between two pixels
+     *  Calculates the distance between the starting coordinate and the ending coordinate by x and y
+     *
+     * @return      returns the x and y distance between the two coordinates as an array of (distance x, distance y)
      */
     public int[] calculateStartEndDistance() {
         int[] distances = new int[2];
@@ -97,12 +161,4 @@ public abstract class Shape implements Tool {
 
         return distances;
     }
-
-    public double calculateSlope(int[] distances) {
-        // the slope is rise/run
-        double slope = (double) distances[1] / distances[0];
-
-        return slope;
-    }
-
 }

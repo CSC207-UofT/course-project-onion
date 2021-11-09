@@ -53,6 +53,36 @@ public abstract class Brush implements Tool {
         calculateEffectedPixels();
     }
 
+    /**
+     * Calculates and stores the desired pixel output stamp in calculateEffectedByPixels for each individual click
+     * where draw() is initiated.
+     *
+     * The current calculateEffectedPixels outputs a square with dimensions <brushSize> * <brushSize>
+     */
+    public void calculateEffectedPixels() {
+        pixelsEffectedByBrush = new int[121][2];
+
+        int counter = 0;
+        for (int x = -brushSize; x < brushSize + 1; x++) {
+            for (int y = -brushSize; y < brushSize + 1; y++) {
+                this.pixelsEffectedByBrush[counter][0] = x;
+                this.pixelsEffectedByBrush[counter][1] = y;
+                counter++;
+            }
+        }
+    }
+
+    /**
+     * Initiated everytime the mouse interact with the canvas. Returns the shape <pixelsEffectedByBrush> calculated
+     * by calculateEffectedPixels on the centre of the coordinate where the mouse landed on.
+     *
+     * @param currentCanvas     The current canvas which the mouse is interacting with
+     * @param currentColour     The current color chosen by the user
+     * @param x                 The x coordinate of the user mouse input
+     * @param y                 The y coordinate of the user mouse input
+     * @return                  AN array collection of arrays of integer coordinates around the (x, y) coordinates in
+     *                          the shape of pixelsEffectedByBrush
+     */
     public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y) {
         // Creating a new array to store the pixels that are updated in this method. These will then
         // Be sent back up to javafx to be rendered on the canvas.
@@ -71,23 +101,6 @@ public abstract class Brush implements Tool {
                         [y + pixelsEffectedByBrush[offset][1]].setRGB(currentColour.getRGB());
             }
         }
-
         return pixelsToUpdate;
     }
-
-    /* TODO: add documentation */
-
-    public void calculateEffectedPixels() {
-        pixelsEffectedByBrush = new int[121][2];
-
-        int counter = 0;
-        for (int x = -brushSize; x < brushSize + 1; x++) {
-            for (int y = -brushSize; y < brushSize + 1; y++) {
-                this.pixelsEffectedByBrush[counter][0] = x;
-                this.pixelsEffectedByBrush[counter][1] = y;
-                counter++;
-            }
-        }
-    }
-
 }
