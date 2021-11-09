@@ -13,7 +13,7 @@ public abstract class Brush implements Tool {
      */
     public Brush(String brushShape, int brushSize) {
         this.brushShape = brushShape;
-        this.brushSize = 1;
+        this.brushSize = brushSize;
     }
 
     /**
@@ -50,6 +50,7 @@ public abstract class Brush implements Tool {
      */
     public void setBrushSize(int brushSize) {
         this.brushSize = brushSize;
+        calculateEffectedPixels();
     }
 
     public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y) {
@@ -74,12 +75,14 @@ public abstract class Brush implements Tool {
         return pixelsToUpdate;
     }
 
+    /* TODO: add documentation */
+
     public void calculateEffectedPixels() {
         pixelsEffectedByBrush = new int[121][2];
 
         int counter = 0;
-        for (int x = -5; x < 6; x++) {
-            for (int y = -5; y < 6; y++) {
+        for (int x = -brushSize; x < brushSize + 1; x++) {
+            for (int y = -brushSize; y < brushSize + 1; y++) {
                 this.pixelsEffectedByBrush[counter][0] = x;
                 this.pixelsEffectedByBrush[counter][1] = y;
                 counter++;
