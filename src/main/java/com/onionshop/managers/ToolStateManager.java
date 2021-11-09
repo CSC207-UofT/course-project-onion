@@ -2,8 +2,6 @@ package com.onionshop.managers;
 
 import com.onionshop.entities.*;
 
-import com.onionshop.managers.ProjectManager;
-
 public class ToolStateManager {
     /**
      * This class holds the current state of the tools and colours used on canvas, and updates them according to
@@ -79,7 +77,7 @@ public class ToolStateManager {
         if (this.currentToolState instanceof Brush) {
             ((Brush) this.currentToolState).setBrushSize(brushSize);
         } else if (this.currentToolState instanceof Shape) {
-            ((Shape) this.currentToolState).setBrushSize(brushSize);
+            ((Shape) this.currentToolState).setLineThickness(brushSize);
         }
     }
 

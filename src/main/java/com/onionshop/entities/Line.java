@@ -1,26 +1,77 @@
 package com.onionshop.entities;
 
-import java.util.Collections;
-
 public class Line extends Shape implements Tool {
+
+    /**
+     * The Line class as a child of the Shape abstract class draws a line from the starting point to the ending
+     * point of the user clicks on canvas.
+     */
+
 
     public Line(int brushSize) {
         super(1);
         this.calculateEffectedPixels();
     }
 
+    /**
+     * Calculates the slope of the line connecting the start coordinate and the end coordinate by the distance between
+     * them.
+     *
+     * @param distances     the distance (distance x, distance y) between the start and end coordinates
+     * @return              the slope of the line as a double
+     */
+    public double calculateSlope(int[] distances) {
+        // the slope is rise/run
+        return (double) distances[1] / distances[0];
+    }
+
+    /**
+     * Calculate result of the equation of the line by both the y or x value per inputted coordinate value depends on
+     * what is needed.
+     *
+     * @param coordinateValue       Can either be x or y coordinate, depending on what is needed
+     * @param distances             The distance between the start and end coordinates
+     * @return                      result of the equation of the line (x result, y result) connecting start and end
+     *                              coordinates
+     */
     private double[] lineCalculationFormula(int coordinateValue, int[] distances) {
+        // equation of the line evaluated
         double[] equation = new double[2];
         double m = calculateSlope(distances);
 
+        // function of the line without transformations in terms of y
         equation[0] = (double) coordinateValue * m;
+        // function of the line without transformations in terms of x
         equation[1] = (double) coordinateValue / m;
 
         return equation;
     }
 
+    /**
+     * The method calculateEffectedPixels is a part of the shape drawing flow and functions according to the drawStage
+     * of the user input (See Shape class explanation)
+     *
+     * The purpose of calculateEffectedPixels is to calculate and update the variable <pixelsEffectedByShape> by the
+     * coordinates of the shape which must be drawn at which drawStage.
+     *
+     * When drawStage = 0,
+     *      As a result of such stage being the default stage where the user have not yet started building the shape,
+     *      we reuse the same calculation as per brush tool's calculateEffectedPixels to possibly draw a square when
+     *      draw() is called.
+     *
+     * When drawStage = 2,
+     *      calculateEffectedPixels calculates and updates <pixelsEffectedByShape> by the coordinates of the line. The
+     *      calculation is as follows:
+     *      1. Calculate the line referring to the x-axis, by incrementing the x coordinate by 1 each time and evaluate
+     *      the y coordinate using lineCalculationFormula per each increment.
+     *      2. Calculate the line referring to the y-axis, by incrementing the y coordinate by 1 each time and evaluate
+     *      the x coordinate using lineCalculationFormula per each increment.
+     *
+     * This provides us with the coverage of extreme cases such as when functions: x = constant or when y = constant
+     * occur.
+     */
     public void calculateEffectedPixels() {
-        // want to draw a red dot if the drawStage is 0
+        // Provide the coordinates of a dot to be drawn by draw() if the drawStage is 0
         if (drawStage == 0) {
             pixelsEffectedByShape = new int[121][2];
 
@@ -33,8 +84,10 @@ public class Line extends Shape implements Tool {
                 }
             }
 
+            // is incremented to enter stage 1 where we await for user's first input
             drawStage ++;
 
+        // Initiated when the user makes the second click on the canvas
         } else if (drawStage == 2) {
 
             // import the start and end coordinate distances
@@ -82,6 +135,4 @@ public class Line extends Shape implements Tool {
 //            assert Math.abs(this.pixelsEffectedByShape[Math.abs(xCounter) - 1][1] - endingCoordinate[1]) < 5;
         }
     }
-
-
 }
