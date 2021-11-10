@@ -3,8 +3,8 @@ package com.onionshop.managers;
 import com.onionshop.entities.Project;
 import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.UndoRedoManager;
-import org.junit.Test;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import java.io.File;
@@ -85,4 +85,6 @@ public class UndoRedoManagerTest {
                 "[end]"};
         assertEquals(project, expected);
     }
+
+
 }

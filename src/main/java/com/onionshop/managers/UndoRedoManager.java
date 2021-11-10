@@ -2,15 +2,15 @@ package com.onionshop.managers;
 
 import java.util.Stack;
 
-import com.onionshop.entities.Pixel;
+import com.onionshop.entities.DrawingState;
 
 public class UndoRedoManager {
     /**
      * Store up to five steps of Drawing instance and keep track on canvas state.
      */
     private int maxStackSize = 5 + 1; //number of previous states PLUS the current state (+1)
-    private Stack<Pixel[][]> undoStack;
-    private Stack<Pixel[][]> redoStack;
+    private Stack<DrawingState> undoStack = new Stack<>();
+    private Stack<DrawingState> redoStack = new Stack<>();
 
     /**
      * Changes the number of previous states of the drawing canvas that are stored at one time;
@@ -28,7 +28,7 @@ public class UndoRedoManager {
      *
      * @param newState the new state to be added
      */
-    public void update(Pixel[][] newState) {
+    public void update(DrawingState newState) {
         if (undoStack.size() + 1 > maxStackSize) {
             undoStack.remove(0);
         }
@@ -41,17 +41,17 @@ public class UndoRedoManager {
      *
      * @return returns 2D Pixel array, corresponding to the canvas
      */
-    public Pixel[][] undo() {
+    public DrawingState undo() {
         redoStack.push(undoStack.pop());
         return undoStack.peek();
     }
 
     /**
-     * Returns an undone state of the drawing canvas, allowing a user to undo an undo.
-     *
-     * @return returns 2D Pixel array, corresponding to the canvas
-     */
-    public Pixel[][] redo() {
+    * Returns an undone state of the drawing canvas, allowing a user to undo an undo.
+    *
+    * @return returns 2D Pixel array, corresponding to the canvas
+    */
+    public DrawingState redo() {
         this.update(redoStack.pop());
         return redoStack.peek();
     }
