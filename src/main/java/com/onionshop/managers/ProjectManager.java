@@ -97,4 +97,5 @@ public class ProjectManager {
     public void restoreDrawingState(){
         currentProject.drawingCanvas = undoRedoState.redo().getState();
     }
+
 }
