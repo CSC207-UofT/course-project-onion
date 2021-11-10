@@ -5,6 +5,8 @@ import com.onionshop.entities.Pixel;
 import com.onionshop.entities.Project;
 import com.onionshop.events.NewProjectEvent;
 
+import java.io.File;
+
 public class ProjectManager {
     /**
         Manages the currently opened project.

@@ -86,5 +86,4 @@ public class UndoRedoManagerTest {
         assertEquals(project, expected);
     }
 
-
 }
