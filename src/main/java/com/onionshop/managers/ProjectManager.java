@@ -1,5 +1,6 @@
 package com.onionshop.managers;
 
+import com.onionshop.entities.DrawingState;
 import com.onionshop.entities.Pixel;
 import com.onionshop.entities.Project;
 import com.onionshop.events.NewProjectEvent;
@@ -14,6 +15,7 @@ public class ProjectManager {
     private final static ProjectManager instance = new ProjectManager();
     private Project currentProject;
     private UndoRedoManager undoRedoState = new UndoRedoManager();
+    private DrawingState drawingState;
 
     /**
      * Returns the instance of ProjectManager
@@ -58,10 +60,15 @@ public class ProjectManager {
         System.out.println("Project:" + currentProject.getPath() + " saved");
     }
 
+    /**
+     * Update the project and UndoRedoManager with newest the pixel array.
+     * @param newCanvas a new Canvas which represent in 2d pixel array
+     */
     public void updateDrawingCanvas(Pixel[][] newCanvas) {
         if (newCanvas.length == currentProject.getWidth() && newCanvas[0].length == currentProject.getHeight()) {
             currentProject.drawingCanvas = newCanvas;
-            undoRedoState.update(newCanvas);
+            drawingState = new DrawingState(newCanvas);
+            undoRedoState.update(drawingState);
         }
         else {
             throw new IndexOutOfBoundsException("Updated drawingCanvas does not match initialized drawingCanvas size");
@@ -74,5 +81,20 @@ public class ProjectManager {
      */
     public Project getCurrentProject() {
         return currentProject;
+    }
+
+    /**
+     * set the Drawing State.
+     * @param drawingState a new drawing state
+     */
+    public void setDrawingState(DrawingState drawingState){
+        this.drawingState = drawingState;
+    }
+
+    /**
+     * Redo the drawing and restore the canvas.
+     */
+    public void restoreDrawingState(){
+        currentProject.drawingCanvas = undoRedoState.redo().getState();
     }
 }
