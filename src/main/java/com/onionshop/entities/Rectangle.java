@@ -4,9 +4,8 @@ public class Rectangle extends Shape implements Tool {
 
     /**
      * Creates a new rectangle Tool
-     * @param brushSize The size of the line for the tool (not very relevant for the rectangle tool)
      */
-    public Rectangle(int brushSize) {
+    public Rectangle() {
         super(1);
         this.calculateEffectedPixels();
     }
@@ -18,7 +17,8 @@ public class Rectangle extends Shape implements Tool {
      */
     public void calculateEffectedPixels() {
         if (drawStage == 0) {
-            pixelsEffectedByShape = new int[121][2];
+            int boxSize = 5 * 5;
+            pixelsEffectedByShape = new int[boxSize][2];
 
             int counter = 0;
             for (int x = -2; x < 3; x++) {

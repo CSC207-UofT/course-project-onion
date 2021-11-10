@@ -60,7 +60,7 @@ public abstract class Brush implements Tool {
      * The current calculateEffectedPixels outputs a square with dimensions <brushSize> * <brushSize>
      */
     public void calculateEffectedPixels() {
-        pixelsEffectedByBrush = new int[121][2];
+        pixelsEffectedByBrush = new int[(brushSize * 2 + 1) * (brushSize * 2 + 1)][2];
 
         int counter = 0;
         for (int x = -brushSize; x < brushSize + 1; x++) {

@@ -115,6 +115,7 @@ public abstract class Shape implements Tool {
             // the specific shape with its exact coordinates we want to plot
             this.calculateEffectedPixels();
 
+            pixelsToUpdate = new int[pixelsEffectedByShape.length][2];
             // variable <pixel> is getting the exact amount of pixels we have to plot in the pixelsEffectedByShape
             // array
             for (int pixel = 0; pixel < pixelsEffectedByShape.length; pixel++) {

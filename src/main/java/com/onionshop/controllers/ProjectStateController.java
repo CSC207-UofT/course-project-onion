@@ -5,12 +5,9 @@ import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -22,9 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 
-import java.io.IOException;
 import java.net.URL;
-import java.time.chrono.Era;
 import java.util.ResourceBundle;
 
 /**
@@ -204,7 +199,7 @@ public class ProjectStateController implements Initializable {
      * Sets the current tool being used to rectangle
      */
     public void onRectangleToolClick() {
-        Rectangle currentToolState = new Rectangle(brushSize);
+        Rectangle currentToolState = new Rectangle();
         toolStateManager.setCurrentToolState(currentToolState);
     }
 }
