@@ -78,7 +78,7 @@
          </Button>
       </GridPane>
 
-      <Slider fx:id="toolSizeSlider" max="70.0" onDragDetected="#onToolSizeSliderMove" prefHeight="14.0" prefWidth="99.0" />
+      <Slider fx:id="toolSizeSlider" max="70.0" onMouseReleased="#onToolSizeSliderMove" prefHeight="14.0" prefWidth="99.0" />
 
 
       <Button fx:id="addToColourPalette" text="Add Selected Colour to Palette" onAction="#onAddToColourPalette" GridPane.columnIndex="2" GridPane.rowIndex="0"

@@ -73,7 +73,8 @@ public class Line extends Shape implements Tool {
     public void calculateEffectedPixels() {
         // Provide the coordinates of a dot to be drawn by draw() if the drawStage is 0
         if (drawStage == 0) {
-            pixelsEffectedByShape = new int[121][2];
+            int boxSize = 5 * 5;
+            pixelsEffectedByShape = new int[boxSize][2];
 
             int counter = 0;
             for (int x = -2; x < 3; x++) {

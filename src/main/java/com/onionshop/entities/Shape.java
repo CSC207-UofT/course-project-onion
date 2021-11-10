@@ -77,7 +77,7 @@ public abstract class Shape implements Tool {
     public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y) {
         // Creating a new array to store the pixels that are updated in this method. These will then
         // Be sent back up to javafx to be rendered on the canvas.
-        int[][] pixelsToUpdate = new int[Math.max(currentCanvas.width, currentCanvas.height)][2];
+        int[][] pixelsToUpdate = new int[pixelsEffectedByShape.length][2];
 
         // Initiated when the user first clicked on the canvas
         if (drawStage == 1) {
@@ -115,6 +115,7 @@ public abstract class Shape implements Tool {
             // the specific shape with its exact coordinates we want to plot
             this.calculateEffectedPixels();
 
+            pixelsToUpdate = new int[pixelsEffectedByShape.length][2];
             // variable <pixel> is getting the exact amount of pixels we have to plot in the pixelsEffectedByShape
             // array
             for (int pixel = 0; pixel < pixelsEffectedByShape.length; pixel++) {
