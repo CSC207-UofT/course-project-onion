@@ -6,6 +6,7 @@ module com.onionshop {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires javafx.graphics;
+    requires java.desktop;
 
     opens com.onionshop to javafx.fxml;
     opens com.onionshop.controllers to javafx.fxml;

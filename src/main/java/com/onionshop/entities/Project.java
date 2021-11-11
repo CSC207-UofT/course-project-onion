@@ -196,4 +196,13 @@ public class Project {
 
         return serialization;
     }
+
+    /**
+     * Extracts the project name from the directory.
+     * @return the project name.
+     */
+    public String extractProjectName() {
+        String projectName = this.path.substring(this.path.lastIndexOf("\\")+1);
+        return projectName;
+    }
 }
