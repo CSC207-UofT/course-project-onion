@@ -1,8 +1,8 @@
 package com.onionshop.managers;
-import com.onionshop.entities.Project;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
+import java.net.URL;
 import java.util.Stack;
 
 public class MostRecentProjectManager {
@@ -16,18 +16,16 @@ public class MostRecentProjectManager {
      * If the project already exists in the mostRecentProjectFile, then order in the mostRecentProjectFile is
      * reshuffled according the selection.
      *
-     * @param mostRecentProject the given most recent project.
+     * @param projectPath the given the path of the most recent project.
      * @throws IOException
      */
-    public void addMostRecentProject(Project mostRecentProject) throws IOException {
+    public void addMostRecentProject(String projectName, String projectPath) throws IOException {
 
         Stack<String> stack = new Stack<String>();
         loadMostRecentProjects();
         writeStackFromFile(stack);
 
-        String projectName = mostRecentProject.extractProjectName();
-
-        String projectArray = "[" + projectName + "," + mostRecentProject.getPath() + "]";
+        String projectArray = "[" + projectName + "," + projectPath + "]";
 
         if (stack.contains(projectArray)) {
             stack.remove(projectArray);
@@ -78,7 +76,7 @@ public class MostRecentProjectManager {
      * @param stack the stack to update.
      * @throws IOException
      */
-    public void writeStackFromFile(Stack stack) throws IOException {
+    public void writeStackFromFile(Stack<String> stack) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(this.mostRecentProjectFile))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -106,7 +104,7 @@ public class MostRecentProjectManager {
 
         String[][] mostRecentProjects = new String[5][2];
 
-        for (int i = 0; i <= 4; i ++) {
+        for (int i = 0; i <= stack.size() - 1; i ++) {
             String project = stack.get(i);
             String projectName = project.substring(1, project.indexOf(','));
             String projectDirectory = project.substring(project.indexOf(',') + 1, project.length() - 1);
@@ -120,10 +118,8 @@ public class MostRecentProjectManager {
      * Loads mostRecentProjects from the file if it exists.
      * If the file does not exist, creates a new file called fresh-onions.txt in the Documents folder by default.
      *
-     * @throws IOException
      */
-    public void loadMostRecentProjects() throws IOException {
-
+    public void loadMostRecentProjects() {
         // getting default path
         String defaultPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
 

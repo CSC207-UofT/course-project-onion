@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -62,35 +63,37 @@ public class ProjectExplorerController implements Initializable {
     @FXML
     public Label mostRecentPath5;
 
-    private MostRecentProjectManager mostRecentProjectManager;
+    private final MostRecentProjectManager mostRecentProjectManager = new MostRecentProjectManager();
     private final ProjectManager projectManager = ProjectManager.getInstance();
     private String[][] mostRecentProjects;
+    private Label[] mostRecentPathArr;
+    private Label[] mostRecentNameArr;
 
     /**
      * This function is called when this scene is first initialized
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        mostRecentPathArr = new Label[]{
+                mostRecentPath1, mostRecentPath2, mostRecentPath3,
+                mostRecentPath4, mostRecentPath5
+        };
+        mostRecentNameArr = new Label[]{
+                mostRecentName1, mostRecentName2, mostRecentName3,
+                mostRecentName4, mostRecentName5
+        };
         initMostRecentProject();
     }
 
     private void initMostRecentProject() {
-        mostRecentProjects = new String[][] {
-            {"Project 1", "/user/directory/path/Project 1"},
-            {"Project 2", "/user/directory/path/Project 2"},
-            {"Project 3", "/user/directory/path/Project 3"},
-            {"Project 4", "/user/directory/path/Project 4"},
-            {"Project 5", "/user/directory/path/Project 5"},
-        };
-
-        // TODO: when backend is done, and delete the above place holder
-        // mostRecentProjects = mostRecentProjectManager.getMostRecentProjects()
-
-        initMostRecentLabel(mostRecentName1, mostRecentPath1, mostRecentProjects[0]);
-        initMostRecentLabel(mostRecentName2, mostRecentPath2, mostRecentProjects[1]);
-        initMostRecentLabel(mostRecentName3, mostRecentPath3, mostRecentProjects[2]);
-        initMostRecentLabel(mostRecentName4, mostRecentPath4, mostRecentProjects[3]);
-        initMostRecentLabel(mostRecentName5, mostRecentPath5, mostRecentProjects[4]);
+        try {
+            mostRecentProjects = mostRecentProjectManager.getMostRecentProjects();
+            for (int i = 0; i < mostRecentProjects.length; i++) {
+                initMostRecentLabel(mostRecentNameArr[i], mostRecentPathArr[i], mostRecentProjects[i]);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initMostRecentLabel(Label name, Label path, String[] namePathStrArr) {
@@ -157,8 +160,16 @@ public class ProjectExplorerController implements Initializable {
      */
     private void openMostRecentProject (int mostRecentProjectNum, Event event) {
         try {
-            projectManager.loadProject(mostRecentProjects[mostRecentProjectNum][1]);
-            SceneSwitcher.switchSceneWithKeyEventsInit(getClass(), event,"/com/onionshop/main-canvas-view.fxml");
+
+            if (mostRecentProjects.length > mostRecentProjectNum) {
+                String path = mostRecentProjects[mostRecentProjectNum][1];
+                String name = mostRecentProjects[mostRecentProjectNum][0];
+                if(name != null && path != null && !name.equals("") && !path.equals("")) {
+                    projectManager.loadProject(path);
+                    mostRecentProjectManager.addMostRecentProject(mostRecentProjects[mostRecentProjectNum][0], path);
+                    SceneSwitcher.switchSceneWithKeyEventsInit(getClass(), event, "/com/onionshop/main-canvas-view.fxml");
+                }
+            }
         } catch (Exception e) {
             System.out.println("Error: Could not load project");
             e.printStackTrace();
@@ -180,7 +191,10 @@ public class ProjectExplorerController implements Initializable {
             fileChooser.getExtensionFilters().add(extFilter);
 
             File selectedFile = fileChooser.showOpenDialog(null);
-            projectManager.loadProject(selectedFile.getAbsolutePath());
+
+            String selectedFilePath = selectedFile.getAbsolutePath();
+            projectManager.loadProject(selectedFilePath);
+            mostRecentProjectManager.addMostRecentProject(selectedFile.getName(), selectedFilePath);
 
             SceneSwitcher.switchSceneWithKeyEventsInit(getClass(), event,"/com/onionshop/main-canvas-view.fxml");
         } catch (Exception exception) {
