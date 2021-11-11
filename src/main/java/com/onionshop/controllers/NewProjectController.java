@@ -1,4 +1,5 @@
 package com.onionshop.controllers;
+import com.onionshop.managers.MostRecentProjectManager;
 import com.onionshop.managers.OnionFileLoader;
 import com.onionshop.events.NewProjectEvent;
 import com.onionshop.managers.ProjectManager;
@@ -51,10 +52,13 @@ public class NewProjectController {
                 String projectName = txtProjectName.getCharacters().toString();
                 int width = Integer.parseInt(txtCanvasWidth.getCharacters().toString());
                 int height = Integer.parseInt(txtCanvasHeight.getCharacters().toString());
+                MostRecentProjectManager mostRecentProjectManager = new MostRecentProjectManager();
 
                 // If there are no errors above, create a new project
                 NewProjectEvent newProjectEvent = new NewProjectEvent(projectName, savDir, width, height);
                 ProjectManager.getInstance().newProject(newProjectEvent);
+                mostRecentProjectManager
+                        .addMostRecentProject(projectName, savDir + "/" + projectName + ".onion");
 
                 // switch to the canvas scene
                 SceneSwitcher.switchSceneWithKeyEventsInit(getClass(), event, "/com/onionshop/main-canvas-view.fxml");

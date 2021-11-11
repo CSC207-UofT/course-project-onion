@@ -202,7 +202,6 @@ public class Project {
      * @return the project name.
      */
     public String extractProjectName() {
-        String projectName = this.path.substring(this.path.lastIndexOf("\\")+1);
-        return projectName;
+        return this.path.substring(this.path.lastIndexOf("\\")+1);
     }
 }
