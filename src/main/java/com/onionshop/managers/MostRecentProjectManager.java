@@ -106,7 +106,7 @@ public class MostRecentProjectManager {
 
         String[][] mostRecentProjects = new String[5][2];
 
-        for (int i = 4; i >= 0; i --) {
+        for (int i = 0; i <= 4; i ++) {
             String project = stack.get(i);
             String projectName = project.substring(1, project.indexOf(','));
             String projectDirectory = project.substring(project.indexOf(',') + 1, project.length() - 1);
