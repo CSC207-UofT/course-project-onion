@@ -123,7 +123,13 @@ public class MostRecentProjectManager {
         // getting default path
         String defaultPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
 
-        this.mostRecentProjectFile = new File(defaultPath + "/Documents/fresh-onions.txt");
+        String operatingSystem = System.getProperty("os.name");
+
+        if (operatingSystem.substring(0, 3).equals("Mac")) {
+            this.mostRecentProjectFile = new File(defaultPath + "/Documents/fresh-onions.txt");
+        } else {
+            this.mostRecentProjectFile = new File(defaultPath + "\\fresh-onions.txt");
+        }
 
         try {
             if (this.mostRecentProjectFile.createNewFile()) {
