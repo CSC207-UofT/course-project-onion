@@ -14,6 +14,7 @@ public class UndoRedoManagerTest {
     Project p;
     private final DrawingManager Drawing = new DrawingManager();
     private final UndoRedoManager UndoRedo = new UndoRedoManager();
+    private ProjectManager projectManager = new ProjectManager();
 
     /**
      * Set up a drawn canvas before each test.
@@ -29,7 +30,7 @@ public class UndoRedoManagerTest {
 
     @Test
     public void testUndo() {
-        UndoRedo.undo();
+        projectManager.undoDrawingState();
         String[] project = p.serialize();
         String[] expected = {
                 "[dimensions]",
@@ -48,8 +49,8 @@ public class UndoRedoManagerTest {
 
     @Test
     public void testUndoTwice() {
-        UndoRedo.undo();
-        UndoRedo.undo();
+        projectManager.undoDrawingState();
+        projectManager.undoDrawingState();
         String[] project = p.serialize();
         String[] expected = {
                 "[dimensions]",
@@ -68,8 +69,8 @@ public class UndoRedoManagerTest {
 
     @Test
     public void testRedo() {
-        UndoRedo.undo();
-        UndoRedo.redo();
+        projectManager.undoDrawingState();
+        projectManager.restoreDrawingState();
         String[] project = p.serialize();
         String[] expected = {
                 "[dimensions]",

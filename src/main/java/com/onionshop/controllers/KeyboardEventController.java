@@ -22,7 +22,6 @@ public class KeyboardEventController implements EventHandler<KeyEvent> {
      * Handles keyboard inputs.
      */
 
-    private final UndoRedoManager UndoRedo = ProjectManager.getInstance().getUndoRedoState();
     private final ProjectManager projectManager = ProjectManager.getInstance();
     KeyCombination Undo = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
     KeyCombination Redo = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
@@ -31,10 +30,14 @@ public class KeyboardEventController implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
         if (Undo.match(event)){
-            UndoRedo.undo();
+            projectManager.undoDrawingState();
         }
         else if (Redo.match(event)) {
-            UndoRedo.redo();
+            try {
+                projectManager.restoreDrawingState();
+            } catch (Exception exception) {
+                System.out.println("Error: could not redo cause there are no record");
+            }
         }
         else if (Save.match(event)){
             try {

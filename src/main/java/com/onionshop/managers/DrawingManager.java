@@ -3,6 +3,7 @@ package com.onionshop.managers;
 
 import com.onionshop.entities.Brush;
 import com.onionshop.entities.Colour;
+import com.onionshop.entities.Pixel;
 import com.onionshop.managers.ProjectManager;
 
 import java.util.Objects;

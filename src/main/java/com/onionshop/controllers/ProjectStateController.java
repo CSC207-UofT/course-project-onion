@@ -147,6 +147,14 @@ public class ProjectStateController implements Initializable {
         for (int i = 0; i < updatedPixels.length; i++) {
             canvasPixelWriter.setColor(updatedPixels[i][0], updatedPixels[i][1], currentCanvasColour);
         }
+        Pixel[][] pixelArray = new Pixel[projectManager.getCurrentProject().getWidth()]
+                [projectManager.getCurrentProject().getHeight()];
+        for (int x = 0; x < projectManager.getCurrentProject().getWidth(); x++) {
+            for (int y = 0; y < projectManager.getCurrentProject().getHeight(); y++) {
+                pixelArray[x][y] = projectManager.getCurrentProject().getPixelByCoord(x, y);
+            }
+        }
+        projectManager.updateDrawingCanvas(pixelArray);
     }
 
 
