@@ -122,6 +122,7 @@ public class ProjectStateController implements Initializable {
                         if (!(toolStateManager.getColourLocked())) {
                             currentCanvasColour =
                                     canvasInputProcessor.selectColourFromPalette((Button)colourButton.getSource());
+                            projectColourPicker.setValue(currentCanvasColour);
                         }
                     }
                     //Right click removes the colour
