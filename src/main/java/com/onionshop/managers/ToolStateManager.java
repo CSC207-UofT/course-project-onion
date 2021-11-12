@@ -87,7 +87,9 @@ public class ToolStateManager {
      * @param newRGB            new RGB value of Colour
      */
     public void updateCurrentColourState(int[] newRGB) {
-        this.currentColourState.setRGB(newRGB);
+        if (!(this.currentToolState instanceof Eraser)) {
+            this.currentColourState.setRGB(newRGB);
+        }
     }
 
     /**
@@ -105,7 +107,9 @@ public class ToolStateManager {
      * @param currentColourState  the current colour selected on project
      */
     public void setCurrentColourState(Colour currentColourState) {
-        this.currentColourState = currentColourState;
+        if (!(this.currentToolState instanceof Eraser)) {
+            this.currentColourState = currentColourState;
+        }
     }
 
     /**
@@ -125,4 +129,11 @@ public class ToolStateManager {
     public Colour getCurrentColourState() {
         return currentColourState;
     }
+
+    /**
+     * This returns whether the colour is currently locked or not for the eraser
+     *
+     * @return whether the current tool is the eraser (meaning the colour should not be changed
+     */
+    public boolean getColourLocked() { return currentToolState instanceof Eraser; }
 }

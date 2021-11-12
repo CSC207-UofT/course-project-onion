@@ -1,6 +1,5 @@
 package com.onionshop.controllers;
 
-import com.onionshop.entities.*;
 import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.ProjectManager;
@@ -70,10 +69,8 @@ public class ProjectStateController implements Initializable {
      * Sets the height and width of the canvas
      */
     private void initCanvas() {
-        Project currentProject = projectManager.getCurrentProject();
-
-        int canvasHeight = currentProject.getHeight();
-        int canvasWidth = currentProject.getWidth();
+        int canvasHeight = projectManager.getCurrentProject().getHeight();
+        int canvasWidth = projectManager.getCurrentProject().getWidth();
 
         // set width and height of the canvas UI
         projectDrawing.setHeight(canvasHeight);
@@ -84,7 +81,7 @@ public class ProjectStateController implements Initializable {
         // set canvas pixels to match the pixels of the current project
         for (int x = 0; x < canvasWidth; x++) {
             for (int y = 0; y < canvasHeight; y++) {
-                int[] rgb = currentProject.getPixelByCoord(x, y).getRGB();
+                int[] rgb = projectManager.getCurrentProject().getPixelByCoord(x, y).getRGB();
                 Color color = Color.rgb(rgb[0], rgb[1], rgb[2], 1);
                 pixelWriter.setColor(x, y, color);
             }
@@ -97,8 +94,10 @@ public class ProjectStateController implements Initializable {
      */
     @FXML
     protected void setDrawingColour() {
-        currentCanvasColour = canvasInputProcessor.processSelectedColour(projectColourPicker.getValue());
-        projectDrawing.getGraphicsContext2D().setFill(currentCanvasColour);
+        if (!toolStateManager.getColourLocked()) {
+            currentCanvasColour = canvasInputProcessor.processSelectedColour(projectColourPicker.getValue());
+            projectDrawing.getGraphicsContext2D().setFill(currentCanvasColour);
+        }
     }
 
     /**
@@ -120,7 +119,10 @@ public class ProjectStateController implements Initializable {
                 colourButton -> {
                     //Left click selects the colour
                     if (colourButton.getButton() == MouseButton.PRIMARY){
-                        currentCanvasColour = canvasInputProcessor.selectColourFromPalette((Button)colourButton.getSource());
+                        if (!(toolStateManager.getColourLocked())) {
+                            currentCanvasColour =
+                                    canvasInputProcessor.selectColourFromPalette((Button)colourButton.getSource());
+                        }
                     }
                     //Right click removes the colour
                     else if (colourButton.getButton() == MouseButton.SECONDARY) {
@@ -164,8 +166,8 @@ public class ProjectStateController implements Initializable {
      */
     @FXML
     protected void onBrushPenClick() {
-        Pen currentToolState = new Pen("round", brushSize);
-        toolStateManager.setCurrentToolState(currentToolState);
+        canvasInputProcessor.setTool(Tools.PEN, brushSize);
+        setDrawingColour();
     }
 
     /**
@@ -173,8 +175,8 @@ public class ProjectStateController implements Initializable {
      */
     @FXML
     public void onEraserClick() {
-        Eraser currentToolState = new Eraser("round", brushSize);
-        toolStateManager.setCurrentToolState(currentToolState);
+        canvasInputProcessor.setTool(Tools.ERASER, brushSize);
+        currentCanvasColour = Color.WHITE;
     }
 
 
@@ -182,8 +184,7 @@ public class ProjectStateController implements Initializable {
      * Sets the current tool being used to line
      */
     public void onLineToolClick() {
-        Line currentToolState = new Line(brushSize);
-        toolStateManager.setCurrentToolState(currentToolState);
+        canvasInputProcessor.setTool(Tools.LINE, brushSize);
     }
 
 
@@ -191,15 +192,13 @@ public class ProjectStateController implements Initializable {
      * Sets the current tool being used to circle
      */
     public void onCircleToolClick() {
-        Circle currentToolState = new Circle(brushSize);
-        toolStateManager.setCurrentToolState(currentToolState);
+        canvasInputProcessor.setTool(Tools.CIRCLE, brushSize);
     }
 
     /**
      * Sets the current tool being used to rectangle
      */
     public void onRectangleToolClick() {
-        Rectangle currentToolState = new Rectangle();
-        toolStateManager.setCurrentToolState(currentToolState);
+        canvasInputProcessor.setTool(Tools.RECTANGLE, brushSize);
     }
 }
