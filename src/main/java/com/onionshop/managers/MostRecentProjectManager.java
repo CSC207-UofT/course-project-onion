@@ -1,35 +1,145 @@
 package com.onionshop.managers;
 
-import java.io.File;
+import javax.swing.filechooser.FileSystemView;
+import java.io.*;
+import java.net.URL;
+import java.util.Stack;
 
 public class MostRecentProjectManager {
 
     private File mostRecentProjectFile;
 
-    /* TODO: create a function for appending a mostRecentProject to the mostRecentProjectFile
-    */
-    public void addMostRecentProject() {
-
-    }
-
-    /* TODO: create a function for creating / loading mostRecentProjects
-        Each most recent project is an array with [projectName, directory]
-        For our purposes, I think a 2D String array is fine, but if you think
-        creating a MostRecentProject class makes more sense, go for it, idk
+    /**
+     * Adds the given most recent project to the mostRecentProjectFile (default location is Documents).
+     * If length of mostRecentProjectFile exceeds 5, removes the oldest file and pushes the new file to the top of the
+     * stack.
+     * If the project already exists in the mostRecentProjectFile, then order in the mostRecentProjectFile is
+     * reshuffled according the selection.
+     *
+     * @param projectPath the given the path of the most recent project.
+     * @throws IOException
      */
-    public String[][] getMostRecentProjects() {
+    public void addMostRecentProject(String projectName, String projectPath) throws IOException {
+
+        Stack<String> stack = new Stack<String>();
         loadMostRecentProjects();
-        return null;
+        writeStackFromFile(stack);
+
+        String projectArray = "[" + projectName + "," + projectPath + "]";
+
+        if (stack.contains(projectArray)) {
+            stack.remove(projectArray);
+            reWriteFile(projectArray, stack);
+
+        } else if (stack.size() < 5){
+            stack.push(projectArray);
+            writeToFile(projectArray);
+        } else {
+            stack.remove(0);
+            reWriteFile(projectArray, stack);
+        }
+
     }
 
-    // TODO: create a function for creating / loading mostRecentProjects
-    public File loadMostRecentProjects() {
-        // check if fresh-onions file exists
-        // if it does, set mostRecentProjectFile to that file
-        // if it does not, create the file and then set mostRecentProjectFile to that file
-        // (create it either in like make it in Documents, or in this project idk)
-        return null;
+    /**
+     * Helper method for addMostRecentProject. Used to reorder the .txt file.
+     *
+     * @param projectArray the array in the form of [projectDirectory, projectName] to be added.
+     * @param stack the stack representing the order of most recent projects.
+     * @throws IOException
+     */
+    public void reWriteFile(String projectArray, Stack<String> stack) throws IOException {
+        stack.push(projectArray);
+        this.mostRecentProjectFile.delete();
+        loadMostRecentProjects();
+        for (String projectArrayStack: stack) {
+            writeToFile(projectArrayStack);
+        }
     }
 
+    /**
+     * Helper method to write to .txt files.
+     *
+     * @param projectArray The string to the be written in a new line.
+     * @throws IOException
+     */
+    public void writeToFile(String projectArray) throws IOException {
+        FileWriter writer = new FileWriter(this.mostRecentProjectFile, true);
+        writer.write(System.lineSeparator());
+        writer.write(projectArray);
+        writer.close();
+    }
 
+    /**
+     * Helper method to update the stack from the file.
+     *
+     * @param stack the stack to update.
+     * @throws IOException
+     */
+    public void writeStackFromFile(Stack<String> stack) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(this.mostRecentProjectFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.isEmpty()) {
+                    stack.push(line);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Returns the most recent projects in a 2D array of length 5.
+     * Columns represent the projectName (index 0) and projectDirectory (index 1).
+     * Each row represents an individual project.
+     *
+     * @return the 2D array of mostRecentProjects.
+     * @throws IOException
+     */
+    public String[][] getMostRecentProjects() throws IOException {
+        loadMostRecentProjects();
+        Stack<String> stack = new Stack<String>();
+        writeStackFromFile(stack);
+
+        String[][] mostRecentProjects = new String[5][2];
+
+        for (int i = 0; i <= stack.size() - 1; i ++) {
+            String project = stack.get(i);
+            String projectName = project.substring(1, project.indexOf(','));
+            String projectDirectory = project.substring(project.indexOf(',') + 1, project.length() - 1);
+            mostRecentProjects[i][0] = projectName;
+            mostRecentProjects[i][1] = projectDirectory;
+        }
+        return mostRecentProjects;
+    }
+
+    /**
+     * Loads mostRecentProjects from the file if it exists.
+     * If the file does not exist, creates a new file called fresh-onions.txt in the Documents folder by default.
+     *
+     */
+    public void loadMostRecentProjects() {
+        // getting default path
+        String defaultPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+
+        String operatingSystem = System.getProperty("os.name");
+
+        if (operatingSystem.substring(0, 3).equals("Mac")) {
+            this.mostRecentProjectFile = new File(defaultPath + "/Documents/fresh-onions.txt");
+        } else {
+            this.mostRecentProjectFile = new File(defaultPath + "\\fresh-onions.txt");
+        }
+
+        try {
+            if (this.mostRecentProjectFile.createNewFile()) {
+                System.out.println("New file created!");
+            } else {
+                System.out.println("File already exists!");
+            }
+            System.out.println(this.mostRecentProjectFile);
+        } catch (IOException e) {
+            System.out.println("Something went wrong.");
+        }
+    }
 }
