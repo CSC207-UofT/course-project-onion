@@ -10,7 +10,7 @@ import com.onionshop.entities.Pixel;
 
 public class Colour extends Pixel {
     //name of the colour, defined by user of default
-    private String name;
+    private final String name;
 
     /**
         Creates instance of Colour
