@@ -2,24 +2,26 @@ package com.onionshop.managers;
 
 import com.onionshop.entities.Project;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class OnionFileLoaderTest {
     static Project project;
     static String savePath;
 
+    @TempDir
+    static Path tempDir1;
+
     @BeforeAll
     static void setUp() throws IOException {
-        savePath = new File(".").getCanonicalPath() + "/src/test/resources/project_save_test.onion";
+        Path tempFilePath = Files.createFile(tempDir1.resolve("testFile1"));
+        savePath = tempFilePath.toString();
         project = new Project(savePath, 2, 2);
-    }
-
-    @AfterEach
-    void cleanUpEach() {
-        (new File(savePath)).delete();
     }
 
     @Test
