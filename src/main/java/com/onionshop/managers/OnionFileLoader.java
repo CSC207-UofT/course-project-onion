@@ -6,6 +6,7 @@ Implements static save and load functionality for .onion files and Project seria
 package com.onionshop.managers;
 
 import com.onionshop.entities.Colour;
+import com.onionshop.entities.ColourPalette;
 import com.onionshop.entities.Pixel;
 import com.onionshop.entities.Project;
 
@@ -73,7 +74,7 @@ public class OnionFileLoader {
     public static Project loadProject(String path) throws Exception {
         String[] lines = getFileLines(path);
         Project loadedProject = generateProjectInstance(lines, path);
-        loadedProject.colourPalette = generateColourPalette(lines);
+        loadedProject.setColourPalette(generateColourPalette(lines));
         loadedProject.drawingCanvas = generatePixelArray(loadedProject.getWidth(), loadedProject.getHeight(), lines);
         return loadedProject;
     }
@@ -128,8 +129,8 @@ public class OnionFileLoader {
      * @param lines array of Strings where array[i] is the i-th line of a file
      * @return arrayList of saved colours read from lines
      */
-    private static ArrayList<Colour> generateColourPalette(String[] lines) throws Exception {
-        ArrayList<Colour> colourPalette = new ArrayList<>();
+    private static ColourPalette generateColourPalette(String[] lines) throws Exception {
+        ArrayList<Colour> colours = new ArrayList<>();
         int lineNumber = getIndexOfString("[saved colours]", lines) + 1;
         String line;
         while (!Objects.equals(line = lines[lineNumber], "[pixels]")) {
@@ -140,10 +141,11 @@ public class OnionFileLoader {
                     Integer.parseInt(stringRGB.substring(stringRGB.indexOf(',') + 1, stringRGB.lastIndexOf(','))),
                     Integer.parseInt(stringRGB.substring(stringRGB.lastIndexOf(',') + 1))
             };
-            colourPalette.add(new Colour(name, RGB));
+            colours.add(new Colour(name, RGB));
             lineNumber++;
         }
-        return colourPalette;
+
+        return new ColourPalette(colours);
     }
 
     /**

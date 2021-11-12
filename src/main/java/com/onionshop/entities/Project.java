@@ -20,7 +20,7 @@ public class Project {
     private String path;
 
     // An array that holds default and user created colours
-    public ArrayList<Colour> colourPalette;
+    private ColourPalette colourPalette;
 
     //2d array representing each pixel of the drawing canvas with Pixel
     public Pixel[][] drawingCanvas;
@@ -37,9 +37,7 @@ public class Project {
         this.width = width;
         this.height = height;
 
-        this.colourPalette = new ArrayList<Colour>();
-
-        this.colourPalette.add(new Colour("black", new int[]{0, 0, 0})); //default pen colour
+        this.colourPalette = new ColourPalette(new ArrayList<Colour>());
 
         this.drawingCanvas = new Pixel[width][height];
         for (int x = 0; x < width; x++) {
@@ -63,8 +61,7 @@ public class Project {
         this.width = width;
         this.height = height;
 
-        colourPalette = new ArrayList<Colour>();
-        this.colourPalette.add(new Colour("black", new int[]{0, 0, 0})); //default pen colour
+        colourPalette = new ColourPalette(new ArrayList<Colour>());
 
         this.drawingCanvas = new Pixel[width][height];
         for (int x = 0; x < width; x++) {
@@ -94,37 +91,6 @@ public class Project {
             path = newPath;
         } else {
             throw new Exception("Invalid path was given: " + newPath);
-        }
-
-    }
-
-    /**
-     * Adds a new custom colour to the colour palette
-     *
-     * @param newColour the new Colour instance to be added
-     */
-    public void addColour(Colour newColour) {
-        this.colourPalette.add(newColour);
-    }
-
-    /**
-     * Removes the given Colour instance from the colourPalette
-     * @param colour Colour instance to be removed
-     */
-    public void removeColour(Colour colour) {
-        colourPalette.remove(colour);
-    }
-
-    /**
-     * Removes the colour of the given name from colourPalette
-     * @param colourName the name of the colour to be removed
-     */
-    public void removeColour(String colourName) {
-        for (Colour c : colourPalette) {
-            if (Objects.equals(c.name, colourName)) {
-                colourPalette.remove(c);
-                return;
-            }
         }
     }
 
@@ -172,8 +138,8 @@ public class Project {
         lineNumber += 4;
 
         //adding saved colours -> <name>:R,G,B
-        for (Colour colour : colourPalette) {
-            serialization[lineNumber] = colour.name + ":" +
+        for (Colour colour : colourPalette.getColours()) {
+            serialization[lineNumber] = colour.getName() + ":" +
                     String.valueOf(colour.RGB[0]) + "," +
                     String.valueOf(colour.RGB[1]) + "," +
                     String.valueOf(colour.RGB[2]);
@@ -203,5 +169,21 @@ public class Project {
      */
     public String extractProjectName() {
         return this.path.substring(this.path.lastIndexOf("\\")+1);
+    }
+
+    /**
+     * Returns this projects colour palette
+     * @return this projects ColourPalette.
+     */
+    public ColourPalette getColourPalette() {
+        return this.colourPalette;
+    }
+
+    /**
+     * Sets the colour palette of this project to the given colour palette
+     * @param newColourPalette the new ColourPalette
+     */
+    public void setColourPalette(ColourPalette newColourPalette) {
+        this.colourPalette = newColourPalette;
     }
 }
