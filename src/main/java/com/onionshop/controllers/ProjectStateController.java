@@ -19,6 +19,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -87,6 +88,14 @@ public class ProjectStateController implements Initializable {
             }
         }
 
+        //The dot function calls are needed so that this file (a controller) doesn't become dependent on an entity
+        //Iterates through the saved colours and adds them to the palette
+        for (int i = 0; i < projectManager.getCurrentProject().getColourPalette().size(); i++) {
+            String colourHex = projectManager.getCurrentProject().getColourPalette().getColourByIndex(i).getName();
+            addColourButtonToPalette(colourHex);
+        }
+
+
     }
 
     /**
@@ -110,6 +119,14 @@ public class ProjectStateController implements Initializable {
         //This adds the colour to the backend palette and returns the string hex value of the colour which is used for
         //the button id.
         String selectedColourHex = canvasInputProcessor.processColourToAddToPalette(projectColourPicker.getValue());
+        addColourButtonToPalette(selectedColourHex);
+    }
+
+    /**
+     * This method adds a new colour button to the colour palette using the given hex string as the colour
+     * @param selectedColourHex The hex string representation of the colour to add to the palette
+     */
+    protected void addColourButtonToPalette(String selectedColourHex) {
         Button colourSwatch = new Button("");
         colourSwatch.setStyle("-fx-background-color: " + selectedColourHex);
         colourSwatch.setId(selectedColourHex);
@@ -169,6 +186,7 @@ public class ProjectStateController implements Initializable {
     protected void onBrushPenClick() {
         canvasInputProcessor.setTool(Tools.PEN, brushSize);
         setDrawingColour();
+        onToolSizeSliderMove();
     }
 
     /**
@@ -178,6 +196,7 @@ public class ProjectStateController implements Initializable {
     public void onEraserClick() {
         canvasInputProcessor.setTool(Tools.ERASER, brushSize);
         currentCanvasColour = Color.WHITE;
+        onToolSizeSliderMove();
     }
 
 
@@ -186,6 +205,7 @@ public class ProjectStateController implements Initializable {
      */
     public void onLineToolClick() {
         canvasInputProcessor.setTool(Tools.LINE, brushSize);
+        setDrawingColour();
     }
 
 
@@ -194,6 +214,7 @@ public class ProjectStateController implements Initializable {
      */
     public void onCircleToolClick() {
         canvasInputProcessor.setTool(Tools.CIRCLE, brushSize);
+        setDrawingColour();
     }
 
     /**
@@ -201,5 +222,6 @@ public class ProjectStateController implements Initializable {
      */
     public void onRectangleToolClick() {
         canvasInputProcessor.setTool(Tools.RECTANGLE, brushSize);
+        setDrawingColour();
     }
 }
