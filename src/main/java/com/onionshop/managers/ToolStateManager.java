@@ -25,7 +25,7 @@ public class ToolStateManager {
      *
      */
     public ToolStateManager() {
-        this.currentToolState = new Pen("round", 10);
+        this.currentToolState = new Pen("round", 5);
         this.currentColourState = new Colour("Black", new int[] {0, 0, 0});
     }
 
