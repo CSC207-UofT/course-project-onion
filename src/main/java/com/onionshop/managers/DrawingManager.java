@@ -3,9 +3,10 @@ package com.onionshop.managers;
 
 import com.onionshop.entities.Brush;
 import com.onionshop.entities.Colour;
-import com.onionshop.entities.Pixel;
+import com.onionshop.entities.ColourPalette;
 import com.onionshop.managers.ProjectManager;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class DrawingManager {
@@ -55,7 +56,7 @@ public class DrawingManager {
      * @param selectedColour The colour to add to the palette
      */
     public void addColourToPalette(Colour selectedColour) {
-        projectManager.getCurrentProject().addColour(selectedColour);
+        projectManager.getCurrentProject().getColourPalette().addColour(selectedColour);
     }
 
     /**
@@ -64,8 +65,8 @@ public class DrawingManager {
      * @return The selected colour
      */
     public int[] selectColourFromPalette(String colourId) {
-        for (Colour currentColour : projectManager.getCurrentProject().colourPalette) {
-            if (Objects.equals(currentColour.name, colourId)) {
+        for (Colour currentColour : projectManager.getCurrentProject().getColourPalette().getColours()) {
+            if (Objects.equals(currentColour.getName(), colourId)) {
                 toolStateManager.setCurrentColourState(currentColour);
                 return currentColour.getRGB();
             }
@@ -84,9 +85,11 @@ public class DrawingManager {
      */
     public void removeColourFromPalette(String colourId) {
         int indexToRemove = -1;
+        ColourPalette colourPalette = projectManager.getCurrentProject().getColourPalette();
+
         //Iterates through the palette to select the colour
-        for (int i = 0; i < projectManager.getCurrentProject().colourPalette.size(); i++) {
-            if (Objects.equals(projectManager.getCurrentProject().colourPalette.get(i).name, colourId)) {
+        for (int i = 0; i < colourPalette.size(); i++) {
+            if (Objects.equals(colourPalette.getColourByIndex(i).getName(), colourId)) {
                 indexToRemove = i;
             }
         }
@@ -95,9 +98,7 @@ public class DrawingManager {
             System.out.println("ERROR :: FAILED TO FIND COLOUR IN BACKEND COLOUR PALETTE :: colourId - " + colourId);
         }
         else {
-            projectManager.getCurrentProject().colourPalette.remove(indexToRemove);
+            projectManager.getCurrentProject().getColourPalette().removeColourByIndex(indexToRemove);
         }
-
-
     }
 }

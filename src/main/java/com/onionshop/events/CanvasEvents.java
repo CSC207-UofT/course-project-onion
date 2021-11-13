@@ -1,7 +1,9 @@
 package com.onionshop.events;
 
-import com.onionshop.entities.Colour;
+import com.onionshop.controllers.Tools;
+import com.onionshop.entities.*;
 import com.onionshop.managers.DrawingManager;
+import com.onionshop.managers.ToolStateManager;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -94,5 +96,39 @@ public class CanvasEvents {
         currentDrawingManager.removeColourFromPalette(colourId);
     }
 
+
+    /**
+     * Sets the tool depending on which button was clicked
+     *
+     * @param selectedTool An enum representing which tool was selected
+     * @param brushSize the size to initialize the tool as
+     */
+    public void setTool(Tools selectedTool, int brushSize) {
+        //set a default to make sure the tool is initialized as something if something goes wrong
+        Tool currentToolState = new Pen("round", 2);
+
+        //switch case to determine which tool was selected
+        switch (selectedTool) {
+            case PEN:
+                currentToolState = new Pen("round", brushSize);
+                break;
+            case ERASER:
+                currentToolState = new Eraser("round", brushSize);
+                break;
+            case LINE:
+                currentToolState = new Line(brushSize);
+                break;
+            case RECTANGLE:
+                currentToolState = new Rectangle();
+                break;
+            case CIRCLE:
+                currentToolState = new Circle(brushSize);
+                break;
+        }
+
+        //set the current tool state
+        ToolStateManager.getInstance().setCurrentToolState(currentToolState);
+
+    }
 
 }
