@@ -104,7 +104,7 @@
       <FlowPane hgap="10" vgap="10" fx:id="colourPalette" GridPane.columnIndex="3" GridPane.rowIndex="1">
 
       </FlowPane>
-      <Canvas fx:id="projectDrawing" height="300" onMouseDragged="#onCanvasMouseDragged" style=" -fx-border-color:black; -fx-border-width: 1;" width="400" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+      <Canvas fx:id="projectDrawing" height="300" onMouseDragged="#onCanvasMouseDragged" onMouseReleased="#onCanvasMouseReleased" style=" -fx-border-color:black; -fx-border-width: 1;" width="400" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
 
 

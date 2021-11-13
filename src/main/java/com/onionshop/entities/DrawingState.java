@@ -7,14 +7,14 @@ public class DrawingState {
      *create a new memento that contain the current Drawing State information.
      */
 
-    private Pixel[][] State;
+    private Pixel[][] state;
 
     /**
      * take the pixel array and create the drawing state.
-     * @param State the pixel array of current drawing state
+     * @param state the pixel array of current drawing state
      */
-    public DrawingState(Pixel[][] State){
-        this.State = State;
+    public DrawingState(Pixel[][] state){
+        this.state = state;
     }
 
     /**
@@ -22,6 +22,6 @@ public class DrawingState {
      * @return return the pixel array of drawing state
      */
     public Pixel[][] getState(){
-        return State;
+        return state;
     }
 }

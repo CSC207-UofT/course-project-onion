@@ -41,9 +41,17 @@ public class SceneSwitcher {
      @param fxml:         the file path to the fxml file that contains the scene we want to switch to
      */
     public static void switchSceneWithKeyEventsInit(Class currentClass, Event event, String fxml) {
-        Scene scene = switchScene(currentClass, event, fxml);
-        if (scene != null) {
-            scene.setOnKeyPressed(new KeyboardEventController());
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(currentClass.getResource(fxml));
+            Scene scene = new Scene(fxmlLoader.load());
+            ProjectStateController projectStateController = (ProjectStateController) fxmlLoader.getController();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+            scene.setOnKeyPressed(new KeyboardEventController(projectStateController));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 }

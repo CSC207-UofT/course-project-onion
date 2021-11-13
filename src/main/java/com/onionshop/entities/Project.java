@@ -186,4 +186,8 @@ public class Project {
     public void setColourPalette(ColourPalette newColourPalette) {
         this.colourPalette = newColourPalette;
     }
+
+    public void setDrawingCanvas(Pixel[][] newDrawingCanvas){
+        this.drawingCanvas = newDrawingCanvas;
+    }
 }
