@@ -205,4 +205,8 @@ public class Project {
         String projectName = this.path.substring(this.path.lastIndexOf("\\")+1);
         return projectName;
     }
+
+    public void setDrawingCanvas(Pixel[][] newDrawingCanvas){
+        this.drawingCanvas = newDrawingCanvas;
+    }
 }

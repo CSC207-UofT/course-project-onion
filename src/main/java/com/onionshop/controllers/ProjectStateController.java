@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -69,7 +70,7 @@ public class ProjectStateController implements Initializable {
      * Initializes the canvas with current project's saved pixels
      * Sets the height and width of the canvas
      */
-    private void initCanvas() {
+    public void initCanvas() {
         Project currentProject = projectManager.getCurrentProject();
 
         int canvasHeight = currentProject.getHeight();
@@ -147,14 +148,6 @@ public class ProjectStateController implements Initializable {
         for (int i = 0; i < updatedPixels.length; i++) {
             canvasPixelWriter.setColor(updatedPixels[i][0], updatedPixels[i][1], currentCanvasColour);
         }
-        Pixel[][] pixelArray = new Pixel[projectManager.getCurrentProject().getWidth()]
-                [projectManager.getCurrentProject().getHeight()];
-        for (int x = 0; x < projectManager.getCurrentProject().getWidth(); x++) {
-            for (int y = 0; y < projectManager.getCurrentProject().getHeight(); y++) {
-                pixelArray[x][y] = projectManager.getCurrentProject().getPixelByCoord(x, y);
-            }
-        }
-        projectManager.updateDrawingCanvas(pixelArray);
     }
 
 
@@ -209,5 +202,23 @@ public class ProjectStateController implements Initializable {
     public void onRectangleToolClick() {
         Rectangle currentToolState = new Rectangle();
         toolStateManager.setCurrentToolState(currentToolState);
+    }
+
+    public void onCanvasMouseReleased(MouseEvent mouseDragEvent) {
+        PixelReader canvasPixelReader = projectDrawing.snapshot(null,null).getPixelReader();
+        Pixel[][] pixelArray = new Pixel[projectManager.getCurrentProject().getWidth()]
+                [projectManager.getCurrentProject().getHeight()];
+        for (int x = 0; x < projectManager.getCurrentProject().getWidth(); x++) {
+            for (int y = 0; y < projectManager.getCurrentProject().getHeight(); y++) {
+                Color color = canvasPixelReader.getColor(x, y);
+                int[] rgbValues = new int[]{
+                        (int)Math.round(color.getRed() * 255),
+                        (int)Math.round(color.getGreen() * 255), (int)Math.round(color.getBlue() * 255)
+                };
+                Pixel pixel = new Pixel(rgbValues);
+                pixelArray[x][y] = pixel;
+            }
+        }
+        projectManager.updateDrawingCanvas(pixelArray);
     }
 }
