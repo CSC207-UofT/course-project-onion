@@ -9,7 +9,7 @@ public class Pen extends Brush {
      * @param brushSize     int of the size of the brush, represents pixel size, default is 1 (px)
      */
     public Pen(String brushShape, int brushSize) {
-        super("round", 1);
+        super(brushShape, brushSize);
         this.calculateEffectedPixels();
     }
 }
