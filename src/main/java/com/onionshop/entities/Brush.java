@@ -1,5 +1,7 @@
 package com.onionshop.entities;
 
+import java.util.Arrays;
+
 public abstract class Brush implements Tool {
     private String brushShape;
     private int brushSize;
@@ -73,6 +75,14 @@ public abstract class Brush implements Tool {
     }
 
     /**
+     * Returns and 2D integer array representing the pixel output stamp for each individual click when drawing
+     * @return pixels effected by brush
+     */
+    public int[][] getPixelsEffectedByBrush() {
+        return pixelsEffectedByBrush;
+    }
+
+    /**
      * Initiated everytime the mouse interact with the canvas. Returns the shape <pixelsEffectedByBrush> calculated
      * by calculateEffectedPixels on the centre of the coordinate where the mouse landed on.
      *
@@ -101,6 +111,7 @@ public abstract class Brush implements Tool {
                         [y + pixelsEffectedByBrush[offset][1]].setRGB(currentColour.getRGB());
             }
         }
+        System.out.println(Arrays.deepToString(pixelsToUpdate));
         return pixelsToUpdate;
     }
 }
