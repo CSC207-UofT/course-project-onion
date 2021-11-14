@@ -11,7 +11,7 @@ public class ColourPalette {
     /**
      * Creates instance of ColourPalette
      *
-     * @param colours:  initial list of colours for the colour palette
+     * @param colours: initial list of colours for the colour palette
      */
     public ColourPalette(ArrayList<Colour> colours) {
         this.colours = colours;
@@ -28,6 +28,7 @@ public class ColourPalette {
 
     /**
      * Removes the given Colour instance from the colourPalette
+     *
      * @param colour Colour instance to be removed
      */
     public void removeColour(Colour colour) {
@@ -36,6 +37,7 @@ public class ColourPalette {
 
     /**
      * Removes the colour of the given name from colourPalette
+     *
      * @param colourName the name of the colour to be removed
      */
     public void removeColour(String colourName) {
@@ -49,14 +51,16 @@ public class ColourPalette {
 
     /**
      * Removes the colour in the given index from colourPalette
+     *
      * @param index the index of the colour to be removed
      */
-    public void removeColourByIndex(int index) {
+    public void removeColour(int index) {
         this.colours.remove(index);
     }
 
     /**
      * Returns the number of colours in the colour palette
+     *
      * @return the number of colours in the colour palette
      */
     public int size() {
@@ -65,6 +69,7 @@ public class ColourPalette {
 
     /**
      * Returns the colours in this colour palette
+     *
      * @return the colours in this colour palette
      */
     public ArrayList<Colour> getColours() {
@@ -73,10 +78,26 @@ public class ColourPalette {
 
     /**
      * Returns the colour at the given index in the colour palette
+     *
      * @return the colour at the given index in the colour palette
      */
-    public Colour getColourByIndex(int index) {
+    public Colour getColour(int index) {
         return colours.get(index);
+    }
+
+    /**
+     * Gets the first Colour instance with a given name
+     *
+     * @param colourName name of colour to be returned
+     * @return returns Colour class of the given name, or null if the name is not found
+     */
+    public Colour getColour(String colourName) {
+        for (Colour c : colours) {
+            if (Objects.equals(c.getName(), colourName)) {
+                return c;
+            }
+        }
+        return null;
     }
 
 }
