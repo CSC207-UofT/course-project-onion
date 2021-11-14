@@ -61,6 +61,38 @@ public abstract class Shape implements Tool {
     }
 
     /**
+     * Set the Starting Coordinate of the shape for testing purposes
+     */
+    public void setStartingCoordinate(int[] startingCoordinate) {
+        this.startingCoordinate = startingCoordinate;
+    }
+
+    /**
+     * Set the Ending Coordinate of the shape for testing purposes
+     */
+    public void setEndingCoordinate(int[] endingCoordinate) {
+        this.endingCoordinate = endingCoordinate;
+    }
+
+    /**
+     * Get the Starting Coordinate of the shape for testing purposes
+     *
+     * @return      the starting coordinate
+     */
+    public int[] getStartingCoordinate() {
+        return startingCoordinate;
+    }
+
+    /**
+     * Get the Ending Coordinate of the shape for testing purposes
+     *
+     * @return      the ending coordinate
+     */
+    public int[] getEndingCoordinate() {
+        return endingCoordinate;
+    }
+
+    /**
      * Initiated everytime the mouse interact with the canvas, responsible for the output drawn on canvas per each
      * interaction.
      *

@@ -1,5 +1,6 @@
 package com.onionshop.controllers;
 
+import com.onionshop.entities.Pixel;
 import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.ProjectManager;
@@ -71,7 +72,7 @@ public class ProjectStateController implements Initializable {
      * Sets the height and width of the canvas
      */
 
-    private void initCanvas() {
+    public void initCanvas() {
         int canvasHeight = projectManager.getCurrentProject().getHeight();
         int canvasWidth = projectManager.getCurrentProject().getWidth();
 
