@@ -34,7 +34,7 @@ public class Line extends Shape implements Tool {
      * @return                      result of the equation of the line (x result, y result) connecting start and end
      *                              coordinates
      */
-    private double[] lineCalculationFormula(int coordinateValue, int[] distances) {
+    public double[] lineCalculationFormula(int coordinateValue, int[] distances) {
         // equation of the line evaluated
         double[] equation = new double[2];
         double m = calculateSlope(distances);
@@ -94,14 +94,13 @@ public class Line extends Shape implements Tool {
             // import the start and end coordinate distances
             int[] distances = calculateStartEndDistance();
 
-            pixelsEffectedByShape = new int[2 * Math.max(Math.max(startingCoordinate[0], startingCoordinate[1]),
-                    Math.max(endingCoordinate[0], endingCoordinate[1]))][2];
+            pixelsEffectedByShape = new int[Math.abs(distances[0]) + Math.abs(distances[1]) + 2][2];
 
             // a counter for exiting the while loop when we arrive at the end coordinate
             int xCounter = 0;
 
             // while loop stop condition: when counter arrives at the x distance between start and end coordinates
-            while (Math.abs(xCounter) < Math.abs(distances[0])) {
+            while (Math.abs(xCounter) <= Math.abs(distances[0])) {
                 this.pixelsEffectedByShape[Math.abs(xCounter)][0] = startingCoordinate[0] + xCounter;
                 this.pixelsEffectedByShape[Math.abs(xCounter)][1] =
                         (int) (startingCoordinate[1] + lineCalculationFormula(xCounter, distances)[0]);
@@ -118,7 +117,7 @@ public class Line extends Shape implements Tool {
             int yCounter = 0;
 
             // while loop stop condition: when counter arrives at the y distance between start and end coordinates
-            while (Math.abs(yCounter) < Math.abs(distances[1])) {
+            while (Math.abs(yCounter) <= Math.abs(distances[1])) {
 
                 this.pixelsEffectedByShape[Math.abs(xCounter + yCounter)][0] =
                         (int) (lineCalculationFormula(yCounter, distances)[1] + startingCoordinate[0]);
