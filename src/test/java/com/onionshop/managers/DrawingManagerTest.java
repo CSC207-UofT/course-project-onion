@@ -96,7 +96,7 @@ public class DrawingManagerTest {
         Colour testColour = new Colour(testColourHex, rgb);
         drawingManager.addColourToPalette(testColour);
         int[] currentPaletteRGB = ProjectManager.getInstance().getCurrentProject().getColourPalette().
-                getColourByIndex(0).getRGB();
+                getColour(0).getRGB();
         assertArrayEquals(currentPaletteRGB, rgb);
 
     }

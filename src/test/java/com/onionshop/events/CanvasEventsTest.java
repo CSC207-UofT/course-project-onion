@@ -82,7 +82,7 @@ class CanvasEventsTest {
 
         assertEquals(testColorString, hexColorValue);
         assertArrayEquals(ProjectManager.getInstance().getCurrentProject().getColourPalette()
-                .getColourByIndex(0).getRGB(), colourArray);
+                .getColour(0).getRGB(), colourArray);
     }
 
     /**
