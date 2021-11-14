@@ -11,11 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ColourPaletteTest {
     ColourPalette colourPalette;
     Colour red;
+    Colour green;
 
     @BeforeEach
     public void setUp() {
-        red = new Colour("red" ,new int[] {255, 0, 0});
-        Colour green = new Colour("green" ,new int[] {0, 255, 0});
+        red = new Colour("red", new int[]{255, 0, 0});
+        green = new Colour("green", new int[]{0, 255, 0});
 
         ArrayList<Colour> colours = new ArrayList<Colour>(List.of(new Colour[]{red, green}));
         colourPalette = new ColourPalette(colours);
@@ -23,7 +24,7 @@ public class ColourPaletteTest {
 
     @Test
     public void testAddColour() {
-        Colour blue = new Colour("blue" ,new int[] {0, 0, 255});
+        Colour blue = new Colour("blue", new int[]{0, 0, 255});
         colourPalette.addColour(blue);
         assert (colourPalette.getColours().contains(blue));
         for (Colour c : colourPalette.getColours()) {
@@ -38,13 +39,26 @@ public class ColourPaletteTest {
     public void testRemoveColourByName() {
         colourPalette.removeColour("red");
         assertEquals(colourPalette.size(), 1);
-        assertEquals(colourPalette.getColourByIndex(0).getName(), "green");
+        assertEquals(colourPalette.getColour(0).getName(), "green");
     }
 
     @Test
     public void testRemoveColourByColour() {
         colourPalette.removeColour(red);
         assertEquals(colourPalette.size(), 1);
-        assertEquals(colourPalette.getColourByIndex(0).getName(), "green");
+        assertEquals(colourPalette.getColour(0).getName(), "green");
+    }
+
+    @Test void testRemoveColourByIndex() {
+        ArrayList<Colour> colours = colourPalette.getColours();
+        colours.remove(0);
+        colourPalette.removeColour(0);
+        assertEquals(colourPalette.getColours(), colours);
+
+    }
+
+    @Test
+    void getColourByName() {
+        assertEquals(colourPalette.getColour("green"), green);
     }
 }

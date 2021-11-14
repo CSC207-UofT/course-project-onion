@@ -1,13 +1,26 @@
 package com.onionshop.entities;
+
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProjectTest {
     Project p;
 
+    @TempDir
+    Path tempDir1;
+    String savePath;
+
     @BeforeEach
     public void setUp() throws Exception {
-        p = new Project("test", 2, 2);
+        Path tempFilePath = Files.createFile(tempDir1.resolve("project_name.onion"));
+        savePath = tempFilePath.toString();
+        p = new Project(savePath, 2, 2);
     }
 
     @Test
@@ -27,4 +40,8 @@ public class ProjectTest {
         assertArrayEquals(lines, expected);
     }
 
+    @Test
+    void extractProjectName() {
+        assertEquals(p.extractProjectName(), "project_name");
+    }
 }

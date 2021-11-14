@@ -1,12 +1,9 @@
 package com.onionshop.managers;
 
 
-import com.onionshop.entities.Brush;
 import com.onionshop.entities.Colour;
 import com.onionshop.entities.ColourPalette;
-import com.onionshop.managers.ProjectManager;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class DrawingManager {
@@ -89,7 +86,7 @@ public class DrawingManager {
 
         //Iterates through the palette to select the colour
         for (int i = 0; i < colourPalette.size(); i++) {
-            if (Objects.equals(colourPalette.getColourByIndex(i).getName(), colourId)) {
+            if (Objects.equals(colourPalette.getColour(i).getName(), colourId)) {
                 indexToRemove = i;
             }
         }
@@ -98,7 +95,7 @@ public class DrawingManager {
             System.out.println("ERROR :: FAILED TO FIND COLOUR IN BACKEND COLOUR PALETTE :: colourId - " + colourId);
         }
         else {
-            projectManager.getCurrentProject().getColourPalette().removeColourByIndex(indexToRemove);
+            projectManager.getCurrentProject().getColourPalette().removeColour(indexToRemove);
         }
     }
 }

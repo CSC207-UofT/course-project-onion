@@ -15,14 +15,20 @@ public class Pixel {
      * @param RGB the RGB value of the pixel
      */
     public Pixel(int[] RGB) {
-        this.RGB = RGB;
+        setRGB(RGB);
     }
 
     public int[] getRGB() {
         return RGB;
     }
 
-    public void setRGB(int[] newRGB) {
-        this.RGB = newRGB;
+    public void setRGB(int[] newRGB) throws IndexOutOfBoundsException {
+        if (newRGB.length == 3) {
+            this.RGB = newRGB;
+        } else {
+            throw new IndexOutOfBoundsException("RGB array contains exactly 3 values, " +
+                    newRGB.length +
+                    " were provided");
+        }
     }
 }

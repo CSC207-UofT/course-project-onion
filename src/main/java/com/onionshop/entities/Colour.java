@@ -13,10 +13,10 @@ public class Colour extends Pixel {
     private final String name;
 
     /**
-        Creates instance of Colour
-
-        @param name: see name instance variable
-        @param RGB: RGB value of Colour
+     * Creates instance of Colour
+     *
+     * @param name: see name instance variable
+     * @param RGB:  RGB value of Colour
      */
     public Colour(String name, int[] RGB) {
         super(RGB);
@@ -25,6 +25,7 @@ public class Colour extends Pixel {
 
     /**
      * Returns this colour as a pixel
+     *
      * @return this colours name
      */
     public Pixel getPixel() {
@@ -33,6 +34,7 @@ public class Colour extends Pixel {
 
     /**
      * Returns the name of this colour
+     *
      * @return this colours name
      */
     public String getName() {
@@ -41,6 +43,7 @@ public class Colour extends Pixel {
 
     /**
      * Set the RGB value of the colour
+     *
      * @param newRGB the [red, green, blue] values for the colour
      */
     @Override
@@ -56,8 +59,9 @@ public class Colour extends Pixel {
     }
 
     /**
-        Safely modifies RGB values of Pixel instance
-        @param changes: the changes of each RGB value (e.g. {10, 0, 0} would increase the red RGB value by 10)
+     * Safely modifies RGB values of Pixel instance
+     *
+     * @param changes: the changes of each RGB value (e.g. {10, 0, 0} would increase the red RGB value by 10)
      */
     public void modify(int[] changes) {
         for (int i = 0; i < 3; i++) {
