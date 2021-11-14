@@ -2,7 +2,7 @@ package com.onionshop.managers;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class MostRecentProjectManager {
@@ -19,6 +19,7 @@ public class MostRecentProjectManager {
      * @param projectPath the given the path of the most recent project.
      * @throws IOException
      */
+
     public void addMostRecentProject(String projectName, String projectPath) throws IOException {
 
         Stack<String> stack = new Stack<String>();
@@ -101,17 +102,21 @@ public class MostRecentProjectManager {
         loadMostRecentProjects();
         Stack<String> stack = new Stack<String>();
         writeStackFromFile(stack);
+        System.out.println(stack);
 
-        String[][] mostRecentProjects = new String[5][2];
+        ArrayList<ArrayList<String>> mostRecentProj = new ArrayList<ArrayList<String>>();
 
-        for (int i = 0; i <= stack.size() - 1; i ++) {
+        for (int i = stack.size() - 1; i >= 0; i --) {
             String project = stack.get(i);
             String projectName = project.substring(1, project.indexOf(','));
             String projectDirectory = project.substring(project.indexOf(',') + 1, project.length() - 1);
-            mostRecentProjects[i][0] = projectName;
-            mostRecentProjects[i][1] = projectDirectory;
+            ArrayList<String> toAdd = new ArrayList<String>();
+            toAdd.add(projectName);
+            toAdd.add(projectDirectory);
+            mostRecentProj.add(toAdd);
         }
-        return mostRecentProjects;
+
+        return mostRecentProj.stream().map(u -> u.toArray(new String[0])).toArray(String[][]::new);
     }
 
     /**
