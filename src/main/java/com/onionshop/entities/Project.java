@@ -9,7 +9,6 @@ package com.onionshop.entities;
 import com.onionshop.managers.OnionFileLoader;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Project {
     // Drawing width in pixels
@@ -45,7 +44,6 @@ public class Project {
                 drawingCanvas[x][y] = new Pixel(new int[]{255, 255, 255}); //White by default
             }
         }
-
     }
 
     /**
@@ -96,7 +94,8 @@ public class Project {
 
     /**
      * Returns this project's canvas width
-     @return this project's width
+     *
+     * @return this project's width
      */
     public int getWidth() {
         return width;
@@ -104,7 +103,8 @@ public class Project {
 
     /**
      * Returns this project's canvas height
-     @return this project's height
+     *
+     * @return this project's height
      */
     public int getHeight() {
         return height;
@@ -112,7 +112,8 @@ public class Project {
 
     /**
      * Returns the pixel located at the given x-y coordinates of this projects drawing canvas
-     @return the pixel located at the given x-y coordinates
+     *
+     * @return the pixel located at the given x-y coordinates
      */
     public Pixel getPixelByCoord(int x, int y) {
         return this.drawingCanvas[x][y];
@@ -159,20 +160,21 @@ public class Project {
             }
         }
         serialization[lineNumber] = "[end]";
-
         return serialization;
     }
 
     /**
      * Extracts the project name from the directory.
+     *
      * @return the project name.
      */
     public String extractProjectName() {
-        return this.path.substring(this.path.lastIndexOf("\\")+1);
+        return path.substring(path.lastIndexOf("\\") + 1, path.indexOf(".onion"));
     }
 
     /**
      * Returns this projects colour palette
+     *
      * @return this projects ColourPalette.
      */
     public ColourPalette getColourPalette() {
@@ -181,13 +183,14 @@ public class Project {
 
     /**
      * Sets the colour palette of this project to the given colour palette
+     *
      * @param newColourPalette the new ColourPalette
      */
     public void setColourPalette(ColourPalette newColourPalette) {
         this.colourPalette = newColourPalette;
     }
 
-    public void setDrawingCanvas(Pixel[][] newDrawingCanvas){
+    public void setDrawingCanvas(Pixel[][] newDrawingCanvas) {
         this.drawingCanvas = newDrawingCanvas;
     }
 }

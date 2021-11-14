@@ -1,31 +1,25 @@
 package com.onionshop.managers;
 
 import com.onionshop.entities.Project;
-import com.onionshop.managers.DrawingManager;
-import com.onionshop.managers.UndoRedoManager;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import java.io.File;
-import java.io.IOException;
 
 public class UndoRedoManagerTest {
     Project p;
     private final DrawingManager Drawing = new DrawingManager();
     private final UndoRedoManager UndoRedo = new UndoRedoManager();
-    private ProjectManager projectManager = new ProjectManager();
+    private final ProjectManager projectManager = new ProjectManager();
 
     /**
      * Set up a drawn canvas before each test.
-     *
-     * @throws Exception
      */
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         p = new Project("test", 2, 2);
-        Drawing.updateCanvasAfterStroke(1,1);
-        Drawing.updateCanvasAfterStroke(1,2);
+        Drawing.updateCanvasAfterStroke(1, 1);
+        Drawing.updateCanvasAfterStroke(1, 2);
     }
 
     @Test

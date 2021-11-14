@@ -26,7 +26,7 @@ class OnionFileLoaderTest {
 
     @Test
     void saveProject() throws IOException {
-        assert(OnionFileLoader.saveProject(project));
+        assert (OnionFileLoader.saveProject(project));
     }
 
     @Test
@@ -38,6 +38,6 @@ class OnionFileLoaderTest {
     @Test
     void doesFileAlreadyExist() throws IOException {
         OnionFileLoader.saveProject(project);
-        assert(OnionFileLoader.doesFileAlreadyExist(savePath));
+        assert (OnionFileLoader.doesFileAlreadyExist(savePath));
     }
 }
