@@ -9,8 +9,8 @@ public class UndoRedoManager {
      * Store up to five steps of Drawing instance and keep track on canvas state.
      */
     private int maxStackSize = 50 + 1; //number of previous states PLUS the current state (+1)
-    private Stack<DrawingState> undoStack = new Stack<>();
-    private Stack<DrawingState> redoStack = new Stack<>();
+    private final Stack<DrawingState> undoStack = new Stack<>();
+    private final Stack<DrawingState> redoStack = new Stack<>();
 
     /**
      * Changes the number of previous states of the drawing canvas that are stored at one time;

@@ -64,6 +64,7 @@ public class ProjectStateController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initCanvas();
+        initColourPalette();
     }
 
     /**
@@ -89,15 +90,18 @@ public class ProjectStateController implements Initializable {
                 pixelWriter.setColor(x, y, color);
             }
         }
+    }
 
+    /**
+     * Initializes the colour palette
+     */
+    private void initColourPalette() {
         //The dot function calls are needed so that this file (a controller) doesn't become dependent on an entity
         //Iterates through the saved colours and adds them to the palette
         for (int i = 0; i < projectManager.getCurrentProject().getColourPalette().size(); i++) {
             String colourHex = projectManager.getCurrentProject().getColourPalette().getColour(i).getName();
             addColourButtonToPalette(colourHex);
         }
-
-
     }
 
     /**
@@ -166,8 +170,8 @@ public class ProjectStateController implements Initializable {
         int[][] updatedPixels = canvasInputProcessor.processControllerDataForDrawingManager(canvasMouseLocation);
 
         PixelWriter canvasPixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
-        for (int i = 0; i < updatedPixels.length; i++) {
-            canvasPixelWriter.setColor(updatedPixels[i][0], updatedPixels[i][1], currentCanvasColour);
+        for (int[] updatedPixel : updatedPixels) {
+            canvasPixelWriter.setColor(updatedPixel[0], updatedPixel[1], currentCanvasColour);
         }
     }
 

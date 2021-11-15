@@ -7,7 +7,7 @@ public class DrawingState {
      *create a new memento that contain the current Drawing State information.
      */
 
-    private Pixel[][] state;
+    private final Pixel[][] state;
 
     /**
      * take the pixel array and create the drawing state.

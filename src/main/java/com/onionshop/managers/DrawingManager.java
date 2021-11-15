@@ -6,11 +6,12 @@ import com.onionshop.entities.ColourPalette;
 
 import java.util.Objects;
 
+/**
+ * This class holds the currently selected Colour, tool and project for the backend of Onionshop. It uses this
+ * information to calculate and update the pixels that are effected as the user draws on the canvas
+ */
+
 public class DrawingManager {
-    /**
-     * This class holds the currently selected Colour, tool and project for the backend of Onionshop. It uses this
-     * information to calculate and update the pixels that are effected as the user draws on the canvas
-     */
 
     /**
      * Instantiates the drawing manager with the current project, the default Tool, and the default colour.
