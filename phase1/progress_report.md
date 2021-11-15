@@ -1,6 +1,6 @@
-#Progress Report
+# Progress Report
 
-##Open questions
+## Open questions
 
 1) How should we deal with errors and exceptions? We are currently just outputting the errors to the console. 
 2) Any concrete advice to implement Layers? What would be a decent amount of workload for Phase 2? 
@@ -8,14 +8,14 @@
 4) How should we address the SRP issue in CanvasEvents and DrawingManager addressed above? 
 5) The undo & redo feature seems to work well in the backend, but works in the front-end only some of the time. Why is it being finicky and how can we make it work consistently?
 
-##What has worked well so far
+## What has worked well so far
 
 - Memento pattern worked well in the undo-redo implementation as it made possible the copying and storing of the current canvas plus the roll back of various states, 
 - Flexibility of Tool structure allows for multiple branchings of tools such as the brushes and the shapes, or other possible tools in the future. 
 - The template method has worked incredibly well with the brush and shape tools as they both involve a certain amount of standardization with the possibility of having multiple child classes. 
 - The structure using the drawStage makes it simple to execute the shape drawing and possible future modifications. 
 
-##What each member has worked on
+## What each member has worked on
 
 _Bhavjot_
 - Worked on:

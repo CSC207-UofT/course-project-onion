@@ -1,12 +1,12 @@
-#Design Document
+# Design Document
 
-##UML Diagram
+## UML Diagram
 
 Below is a UML diagram representing the current program. It is seperated into Entities, Managers, Controllers, and the UI.
 
 ![UML Diagram](images/UML%20diagram.png)
 
-##Major Design Decisions
+## Major Design Decisions
 
 A description of any major design decisions your group has made (along with brief explanations of why you made them).
 
@@ -34,7 +34,7 @@ _**Keyboard Events**_
 - Used dependency injection in order to call ProjectStateController methods when we ctrl Z and ctrl Y for undoing and redoing. Otherwise it did not seem possible to update the canvas from keyboard events 
 - Added a method in scene switcher specifically for attaching the KeyBoardEventController to the main-canvas-view scene because of the way JavaFX requires us to add EventHandlers to scenes.
 
-##Clean Architecture
+## Clean Architecture
 
 ### Scenario Walkthrough
 
@@ -61,11 +61,11 @@ Let’s take the scenario of starting the program, the user selecting a recently
    3) Drawing the actual line 
       1) Uses CanvasEvents to process data, which calls DrawingManager (use case) which uses the current tool (entity) and colour (entity) to draw on the Canvas
 
-###Violations
+### Violations
 
 One such violation of clear architecture is the Pixel class. It is an entity that is called by a controller, the ProjectStateController. 
 
-###Dependency Rule
+### Dependency Rule
 
 There are many instances of the dependency rule being explicitly followed. Let’s take the scenario of a user loading up the program and viewing a recent project.
 
@@ -75,7 +75,7 @@ The MostRecentProjectManager is a use case which manages and controls most recen
 
 There is no instance of the controller directly interacting with the `.txt` file. Everytime the controller needs to access recent projects, it goes through the manager, which calls upon the `.txt` file. The `.txt` file has no knowledge of the manager, and the manager has no knowledge of the controller.
 
-##Solid Design Principles
+## Solid Design Principles
 
 _Single Responsibility Principle_
 
@@ -101,13 +101,13 @@ _Dependency inversion principle_
 
 High level modules (controllers) do not depend on low-level modules(entities). In our program the controllers are dependent on the use cases instead. For example, ProjectStateController uses ToolStateManager and DrawingManager to initialize the canvas as well as updating it when the user draws a stroke on canvas. KeyboardEventController uses the current ProjectManager to achieve the undo-redo feature. In addition, ProjectExplorerController depends on MostRecentProjectManager to display and label the most recent projects edited. In each example the controller did not instantiate any entity directly, instead just initialized use cases that did the job. This extra layer between the high-level classes and low-level classes preserved flexibility in the way that if an entity needs to be replaced, the logic in controllers does not need to change accordingly.
 
-##Packaging Strategies
+## Packaging Strategies
 
 The only packaging strategy we have seriously considered is the “By Layer” packaging strategy as that makes the most sense regarding the purpose of our project and how it is designed. Although we have looked into the component class, the entirety of our project is all extremely dependent on the system rather than various modules that would rather benefit from being in a different package. As a result, ever since we have established the structure of our project, it is obvious to us to use the By Layer packaging strategy over anything else.
 
 The By Layer Packaging Strategy is as intuitive as it sounds – it divides the packages by the layers of Clean Architecture of Frameworks & Drivers, Interface Adapters, Application Business Rules, and Enterprises Business Rules. In the case of our application it would be the Onionshop as the user interface, then each Controllers, Events, Managers, and Entities. This provides us with an incredibly clear and easy-to-work-with framework as every layer of our application interacts and relates as a whole rather than working as individual unrelated components. Starting from the entities, the design of the working of the interface and abstract classes leave us many classes which will benefit from being grouped together as a few managers are directly working with multiples of the entities which also interact with the events which then work with certain controllers that control and interact with the front end.
 
-##Design Patterns
+## Design Patterns
 
 _Memento_
 
@@ -130,7 +130,7 @@ We used Dependency Injection in our project in several areas. One area where we 
 Pull Requests:
 https://github.com/CSC207-UofT/course-project-onion/pull/76
 
-##Testing
+## Testing
 
 There were a few classes that we decided not to test.
 
@@ -145,7 +145,7 @@ _Project Manager_
 _DrawingState and NewProjectEvent_
 - These classes only contain getters
 
-##Refactoring
+## Refactoring
 
 We refactored the entire project into our packaging system.
 - https://github.com/CSC207-UofT/course-project-onion/pull/43
@@ -153,7 +153,7 @@ We refactored the entire project into our packaging system.
 We refactored code in OnionFileLoader to be in separate smaller methods.
 - https://github.com/CSC207-UofT/course-project-onion/pull/39 
 
-##Dealing with Errors
+## Dealing with Errors
 
 Our group used discord for all of our communication. We decided that it would be easiest to just add a channel to our server dedicated to errors, since most of us are quite active on the platform so we would get quicker responses from each other. 
 
