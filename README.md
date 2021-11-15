@@ -5,6 +5,7 @@ This is a directory for the project. Setup instructions are below the links sect
 ## Links
 
 - [Phase 0](/phase0)
+- [Phase 1](/phase1)
 
 ## How do I get started?
 
