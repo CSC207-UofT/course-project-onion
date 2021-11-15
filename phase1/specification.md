@@ -1,4 +1,4 @@
-### Revised Specification
+# Revised Specification
 
 Onionshop is a drawing program that has a canvas which takes mouse or tablet input and outputs line strokes (drawing). Drawings can be saved to files with the extension .onion, and reopened later to continue editing. The .onion files could also be opened in the notepad, and users could see the serialized documentation, including the height and width of the canvas, the project saved colour, and RGB colour code in the pixel array.
 
