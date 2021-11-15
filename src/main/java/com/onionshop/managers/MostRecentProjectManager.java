@@ -141,4 +141,8 @@ public class MostRecentProjectManager {
             System.out.println("Something went wrong.");
         }
     }
+
+    public File getMostRecentProjectFile() {
+        return this.mostRecentProjectFile;
+    }
 }
