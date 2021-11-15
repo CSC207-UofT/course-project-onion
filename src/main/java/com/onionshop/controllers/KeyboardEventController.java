@@ -23,7 +23,8 @@ public class KeyboardEventController implements EventHandler<KeyEvent> {
      */
 
     private final ProjectManager projectManager = ProjectManager.getInstance();
-    private ProjectStateController projectStateController;
+    private final ProjectStateController projectStateController;
+
     KeyCombination Undo = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
     KeyCombination Redo = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
     KeyCombination Save = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);

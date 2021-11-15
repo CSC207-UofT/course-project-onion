@@ -22,13 +22,12 @@ public class CanvasEvents {
      * back from the drawing manager after drawing is finished on the backend
      *
      * @param inputMouseData the current x y coordinate of the mouse
-     * @return
+     * @return updated pixels
      */
     public int[][] processControllerDataForDrawingManager(MouseEvent inputMouseData) {
         int x = (int)inputMouseData.getX();
         int y = (int)inputMouseData.getY();
-        int[][] pixelsToReturn = currentDrawingManager.updateCanvasAfterStroke(x, y);
-        return pixelsToReturn;
+        return currentDrawingManager.updateCanvasAfterStroke(x, y);
     }
 
     /**
