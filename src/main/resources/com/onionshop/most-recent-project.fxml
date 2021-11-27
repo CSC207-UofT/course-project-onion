@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml"
+         styleClass="most-recent-item" >
+    <stylesheets>
+        <URL value="@most-recent-project.css"/>
+    </stylesheets>
+
+    <Label fx:id="mostRecentName" styleClass="most-recent-name"/>
+    <Label fx:id="mostRecentPath" styleClass="most-recent-path"/>
+</fx:root>
