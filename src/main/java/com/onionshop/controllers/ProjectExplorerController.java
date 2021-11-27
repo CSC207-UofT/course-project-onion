@@ -2,14 +2,18 @@ package com.onionshop.controllers;
 
 import com.onionshop.managers.MostRecentProjectManager;
 import com.onionshop.managers.ProjectManager;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -27,79 +31,35 @@ public class ProjectExplorerController implements Initializable {
      * - Create new project -> open new project scene using NewProjectController.
      */
 
-    @FXML
-    public Button btnNewProject;
-
-    @FXML
-    public Button btnOpen;
-
-    @FXML
-    public Label mostRecentName1;
-
-    @FXML
-    public Label mostRecentPath1;
-
-    @FXML
-    public Label mostRecentName2;
-
-    @FXML
-    public Label mostRecentPath2;
-
-    @FXML
-    public Label mostRecentName3;
-
-    @FXML
-    public Label mostRecentPath3;
-
-    @FXML
-    public Label mostRecentName4;
-
-    @FXML
-    public Label mostRecentPath4;
-
-    @FXML
-    public Label mostRecentName5;
-
-    @FXML
-    public Label mostRecentPath5;
+    @FXML public Button btnNewProject;
+    @FXML public Button btnOpen;
+    @FXML public VBox mostRecentProjectsVBox;
 
     private final MostRecentProjectManager mostRecentProjectManager = new MostRecentProjectManager();
     private final ProjectManager projectManager = ProjectManager.getInstance();
-    private String[][] mostRecentProjects;
-    private Label[] mostRecentPathArr;
-    private Label[] mostRecentNameArr;
 
     /**
      * This function is called when this scene is first initialized
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        mostRecentPathArr = new Label[]{
-                mostRecentPath1, mostRecentPath2, mostRecentPath3,
-                mostRecentPath4, mostRecentPath5
-        };
-        mostRecentNameArr = new Label[]{
-                mostRecentName1, mostRecentName2, mostRecentName3,
-                mostRecentName4, mostRecentName5
-        };
         initMostRecentProject();
     }
 
     private void initMostRecentProject() {
         try {
-            mostRecentProjects = mostRecentProjectManager.getMostRecentProjects();
-            for (int i = 0; i < mostRecentProjects.length; i++) {
-                initMostRecentLabel(mostRecentNameArr[i], mostRecentPathArr[i], mostRecentProjects[i]);
+            String[][] mostRecentProjects = mostRecentProjectManager.getMostRecentProjects();
+            for (String[] mostRecentProject : mostRecentProjects) {
+                String name = mostRecentProject[0];
+                String path = mostRecentProject[1];
+                MostRecentProjectUI mostRecentProjectUI = new MostRecentProjectUI(
+                        name, path, event -> openMostRecentProject(name, path, event)
+                );
+                mostRecentProjectsVBox.getChildren().add(mostRecentProjectUI);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void initMostRecentLabel(Label name, Label path, String[] namePathStrArr) {
-        name.setText(namePathStrArr[0]);
-        path.setText(namePathStrArr[1]);
-        path.setTooltip(new Tooltip(namePathStrArr[1]));
     }
 
     /**
@@ -111,64 +71,17 @@ public class ProjectExplorerController implements Initializable {
     }
 
     /**
-     * Opens the first most recently edited project
+     * Opens a most recently edited project
+     * @param name name of the project being opened
+     * @param path path of the project being opened
+     * @param event the event that caused the project to be opened
      */
-    @FXML
-    public void openMostRecentProject1 (MouseEvent event) {
-        openMostRecentProject(0, event);
-    }
-
-
-    /**
-     * Opens the second most recently edited project
-     */
-    @FXML
-    public void openMostRecentProject2 (MouseEvent event) {
-        openMostRecentProject(1, event);
-    }
-
-
-    /**
-     * Opens the third most recently edited project
-     */
-    @FXML
-    public void openMostRecentProject3 (MouseEvent event) {
-        openMostRecentProject(2, event);
-    }
-
-    /**
-     * Opens the forth most recently edited project
-     */
-    @FXML
-    public void openMostRecentProject4 (MouseEvent event) {
-        openMostRecentProject(3, event);
-    }
-
-    /**
-     * Opens the fifth most recently edited project
-     */
-    @FXML
-    public void openMostRecentProject5 (MouseEvent event) {
-        openMostRecentProject(4, event);
-    }
-
-    /**
-     * Opens the (mostRecentProjectNum-1)th most recently edited project
-     * Where 0 <= mostRecentProjectNum <= 4
-     * @param mostRecentProjectNum the ranking of the project being opened in terms of
-     *                             how recently it was edited
-     */
-    private void openMostRecentProject (int mostRecentProjectNum, Event event) {
+    private void openMostRecentProject (String name, String path, Event event) {
         try {
-
-            if (mostRecentProjects.length > mostRecentProjectNum) {
-                String path = mostRecentProjects[mostRecentProjectNum][1];
-                String name = mostRecentProjects[mostRecentProjectNum][0];
-                if(name != null && path != null && !name.equals("") && !path.equals("")) {
-                    projectManager.loadProject(path);
-                    mostRecentProjectManager.addMostRecentProject(mostRecentProjects[mostRecentProjectNum][0], path);
-                    SceneSwitcher.switchSceneWithKeyEventsInit(getClass(), event, "/com/onionshop/main-canvas-view.fxml");
-                }
+            if(name != null && path != null && !name.equals("") && !path.equals("")) {
+                projectManager.loadProject(path);
+                mostRecentProjectManager.addMostRecentProject(name, path);
+                SceneSwitcher.switchSceneWithKeyEventsInit(getClass(), event, "/com/onionshop/main-canvas-view.fxml");
             }
         } catch (Exception e) {
             System.out.println("Error: Could not load project");
