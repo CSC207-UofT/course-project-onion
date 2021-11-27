@@ -121,7 +121,7 @@ public class CanvasEvents {
                 currentToolState = new Rectangle();
                 break;
             case CIRCLE:
-                currentToolState = new Circle(brushSize);
+                currentToolState = new Circle();
                 break;
         }
 
