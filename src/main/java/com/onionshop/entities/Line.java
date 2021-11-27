@@ -89,7 +89,7 @@ public class Line extends Shape implements Tool {
             drawStage ++;
 
         // Initiated when the user makes the second click on the canvas
-        } else if (drawStage == 2) {
+        } else if (drawStage == 3) {
 
             // import the start and end coordinate distances
             int[] distances = calculateStartEndDistance();

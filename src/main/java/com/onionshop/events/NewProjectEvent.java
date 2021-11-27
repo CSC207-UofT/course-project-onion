@@ -5,10 +5,10 @@ package com.onionshop.events;
  */
 
 public class NewProjectEvent {
-    private String projectName;
-    private String directory;
-    private int width;
-    private int height;
+    private final String projectName;
+    private final String directory;
+    private final int width;
+    private final int height;
 
     /***
      * Initializes an instance of NewProjectEvent.

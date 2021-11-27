@@ -111,7 +111,6 @@ public abstract class Brush implements Tool {
                         [y + pixelsEffectedByBrush[offset][1]].setRGB(currentColour.getRGB());
             }
         }
-        System.out.println(Arrays.deepToString(pixelsToUpdate));
         return pixelsToUpdate;
     }
 }

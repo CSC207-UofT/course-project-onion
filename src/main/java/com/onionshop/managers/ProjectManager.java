@@ -14,7 +14,7 @@ public class ProjectManager {
 
     private final static ProjectManager instance = new ProjectManager();
     private Project currentProject;
-    private UndoRedoManager undoRedoState = new UndoRedoManager();
+    private final UndoRedoManager undoRedoState = new UndoRedoManager();
     private DrawingState drawingState;
 
     /**

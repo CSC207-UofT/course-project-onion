@@ -33,7 +33,7 @@ public class Rectangle extends Shape implements Tool {
             drawStage ++;
 
             // Initiated when the user makes the second click on the canvas
-        } else if (drawStage == 2) {
+        } else if (drawStage == 3) {
 
             //Get the width and height of the rectangle
             int width = Math.abs(startingCoordinate[0] - endingCoordinate[0]);

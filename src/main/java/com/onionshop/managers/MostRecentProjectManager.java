@@ -17,7 +17,6 @@ public class MostRecentProjectManager {
      * reshuffled according the selection.
      *
      * @param projectPath the given the path of the most recent project.
-     * @throws IOException
      */
 
     public void addMostRecentProject(String projectName, String projectPath) throws IOException {
@@ -47,7 +46,6 @@ public class MostRecentProjectManager {
      *
      * @param projectArray the array in the form of [projectDirectory, projectName] to be added.
      * @param stack the stack representing the order of most recent projects.
-     * @throws IOException
      */
     public void reWriteFile(String projectArray, Stack<String> stack) throws IOException {
         stack.push(projectArray);
@@ -62,7 +60,6 @@ public class MostRecentProjectManager {
      * Helper method to write to .txt files.
      *
      * @param projectArray The string to the be written in a new line.
-     * @throws IOException
      */
     public void writeToFile(String projectArray) throws IOException {
         FileWriter writer = new FileWriter(this.mostRecentProjectFile, true);
@@ -75,7 +72,6 @@ public class MostRecentProjectManager {
      * Helper method to update the stack from the file.
      *
      * @param stack the stack to update.
-     * @throws IOException
      */
     public void writeStackFromFile(Stack<String> stack) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(this.mostRecentProjectFile))) {
@@ -96,13 +92,11 @@ public class MostRecentProjectManager {
      * Each row represents an individual project.
      *
      * @return the 2D array of mostRecentProjects.
-     * @throws IOException
      */
     public String[][] getMostRecentProjects() throws IOException {
         loadMostRecentProjects();
         Stack<String> stack = new Stack<String>();
         writeStackFromFile(stack);
-        System.out.println(stack);
 
         ArrayList<ArrayList<String>> mostRecentProj = new ArrayList<ArrayList<String>>();
 
@@ -146,5 +140,9 @@ public class MostRecentProjectManager {
         } catch (IOException e) {
             System.out.println("Something went wrong.");
         }
+    }
+
+    public File getMostRecentProjectFile() {
+        return this.mostRecentProjectFile;
     }
 }
