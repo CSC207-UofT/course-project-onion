@@ -92,6 +92,10 @@ public abstract class Shape implements Tool {
         return endingCoordinate;
     }
 
+    public void incrementDrawingStage() {drawStage++;}
+
+    public int getDrawStage() {return drawStage;}
+
     /**
      * Initiated everytime the mouse interact with the canvas, responsible for the output drawn on canvas per each
      * interaction.
@@ -137,7 +141,13 @@ public abstract class Shape implements Tool {
             this.startingCoordinate[1] = y;
 
         // Initiated when the user makes the second click on the canvas
-        } else if (drawStage == 2) {
+        }
+        else if (drawStage == 2) {
+            //This draw stage returns an empty array while waiting for the user to release their mouse
+            //which will draw the shape in draw stage 3
+            pixelsToUpdate = new int[0][0];
+        }
+        else if (drawStage == 3) {
 
             // store the current (x, y) coordinate into the array of endingCoordinate
             this.endingCoordinate[0] = x;

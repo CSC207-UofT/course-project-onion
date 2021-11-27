@@ -3,6 +3,7 @@ package com.onionshop.managers;
 
 import com.onionshop.entities.Colour;
 import com.onionshop.entities.ColourPalette;
+import com.onionshop.entities.Shape;
 
 import java.util.Objects;
 
@@ -98,5 +99,23 @@ public class DrawingManager {
         else {
             projectManager.getCurrentProject().getColourPalette().removeColour(indexToRemove);
         }
+    }
+
+    /**
+     * This function draws a shape on the canvas when the user releases their mouse after clicking and dragging
+     *
+     * @param x the end x coordinate of the shape where the user released their mouse
+     * @param y the end y coordinate of the shape where the user released their mouse
+     * @return the array of edited pixels affected by the shape
+     */
+    public int[][] drawShapeOnRelease(int x, int y) {
+        //Creating a temp shape for use since the controller insures the current tool is a shape
+        //before calling the method
+        Shape tempShape = (Shape) ToolStateManager.getInstance().getCurrentToolState();
+        tempShape.incrementDrawingStage();
+        //Calls the shape draw function to draw stage 3 for the shape (basically drawing it on the canvas)
+        int[][] editedPixels = tempShape.draw(projectManager.getCurrentProject(),
+                toolStateManager.getCurrentColourState(), x, y);
+        return editedPixels;
     }
 }

@@ -1,6 +1,7 @@
 package com.onionshop.controllers;
 
 import com.onionshop.entities.Pixel;
+import com.onionshop.entities.Shape;
 import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.ProjectManager;
@@ -161,7 +162,7 @@ public class ProjectStateController implements Initializable {
     }
 
 
-    /** A function that draws ovals as the user clicks and drags their mouse across the canvas
+    /** A function that draws as the user clicks and drags their mouse across the canvas
      *
      * @param canvasMouseLocation - A mouseEvent passed in containing the x and y coordinates of the mouse
      */
@@ -169,6 +170,18 @@ public class ProjectStateController implements Initializable {
     protected void onCanvasMouseDragged(MouseEvent canvasMouseLocation) {
         int[][] updatedPixels = canvasInputProcessor.processControllerDataForDrawingManager(canvasMouseLocation);
 
+        PixelWriter canvasPixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
+        for (int[] updatedPixel : updatedPixels) {
+            canvasPixelWriter.setColor(updatedPixel[0], updatedPixel[1], currentCanvasColour);
+        }
+    }
+
+    /** A function that updates the canvas given a set of pixels. We may want to add this as a helper
+     * function to the above onCanvasMouseDragged function.
+     *
+     * @param updatedPixels the pixels to update on the canvas
+     */
+    protected void updateCanvas(int[][] updatedPixels) {
         PixelWriter canvasPixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
         for (int[] updatedPixel : updatedPixels) {
             canvasPixelWriter.setColor(updatedPixel[0], updatedPixel[1], currentCanvasColour);
@@ -232,6 +245,8 @@ public class ProjectStateController implements Initializable {
     }
 
     public void onCanvasMouseReleased(MouseEvent mouseDragEvent) {
+        updateShapeOnMouseRelease(mouseDragEvent);
+
         PixelReader canvasPixelReader = projectDrawing.snapshot(null,null).getPixelReader();
         Pixel[][] pixelArray = new Pixel[projectManager.getCurrentProject().getWidth()]
                 [projectManager.getCurrentProject().getHeight()];
@@ -247,5 +262,24 @@ public class ProjectStateController implements Initializable {
             }
         }
         projectManager.updateDrawingCanvas(pixelArray);
+    }
+
+    /**
+     * This function checks if the current tool is a shape and if it is it draws a shape on the canvas when the
+     * user releases their mouse
+     *
+     * @param mouseDragEvent The MouseEvent triggered when the user releases their mouse
+     */
+    public void updateShapeOnMouseRelease(MouseEvent mouseDragEvent) {
+        // These two if statement check if the current tool as a shape that needs to be drawn with click and drag
+        if (ToolStateManager.getInstance().getCurrentToolState() instanceof Shape) {
+            if (((Shape) ToolStateManager.getInstance().getCurrentToolState()).getDrawStage() == 2) {
+                // If it is a shape, this draws the shape on the canvas when the user releases their mouse
+                int[][] pixelsToUpdate = projectDrawingManager.drawShapeOnRelease((int) mouseDragEvent.getX(),
+                        (int) mouseDragEvent.getY());
+                //This calls a function to update the user end canvas
+                updateCanvas(pixelsToUpdate);
+            }
+        }
     }
 }
