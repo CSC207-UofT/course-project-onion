@@ -90,6 +90,9 @@ public class ProjectStateController implements Initializable {
                 pixelWriter.setColor(x, y, color);
             }
         }
+        if (projectManager.getUndoRedoState().undoStack.isEmpty()) {
+            projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray());
+        }
     }
 
     /**

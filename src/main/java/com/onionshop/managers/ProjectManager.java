@@ -102,7 +102,7 @@ public class ProjectManager {
      * Redo the drawing and restore the canvas.
      */
     public void restoreDrawingState(){
-        currentProject.drawingCanvas = undoRedoState.redo().getState();
+        currentProject.setDrawingCanvas(undoRedoState.redo().getState());
     }
 
 }
