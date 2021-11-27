@@ -1,0 +1,24 @@
+.container {
+    -fx-font-family: "Comic Sans MS";
+    -fx-background-color: #E7C1FF;
+}
+
+.tool-btn {
+    -fx-pref-width: 46;
+    -fx-pref-height: 26;
+    -fx-font-size: 10;
+    -fx-background-insets: 0 10px;
+    -fx-background-color: #FFF2DA;
+}
+
+.tool-container {
+    -fx-padding: 10px 0;
+    -fx-max-width: Infinity;
+    -fx-background-color: #9A75B2;
+}
+
+.tool-slider {
+    -fx-padding: 0 10px;
+    -fx-pref-width: 200;
+    -fx-pref-height: 14;
+}
