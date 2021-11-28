@@ -6,13 +6,13 @@ import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -60,8 +60,41 @@ public class ProjectStateController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initCanvas();
+        initLayers();
         initColourPalette();
     }
+
+    /**
+     * Initializes scene with each layer
+     */
+    private void initLayers() {
+        /*
+         * TODO: Once backend is implemented, for each layer add a canvas LayerControlUI
+         */
+        layersContainer.getChildren().add(new LayerControlUI(0, event -> {}, projectDrawing));
+        int width = projectManager.getCurrentProject().getWidth();
+        int height = projectManager.getCurrentProject().getHeight();
+        Canvas layer1 = new Canvas(width, height);
+        Canvas layer2 = new Canvas(width, height);
+        PixelWriter pixelWriter1 = layer1.getGraphicsContext2D().getPixelWriter();
+        PixelWriter pixelWriter2 = layer2.getGraphicsContext2D().getPixelWriter();
+        for (int x = 0; x < 20; x++) {
+            for (int y = 0; y < 20; y++) {
+                pixelWriter1.setColor(x, y, Color.AQUA);
+                pixelWriter2.setColor(x, y, Color.RED);
+            }
+        }
+
+        canvasCollection.getChildren().add(layer1);
+        layersContainer.getChildren().add(0, new LayerControlUI(1, event -> {}, layer1));
+        canvasCollection.getChildren().add(layer2);
+        layersContainer.getChildren().add(0, new LayerControlUI(2, event -> {}, layer2));
+    }
+
+    /*
+     * TODO: Refactor to init each layer for the given frontend
+     *  canvas and backend layer
+     */
 
     /**
      * Initializes the canvas with current project's saved pixels
@@ -86,7 +119,8 @@ public class ProjectStateController implements Initializable {
                 pixelWriter.setColor(x, y, color);
             }
         }
-        container.setMinHeight(canvasHeight + (canvasHeight < 350 ? (350 - canvasHeight + 75) : 75));
+
+        container.setMinHeight(canvasHeight < 300 ? 475 : canvasHeight + 125);
     }
 
     /**
@@ -277,5 +311,20 @@ public class ProjectStateController implements Initializable {
                 updateCanvas(pixelsToUpdate);
             }
         }
+    }
+
+    /**
+     * Create a new layer
+     */
+    public void addLayer(ActionEvent actionEvent) {
+        Canvas newLayer = new Canvas(projectManager.getCurrentProject().getWidth(),
+                projectManager.getCurrentProject().getHeight());
+        canvasCollection.getChildren().add(newLayer);
+        layersContainer.getChildren().add(0,
+                new LayerControlUI(layersContainer.getChildren().size(), event -> {}, newLayer));
+
+        /*
+         * TODO: Link to backend layer manager
+         */
     }
 }

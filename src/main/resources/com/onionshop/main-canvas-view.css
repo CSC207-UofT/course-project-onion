@@ -43,10 +43,6 @@
     -fx-border-color: #ddd;
 }
 
-.layer-txt {
-    -fx-padding: 10px;
-}
-
 .bottom-container {
     -fx-padding: 0 20px 20px;
 }
@@ -54,15 +50,4 @@
 .layer-container {
     -fx-pref-width: 350;
     -fx-pref-height: 300;
-}
-
-.layer {
-    -fx-pref-width: 300px;
-    -fx-pref-height: 20px;
-    -fx-padding: 10px;
-    -fx-background-color: #ddd;
-}
-
-.layer:hover {
-    -fx-opacity: 0.8;
 }

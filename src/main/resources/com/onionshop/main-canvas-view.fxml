@@ -107,16 +107,15 @@
                    onMouseReleased="#onCanvasMouseReleased" styleClass="canvas"/>
        </AnchorPane>
 
-       <VBox alignment="TOP_CENTER">
-           <Label text="Onions Have Layers" styleClass="layer-txt"/>
+       <VBox alignment="TOP_CENTER" spacing="10">
+           <Label text="Onions Have Layers"/>
+           <HBox spacing="20">
+               <Button text="Add Layer" onAction="#addLayer"/>
+           </HBox>
            <ScrollPane hbarPolicy="NEVER" vbarPolicy="ALWAYS" fitToWidth="true"
                        vmax="500" prefViewportHeight="250">
               <!-- Layers -->
                <VBox fx:id="layersContainer">
-                 <HBox spacing="10" styleClass="layer">
-                    <CheckBox />
-                    <Label text="Layer 1"/>
-                 </HBox>
                </VBox>
            </ScrollPane>
        </VBox>

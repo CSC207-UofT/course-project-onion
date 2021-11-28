@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<fx:root type="javafx.scene.layout.HBox" xmlns:fx="http://javafx.com/fxml" spacing="10"
+         styleClass="layer">
+    <stylesheets>
+        <URL value="@layer-control.css"/>
+    </stylesheets>
+    <CheckBox fx:id="layerCheckBox" selected="true"/>
+    <Label fx:id="layerName"/>
+</fx:root>
+
+
