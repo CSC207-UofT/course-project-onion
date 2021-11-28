@@ -32,10 +32,10 @@ public class ProjectTest {
                 "height:2",
                 "[saved colours]",
                 "[pixels]",
-                "255,255,255",
-                "255,255,255",
-                "255,255,255",
-                "255,255,255",
+                "255,255,255,255",
+                "255,255,255,255",
+                "255,255,255,255",
+                "255,255,255,255",
                 "[end]"};
         assertArrayEquals(lines, expected);
     }
