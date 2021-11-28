@@ -16,7 +16,8 @@
 <?import java.net.URL?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ScrollPane?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="320.0"
             styleClass="container"
             xmlns="http://javafx.com/javafx/17"
@@ -29,8 +30,14 @@
    </stylesheets>
 
    <!-- Tools -->
-   <ToolBar  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
-          styleClass="tool-container">
+   <HBox  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+          styleClass="tool-container" alignment="CENTER">
+
+       <!-- Colour Picker -->
+       <ColorPicker fx:id="projectColourPicker" onAction="#setDrawingColour"
+                     styleClass="colour-picker" xmlns="http://javafx.com/javafx/8.0.65"
+                    xmlns:fx="http://javafx.com/fxml/1" />
+
          <!-- Pen Tool -->
          <Button fx:id="brushPen" onAction="#onBrushPenClick" styleClass="tool-btn">
             <graphic>
@@ -79,36 +86,39 @@
          <!-- Tool Size Slider -->
          <Slider fx:id="toolSizeSlider" max="70.0" onMouseReleased="#onToolSizeSliderMove"
                  styleClass="tool-slider"/>
-   </ToolBar>
+   </HBox>
 
-   <HBox AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0" >
-      <!-- Colour Selection -->
-      <VBox>
-         <!-- Colour Picker -->
-         <ColorPicker fx:id="projectColourPicker" accessibleText="Tool Size" onAction="#setDrawingColour"
-                      prefHeight="24.0" prefWidth="104.0" xmlns="http://javafx.com/javafx/8.0.65"
-                      xmlns:fx="http://javafx.com/fxml/1" />
-
-         <!-- Add to colour palette button -->
-         <Button fx:id="addToColourPalette" text="Add Selected Colour to Palette" onAction="#onAddToColourPalette" GridPane.columnIndex="2" GridPane.rowIndex="0"
-                 GridPane.columnSpan="1"/>
+   <HBox spacing="40" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
+         AnchorPane.bottomAnchor="10.0" alignment="CENTER" styleClass="bottom-container">
+      <VBox spacing="10">
+          <!-- Add to colour palette button -->
+         <Button text="Add Current Colour" onAction="#onAddToColourPalette"/>
 
          <!-- Colour Palette -->
-         <Label fx:id="colourPaletteLabel" text="Colour Palette (Right click to remove colours)" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
-         <FlowPane hgap="10" vgap="10" fx:id="colourPalette" GridPane.columnIndex="3" GridPane.rowIndex="1">
+         <Label text="Colour Palette (Right click to remove colours)"/>
+         <FlowPane hgap="10" vgap="10" fx:id="colourPalette" styleClass="colour-palette">
 
          </FlowPane>
       </VBox>
 
       <!-- Canvas -->
-      <Canvas fx:id="projectDrawing" height="300" onMouseDragged="#onCanvasMouseDragged" onMouseReleased="#onCanvasMouseReleased" style=" -fx-border-color:black; -fx-border-width: 1;" width="400" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+       <AnchorPane maxHeight="-Infinity" fx:id="canvasCollection">
+           <Canvas fx:id="projectDrawing" onMouseDragged="#onCanvasMouseDragged"
+                   onMouseReleased="#onCanvasMouseReleased" styleClass="canvas"/>
+       </AnchorPane>
 
-      <!-- Layers -->
-      <VBox fx:id="layersContainer">
-         <HBox>
-            <CheckBox />
-            <Label text="Layer"/>
-         </HBox>
-      </VBox>
+       <VBox alignment="TOP_CENTER">
+           <Label text="Onions Have Layers" styleClass="layer-txt"/>
+           <ScrollPane hbarPolicy="NEVER" vbarPolicy="ALWAYS" fitToWidth="true"
+                       vmax="500" prefViewportHeight="250">
+              <!-- Layers -->
+               <VBox fx:id="layersContainer">
+                 <HBox spacing="10" styleClass="layer">
+                    <CheckBox />
+                    <Label text="Layer 1"/>
+                 </HBox>
+               </VBox>
+           </ScrollPane>
+       </VBox>
    </HBox>
 </AnchorPane>

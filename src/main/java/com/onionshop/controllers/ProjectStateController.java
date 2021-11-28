@@ -12,7 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -39,13 +39,11 @@ public class ProjectStateController implements Initializable {
     @FXML public Button line;
     @FXML public AnchorPane container;
     @FXML public VBox layersContainer;
-    @FXML private Button brushPen;
+    @FXML public AnchorPane canvasCollection;
     @FXML private ColorPicker projectColourPicker;
     @FXML private Canvas projectDrawing;
     @FXML private Slider toolSizeSlider;
-    @FXML private Button addToColourPalette;
     @FXML private FlowPane colourPalette;
-    @FXML private Label colourPaletteLabel;
 
     private final DrawingManager projectDrawingManager = new DrawingManager();
     private final ToolStateManager toolStateManager = ToolStateManager.getInstance();
@@ -88,7 +86,7 @@ public class ProjectStateController implements Initializable {
                 pixelWriter.setColor(x, y, color);
             }
         }
-        container.setMinHeight(canvasHeight + 75);
+        container.setMinHeight(canvasHeight + (canvasHeight < 350 ? (350 - canvasHeight + 75) : 75));
     }
 
     /**
