@@ -1,0 +1,10 @@
+.layer {
+    -fx-pref-width: 300px;
+    -fx-pref-height: 20px;
+    -fx-padding: 10px;
+    -fx-background-color: #ddd;
+}
+
+.layer:hover {
+    -fx-opacity: 0.8;
+}
