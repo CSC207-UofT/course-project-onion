@@ -9,13 +9,13 @@ class PixelTest {
 
     @Test
     void getRGB() {
-        assert (Arrays.equals(new int[]{100, 100, 100}, pixel.getRGB()));
+        assert (Arrays.equals(new int[]{100, 100, 100, 255}, pixel.getRGB()));
     }
 
     @Test
     void setRGBError() {
         try {
-            pixel.setRGB(new int[]{100, 100, 100, 100});
+            pixel.setRGB(new int[]{100, 100});
             assert false;
         } catch (Exception e) {
             if (e instanceof IndexOutOfBoundsException) {

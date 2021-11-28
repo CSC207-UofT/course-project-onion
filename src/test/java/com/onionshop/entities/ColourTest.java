@@ -17,7 +17,7 @@ public class ColourTest {
 
     @Test
     public void testSetRGB1() {
-        int[] newRGB = new int[] {240, 0, 0};
+        int[] newRGB = new int[] {240, 0, 0, 255};
         colour.setRGB(newRGB);
         assertArrayEquals(newRGB, colour.getRGB());
     }
@@ -25,7 +25,7 @@ public class ColourTest {
     @Test
     public void testSetRGB2() {
         int[] newRGB = new int[] {270, 0, 300};
-        int[] expectedRGB = new int[] {255, 0, 255};
+        int[] expectedRGB = new int[] {255, 0, 255, 255};
         colour.setRGB(newRGB);
         assertArrayEquals(expectedRGB, colour.getRGB());
     }

@@ -41,7 +41,7 @@ public class Project {
         this.drawingCanvas = new Pixel[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                drawingCanvas[x][y] = new Pixel(new int[]{255, 255, 255}); //White by default
+                drawingCanvas[x][y] = new Pixel(new int[]{255, 255, 255, 255}); //White by default
             }
         }
     }
@@ -143,7 +143,8 @@ public class Project {
             serialization[lineNumber] = colour.getName() + ":" +
                     String.valueOf(colour.RGB[0]) + "," +
                     String.valueOf(colour.RGB[1]) + "," +
-                    String.valueOf(colour.RGB[2]);
+                    String.valueOf(colour.RGB[2]) + "," +
+                    String.valueOf(colour.RGB[3]);
             lineNumber++;
         }
 
@@ -155,7 +156,8 @@ public class Project {
             for (int y = 0; y < height; y++) {
                 serialization[lineNumber] = String.valueOf(drawingCanvas[x][y].RGB[0]) + "," +
                         String.valueOf(drawingCanvas[x][y].RGB[1]) + "," +
-                        String.valueOf(drawingCanvas[x][y].RGB[2]);
+                        String.valueOf(drawingCanvas[x][y].RGB[2]) + "," +
+                        String.valueOf(drawingCanvas[x][y].RGB[3]);
                 lineNumber++;
             }
         }
