@@ -119,7 +119,8 @@ public class ProjectStateController implements Initializable {
                 pixelWriter.setColor(x, y, color);
             }
         }
-        container.setMinHeight(canvasHeight + (canvasHeight < 350 ? (350 - canvasHeight + 75) : 75));
+
+        container.setMinHeight(canvasHeight < 300 ? 475 : canvasHeight + 125);
     }
 
     /**
