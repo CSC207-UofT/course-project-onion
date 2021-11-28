@@ -66,7 +66,6 @@ public class ProjectManager {
      */
     public void updateDrawingCanvas(Pixel[][] newCanvas) {
         if (newCanvas.length == currentProject.getWidth() && newCanvas[0].length == currentProject.getHeight()) {
-            currentProject.drawingCanvas = newCanvas;
             drawingState = new DrawingState(newCanvas);
             undoRedoState.update(drawingState);
         }

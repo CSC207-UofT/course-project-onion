@@ -40,12 +40,8 @@ public class KeyboardEventController implements EventHandler<KeyEvent> {
             projectStateController.initCanvas();
         }
         else if (Redo.match(event)) {
-            try {
-                projectManager.restoreDrawingState();
-                projectStateController.initCanvas();
-            } catch (Exception exception) {
-                System.out.println("Error: could not redo cause there are no record");
-            }
+            projectManager.restoreDrawingState();
+            projectStateController.initCanvas();
         }
         else if (Save.match(event)){
             try {

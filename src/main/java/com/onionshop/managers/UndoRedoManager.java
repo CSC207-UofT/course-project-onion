@@ -42,7 +42,8 @@ public class UndoRedoManager {
      * @return returns 2D Pixel array, corresponding to the canvas
      */
     public DrawingState undo() {
-        redoStack.push(undoStack.pop());
+        DrawingState currentState = undoStack.pop();
+        redoStack.push(currentState);
         return undoStack.peek();
     }
 

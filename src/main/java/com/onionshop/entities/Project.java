@@ -198,6 +198,10 @@ public class Project {
         this.drawingCanvas = newDrawingCanvas;
     }
 
+    /**
+     * Return the current pixel array of this project.
+     * @return the current pixel array of this project.
+     */
     public Pixel[][] getPixelArray() {
         Pixel[][] pixelArray = new Pixel[projectManager.getCurrentProject().getWidth()]
                 [projectManager.getCurrentProject().getHeight()];
