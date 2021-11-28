@@ -16,7 +16,7 @@ public class ColourPaletteTest {
     @BeforeEach
     public void setUp() {
         red = new Colour("red", new int[]{255, 0, 0});
-        green = new Colour("green", new int[]{0, 255, 0});
+        green = new Colour("green", new int[]{0, 255, 0, 128});
 
         ArrayList<Colour> colours = new ArrayList<Colour>(List.of(new Colour[]{red, green}));
         colourPalette = new ColourPalette(colours);
