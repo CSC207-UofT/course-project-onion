@@ -1,0 +1,68 @@
+.container {
+    -fx-font-family: "Comic Sans MS";
+}
+
+.tool-btn {
+    -fx-pref-width: 46;
+    -fx-pref-height: 26;
+    -fx-font-size: 10;
+    -fx-background-insets: 0 10px;
+}
+
+.tool-container {
+    -fx-padding: 10px 0;
+    -fx-max-width: Infinity;
+    -fx-background-color: #bbb;
+}
+
+.tool-slider {
+    -fx-padding: 0 10px;
+    -fx-pref-width: 200;
+    -fx-pref-height: 14;
+}
+
+.colour-picker {
+    -fx-padding: 0 10px;
+    -fx-pref-width: 150;
+    -fx-pref-height: 30;
+}
+
+.canvas {
+    -fx-border-color: black;
+    -fx-border-width: 1;
+}
+
+.colour-palette {
+    -fx-pref-width: 300px;
+    -fx-pref-height: 200px;
+    -fx-padding: 10px;
+    -fx-background-color: #fff;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-border-color: #ddd;
+}
+
+.layer-txt {
+    -fx-padding: 10px;
+}
+
+.bottom-container {
+    -fx-padding: 0 20px 20px;
+}
+
+.layer-container {
+    -fx-pref-width: 350;
+    -fx-pref-height: 300;
+}
+
+.layer {
+    -fx-pref-width: 300px;
+    -fx-pref-height: 20px;
+    -fx-padding: 10px;
+    -fx-background-color: #ddd;
+}
+
+.layer:hover {
+    -fx-opacity: 0.8;
+}
