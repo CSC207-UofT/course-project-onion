@@ -12,13 +12,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
@@ -30,25 +32,18 @@ import java.util.ResourceBundle;
  * drawing on canvas and selecting a colour(to be implemented).
  */
 public class ProjectStateController implements Initializable {
-    public Button eraser;
-    public Button rectangle;
-    public Button circle;
-    public Button line;
 
-    @FXML
-    private Button brushPen;
-    @FXML
-    private ColorPicker projectColourPicker;
-    @FXML
-    private Canvas projectDrawing;
-    @FXML
-    private Slider toolSizeSlider;
-    @FXML
-    private Button addToColourPalette;
-    @FXML
-    private FlowPane colourPalette;
-    @FXML
-    private Label colourPaletteLabel;
+    @FXML public Button eraser;
+    @FXML public Button rectangle;
+    @FXML public Button circle;
+    @FXML public Button line;
+    @FXML public AnchorPane container;
+    @FXML public VBox layersContainer;
+    @FXML public AnchorPane canvasCollection;
+    @FXML private ColorPicker projectColourPicker;
+    @FXML private Canvas projectDrawing;
+    @FXML private Slider toolSizeSlider;
+    @FXML private FlowPane colourPalette;
 
     private final DrawingManager projectDrawingManager = new DrawingManager();
     private final ToolStateManager toolStateManager = ToolStateManager.getInstance();
@@ -91,6 +86,7 @@ public class ProjectStateController implements Initializable {
                 pixelWriter.setColor(x, y, color);
             }
         }
+        container.setMinHeight(canvasHeight + (canvasHeight < 350 ? (350 - canvasHeight + 75) : 75));
     }
 
     /**
