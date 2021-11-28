@@ -108,7 +108,7 @@ public abstract class Brush implements Tool {
                 pixelsToUpdate[offset][0] = x + pixelsEffectedByBrush[offset][0];
                 pixelsToUpdate[offset][1] = y + pixelsEffectedByBrush[offset][1];
                 currentCanvas.drawingCanvas[x + pixelsEffectedByBrush[offset][0]]
-                        [y + pixelsEffectedByBrush[offset][1]].setRGB(currentColour.getRGB());
+                        [y + pixelsEffectedByBrush[offset][1]].setRGB(currentColour.getRGB()); //TODO: refactor
             }
         }
         return pixelsToUpdate;

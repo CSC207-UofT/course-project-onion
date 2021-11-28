@@ -129,7 +129,7 @@ public abstract class Shape implements Tool {
                     pixelsToUpdate[offset][0] = x + pixelsEffectedByShape[offset][0];
                     pixelsToUpdate[offset][1] = y + pixelsEffectedByShape[offset][1];
                     currentCanvas.drawingCanvas[x + pixelsEffectedByShape[offset][0]]
-                            [y + pixelsEffectedByShape[offset][1]].setRGB(currentColour.getRGB());
+                            [y + pixelsEffectedByShape[offset][1]].setRGB(currentColour.getRGB()); //TODO: refactor
                 }
             }
 
@@ -172,7 +172,7 @@ public abstract class Shape implements Tool {
                     pixelsToUpdate[pixel][0] = pixelsEffectedByShape[pixel][0];
                     pixelsToUpdate[pixel][1] = pixelsEffectedByShape[pixel][1];
                     currentCanvas.drawingCanvas[pixelsEffectedByShape[pixel][0]]
-                            [pixelsEffectedByShape[pixel][1]].setRGB(currentColour.getRGB());
+                            [pixelsEffectedByShape[pixel][1]].setRGB(currentColour.getRGB()); //TODO: refactor
                 }
 
             }
