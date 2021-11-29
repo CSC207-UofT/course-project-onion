@@ -194,8 +194,8 @@ public class ProjectStateController implements Initializable {
      *
      * @param updatedPixels the pixels to update on the canvas
      */
-    protected void updateCanvas(int[][] updatedPixels) {
-        PixelWriter canvasPixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
+    protected void updateCanvas(int[][] updatedPixels, Canvas layer) {
+        PixelWriter canvasPixelWriter = layer.getGraphicsContext2D().getPixelWriter();
         for (int[] updatedPixel : updatedPixels) {
             canvasPixelWriter.setColor(updatedPixel[0], updatedPixel[1], currentCanvasColour);
         }
@@ -291,7 +291,7 @@ public class ProjectStateController implements Initializable {
                 int[][] pixelsToUpdate = projectDrawingManager.drawShapeOnRelease((int) mouseDragEvent.getX(),
                         (int) mouseDragEvent.getY());
                 //This calls a function to update the user end canvas
-                updateCanvas(pixelsToUpdate);
+                updateCanvas(pixelsToUpdate, (Canvas) mouseDragEvent.getSource());
             }
         }
     }
