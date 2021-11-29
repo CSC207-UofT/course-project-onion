@@ -32,6 +32,15 @@ public class LayerManager {
     }
 
     /**
+     * Returns a Layer instance of the current selected layer.
+     *
+     * @return
+     */
+    public Layer getSelectedLayer() {
+        return this.layers.get(this.selectedLayerIndex);
+    }
+
+    /**
      * When the user creates a new layer, add a new blank canvas to the layers list
      */
     public void newLayer() {
