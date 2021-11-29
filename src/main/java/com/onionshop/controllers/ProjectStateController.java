@@ -174,9 +174,6 @@ public class ProjectStateController implements Initializable {
         for (int[] updatedPixel : updatedPixels) {
             canvasPixelWriter.setColor(updatedPixel[0], updatedPixel[1], currentCanvasColour);
         }
-        if (projectManager.getUndoRedoState().undoStack.isEmpty()) {
-            projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray());
-        }
     }
 
 
