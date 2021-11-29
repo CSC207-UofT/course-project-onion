@@ -85,9 +85,9 @@ public class Project {
      *
      * @return the pixel located at the given x-y coordinates
      */
-    public Pixel getPixelByCoord(int layerIndex, int x, int y) {
-        //TODO: refactor
-    }
+//    public Pixel getPixelByCoord(int layerIndex, int x, int y) {
+//
+//    }
 
     /**
      * Serializes this Project instance to .onion file format

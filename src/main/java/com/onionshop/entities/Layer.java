@@ -15,4 +15,8 @@ public class Layer {
     public void setLayerCanvas(Pixel[][] newDrawingCanvas) {
         this.layerCanvas = newDrawingCanvas;
     }
+
+    public Pixel getPixelByCoord(int x, int y) {
+        return this.layerCanvas[x][y];
+    }
 }
