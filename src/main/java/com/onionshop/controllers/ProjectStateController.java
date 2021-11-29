@@ -296,6 +296,9 @@ public class ProjectStateController implements Initializable {
         }
     }
 
+    /**
+     * Returns a new layer with the onMouseDragged and onMouseReleased event handlers
+     */
     private Canvas createNewLayer() {
         Canvas newLayer = new Canvas(
                 projectManager.getCurrentProject().getWidth(),
