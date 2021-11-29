@@ -66,9 +66,10 @@ public class DrawingManagerTest {
         int y = 100;
         drawingManager.updateCanvasAfterStroke(x, y);
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
+        LayerManager layerManager = new LayerManager(currentProject);
         for (int i = x - brushSize; i < x + brushSize; i++) {
             for (int j = y - brushSize; j < y + brushSize; j++) {
-                assertArrayEquals(currentProject.getPixelByCoord(i, j).getRGB(), rgb);
+                assertArrayEquals(layerManager.getSelectedLayer().getPixelByCoord(i, j).getRGB(), rgb);
             }
         }
     }

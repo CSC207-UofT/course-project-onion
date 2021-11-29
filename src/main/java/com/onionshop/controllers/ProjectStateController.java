@@ -4,6 +4,7 @@ import com.onionshop.entities.Pixel;
 import com.onionshop.entities.Shape;
 import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
+import com.onionshop.managers.LayerManager;
 import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
 import javafx.event.ActionEvent;
@@ -49,6 +50,7 @@ public class ProjectStateController implements Initializable {
     private final ToolStateManager toolStateManager = ToolStateManager.getInstance();
     private final CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
     private final ProjectManager projectManager = ProjectManager.getInstance();
+    private final LayerManager layerManager = new LayerManager(projectManager.getCurrentProject());
     private Color currentCanvasColour = Color.BLACK;
 
     private int brushSize;
@@ -110,11 +112,12 @@ public class ProjectStateController implements Initializable {
         projectDrawing.setWidth(canvasWidth);
 
         PixelWriter pixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
+        int currentLayerIndex = layerManager.getSelectedLayerIndex();
 
         // set canvas pixels to match the pixels of the current project
         for (int x = 0; x < canvasWidth; x++) {
             for (int y = 0; y < canvasHeight; y++) {
-                int[] rgb = projectManager.getCurrentProject().getPixelByCoord(x, y).getRGB();
+                int[] rgb = layerManager.getSelectedLayer().getPixelByCoord(x, y).getRGB();
                 Color color = Color.rgb(rgb[0], rgb[1], rgb[2], 1);
                 pixelWriter.setColor(x, y, color);
             }

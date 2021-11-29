@@ -21,6 +21,11 @@ public class Colour extends Pixel {
         this.name = name;
     }
 
+    public Colour(int[] RGB) {
+        super(RGB);
+        this.name = null;
+    }
+
     /**
      * Returns this colour as a pixel
      *

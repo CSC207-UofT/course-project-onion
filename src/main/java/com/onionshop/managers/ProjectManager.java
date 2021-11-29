@@ -1,6 +1,7 @@
 package com.onionshop.managers;
 
 import com.onionshop.entities.DrawingState;
+import com.onionshop.entities.Layer;
 import com.onionshop.entities.Pixel;
 import com.onionshop.entities.Project;
 import com.onionshop.events.NewProjectEvent;
@@ -14,6 +15,7 @@ public class ProjectManager {
 
     private final static ProjectManager instance = new ProjectManager();
     private Project currentProject;
+    private LayerManager layerManager;
     private final UndoRedoManager undoRedoState = new UndoRedoManager();
     private DrawingState drawingState;
 
@@ -37,6 +39,16 @@ public class ProjectManager {
         } else {
             throw new Exception("Error: File with that name already exists!");
         }
+
+        layerManager = new LayerManager(currentProject);
+    }
+
+    public void addLayer(Layer layer) {
+        layerManager.addLayer(layer);
+    }
+
+    public void newLayer() {
+        //TODO
     }
 
     /**
@@ -62,13 +74,14 @@ public class ProjectManager {
 
     /**
      * Update the project and UndoRedoManager with newest the pixel array.
-     * @param newCanvas a new Canvas which represent in 2d pixel array
+     * @param updatedLayer a new Canvas which represent in 2d pixel array
      */
-    public void updateDrawingCanvas(Pixel[][] newCanvas) {
-        if (newCanvas.length == currentProject.getWidth() && newCanvas[0].length == currentProject.getHeight()) {
-            currentProject.drawingCanvas = newCanvas;
-            drawingState = new DrawingState(newCanvas);
-            undoRedoState.update(drawingState);
+    public void updateDrawingCanvas(Pixel[][] updatedLayer) {
+        if (updatedLayer.length == currentProject.getWidth() && updatedLayer[0].length == currentProject.getHeight()) {
+//            currentProject.layers.get(layerManager.getSelectedLayerIndex()).setLayerCanvas(updatedLayer);
+//            drawingState = new DrawingState(updatedLayer);
+//            undoRedoState.update(drawingState);
+            //TODO: refactor
         }
         else {
             throw new IndexOutOfBoundsException("Updated drawingCanvas does not match initialized drawingCanvas size");
@@ -95,14 +108,16 @@ public class ProjectManager {
      * Update the canvas if undo the Drawing State.
      */
     public void undoDrawingState() {
-        currentProject.setDrawingCanvas(undoRedoState.undo().getState());
+//        currentProject.setDrawingCanvas(undoRedoState.undo().getState());
+        //TODO: refactor
     }
 
     /**
      * Redo the drawing and restore the canvas.
      */
     public void restoreDrawingState(){
-        currentProject.drawingCanvas = undoRedoState.redo().getState();
+//        currentProject.drawingCanvas = undoRedoState.redo().getState();
+        //TODO: refactor
     }
 
 }

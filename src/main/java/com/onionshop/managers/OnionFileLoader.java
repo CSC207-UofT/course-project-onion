@@ -5,13 +5,11 @@ Implements static save and load functionality for .onion files and Project seria
  */
 package com.onionshop.managers;
 
-import com.onionshop.entities.Colour;
-import com.onionshop.entities.ColourPalette;
-import com.onionshop.entities.Pixel;
-import com.onionshop.entities.Project;
+import com.onionshop.entities.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class OnionFileLoader {
@@ -72,10 +70,18 @@ public class OnionFileLoader {
      * @return returns a Project instance if there are no files errors, returns null if there are errors
      */
     public static Project loadProject(String path) throws Exception {
+        ProjectManager projectManager = ProjectManager.getInstance();
+
         String[] lines = getFileLines(path);
         Project loadedProject = generateProjectInstance(lines, path);
         loadedProject.setColourPalette(generateColourPalette(lines));
-        loadedProject.drawingCanvas = generatePixelArray(loadedProject.getWidth(), loadedProject.getHeight(), lines);
+
+        List<Layer> layers = generateLayers(loadedProject.getWidth(), loadedProject.getHeight(), lines);
+        for (Layer l : layers) {
+            projectManager.addLayer(l);
+        }
+
+
         return loadedProject;
     }
 
@@ -169,20 +175,31 @@ public class OnionFileLoader {
      * @param width  width of canvas in pixels
      * @param height height of canvas in pixels
      * @param lines  array of Strings where array[i] is the i-th line of a file
-     * @return returns 2D mapped array of Pixels where arr[x][y] is a pixel on the screen at (x, y)
+     * @return returns Layer of Pixels where Layer.canvas[x][y] is a pixel on the screen at (x, y)
      */
-    private static Pixel[][] generatePixelArray(int width, int height, String[] lines) throws Exception {
-        Pixel[][] drawingCanvas = new Pixel[width][height];
-        String line;
-        int lineNumber = getIndexOfString("[pixels]", lines) + 1;
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                line = lines[lineNumber];
-                drawingCanvas[x][y] = new Pixel(extractRGB(line));
-                lineNumber++;
+    private static List<Layer> generateLayers(int width, int height, String[] lines) throws Exception {
+        List<Layer> layers = new ArrayList<>();
+        int lineNumber = getIndexOfString("[layer:0]", lines) + 1;
+        int layerNumber = 0;
+        String line = lines[lineNumber];
+
+        while (!Objects.equals(line, "[end]")) {
+            line = lines[lineNumber];
+            lineNumber++;
+
+            assert Integer.parseInt(line.substring(line.indexOf(":") + 1, line.indexOf("]"))) == layerNumber;
+            layerNumber++;
+
+            Layer layer = new Layer(width, height, new int[]{0,0,0,0});
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    line = lines[lineNumber];
+                    layer.layerCanvas[x][y] = new Pixel(extractRGB(line));
+                    lineNumber++;
+                }
             }
         }
-        return drawingCanvas;
+        return layers;
     }
 
     /**
