@@ -1,5 +1,7 @@
 package com.onionshop.entities;
 
+import com.onionshop.managers.LayerManager;
+
 public abstract class Shape implements Tool {
 
     /**
@@ -114,6 +116,7 @@ public abstract class Shape implements Tool {
         // Creating a new array to store the pixels that are updated in this method. These will then
         // Be sent back up to javafx to be rendered on the canvas.
         int[][] pixelsToUpdate = new int[pixelsEffectedByShape.length][2];
+        LayerManager layerManager = new LayerManager(currentCanvas);
 
         // Initiated when the user first clicked on the canvas
         if (drawStage == 1) {
@@ -128,8 +131,9 @@ public abstract class Shape implements Tool {
                     //If they are, update the updated pixels list and the canvas itself
                     pixelsToUpdate[offset][0] = x + pixelsEffectedByShape[offset][0];
                     pixelsToUpdate[offset][1] = y + pixelsEffectedByShape[offset][1];
-                    currentCanvas.drawingCanvas[x + pixelsEffectedByShape[offset][0]]
-                            [y + pixelsEffectedByShape[offset][1]].setRGB(currentColour.getRGB()); //TODO: refactor
+
+                    layerManager.getSelectedLayer().layerCanvas[x + pixelsEffectedByShape[offset][0]]
+                            [y + pixelsEffectedByShape[offset][1]].setRGB(currentColour.getRGB());
                 }
             }
 
@@ -171,8 +175,8 @@ public abstract class Shape implements Tool {
                     //If they are, update the updated pixels list and the canvas itself
                     pixelsToUpdate[pixel][0] = pixelsEffectedByShape[pixel][0];
                     pixelsToUpdate[pixel][1] = pixelsEffectedByShape[pixel][1];
-                    currentCanvas.drawingCanvas[pixelsEffectedByShape[pixel][0]]
-                            [pixelsEffectedByShape[pixel][1]].setRGB(currentColour.getRGB()); //TODO: refactor
+                    layerManager.getSelectedLayer().layerCanvas[pixelsEffectedByShape[pixel][0]]
+                            [pixelsEffectedByShape[pixel][1]].setRGB(currentColour.getRGB());
                 }
 
             }

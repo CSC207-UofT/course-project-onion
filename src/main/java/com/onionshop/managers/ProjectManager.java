@@ -78,10 +78,10 @@ public class ProjectManager {
      */
     public void updateDrawingCanvas(Pixel[][] updatedLayer) {
         if (updatedLayer.length == currentProject.getWidth() && updatedLayer[0].length == currentProject.getHeight()) {
-//            currentProject.layers.get(layerManager.getSelectedLayerIndex()).setLayerCanvas(updatedLayer);
-//            drawingState = new DrawingState(updatedLayer);
-//            undoRedoState.update(drawingState);
-            //TODO: refactor
+            currentProject.layers.get(layerManager.getSelectedLayerIndex()).setLayerCanvas(updatedLayer);
+            drawingState = new DrawingState(updatedLayer);
+            undoRedoState.update(drawingState);
+
         }
         else {
             throw new IndexOutOfBoundsException("Updated drawingCanvas does not match initialized drawingCanvas size");
@@ -108,16 +108,16 @@ public class ProjectManager {
      * Update the canvas if undo the Drawing State.
      */
     public void undoDrawingState() {
-//        currentProject.setDrawingCanvas(undoRedoState.undo().getState());
-        //TODO: refactor
+        currentProject.layers.get(layerManager.getSelectedLayerIndex()).setLayerCanvas(undoRedoState.undo().getState());
+
     }
 
     /**
      * Redo the drawing and restore the canvas.
      */
     public void restoreDrawingState(){
-//        currentProject.drawingCanvas = undoRedoState.redo().getState();
-        //TODO: refactor
+        currentProject.layers.get(layerManager.getSelectedLayerIndex()).layerCanvas = undoRedoState.redo().getState();
+
     }
 
 }
