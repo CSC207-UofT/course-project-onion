@@ -42,17 +42,14 @@ public class UndoRedoManager {
      * @return returns 2D Pixel array, corresponding to the canvas
      */
     public DrawingState undo() {
-        try {
-            if (undoStack.size() > 1) {
-                DrawingState currentState = undoStack.pop();
-                redoStack.push(currentState);
-                return undoStack.peek();
-            } else {
-                throw new Exception();
-            }
-        }catch (Exception e) {
-            return undoStack.peek();
+        if (undoStack.size() > 1) {
+            DrawingState currentState = undoStack.pop();
+            redoStack.push(currentState);
         }
+        else {
+            System.out.println("Error: You can't undo more steps!");
+        }
+        return undoStack.peek();
     }
 
     /**
@@ -61,7 +58,13 @@ public class UndoRedoManager {
     * @return returns 2D Pixel array, corresponding to the canvas
     */
     public DrawingState redo() {
-        undoStack.push(redoStack.peek());
-        return redoStack.pop();
+        if (redoStack.size() > 0) {
+            undoStack.push(redoStack.peek());
+            return redoStack.pop();
+        }
+        else {
+            System.out.println("Error: You cannot redo now because there are no steps need to redo!");
+            return undoStack.peek();
+        }
     }
 }

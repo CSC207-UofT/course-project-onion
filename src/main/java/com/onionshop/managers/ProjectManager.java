@@ -95,7 +95,7 @@ public class ProjectManager {
     /**
      * Update the canvas if undo the Drawing State.
      */
-    public void undoDrawingState() throws Exception {
+    public void undoDrawingState() {
         currentProject.setDrawingCanvas(undoRedoState.undo().getState());
     }
 

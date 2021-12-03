@@ -36,12 +36,7 @@ public class KeyboardEventController implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
         if (Undo.match(event)){
-            try {
-                projectManager.undoDrawingState();
-            } catch (Exception e) {
-                System.out.println("Error: You can't undo more steps!");
-                e.printStackTrace();
-            }
+            projectManager.undoDrawingState();
             projectStateController.initCanvas();
         }
         else if (Redo.match(event)) {
