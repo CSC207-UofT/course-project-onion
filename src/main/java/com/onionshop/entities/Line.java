@@ -73,23 +73,13 @@ public class Line extends Shape implements Tool {
     public void calculateEffectedPixels() {
         // Provide the coordinates of a dot to be drawn by draw() if the drawStage is 0
         if (drawStage == 0) {
-            int boxSize = 5 * 5;
-            pixelsEffectedByShape = new int[boxSize][2];
-
-            int counter = 0;
-            for (int x = -2; x < 3; x++) {
-                for (int y = -2; y < 3; y++) {
-                    this.pixelsEffectedByShape[counter][0] = x;
-                    this.pixelsEffectedByShape[counter][1] = y;
-                    counter++;
-                }
-            }
+            pixelsEffectedByShape = new int[0][0];
 
             // is incremented to enter stage 1 where we await for user's first input
             drawStage ++;
 
         // Initiated when the user makes the second click on the canvas
-        } else if (drawStage == 2) {
+        } else if (drawStage == 3) {
 
             // import the start and end coordinate distances
             int[] distances = calculateStartEndDistance();
@@ -130,9 +120,6 @@ public class Line extends Shape implements Tool {
                 }
 
             }
-
-//            assert Math.abs(this.pixelsEffectedByShape[Math.abs(xCounter) - 1][0] - endingCoordinate[0]) < 5;
-//            assert Math.abs(this.pixelsEffectedByShape[Math.abs(xCounter) - 1][1] - endingCoordinate[1]) < 5;
         }
     }
 }

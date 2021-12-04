@@ -14,29 +14,6 @@
     -fx-cursor: hand;
 }
 
-.most-recent-item {
-    -fx-padding: 0 20px 5px;
-    -fx-border-width: 5px;
-    -fx-max-width: Infinity;
-}
-
-.most-recent-item:hover {
-    /*-fx-opacity: 0.6;*/
-    -fx-background-color: #d7aff1;
-    -fx-cursor: hand;
-}
-
-.most-recent-name {
-    -fx-text-fill: #9A75B2;
-    -fx-font-size: 15.0;
-    -fx-font-weight: bold;
-}
-
-.most-recent-path {
-    -fx-text-fill: #9A75B2;
-    -fx-font-size: 12.0;
-}
-
 .most-recent-container {
     -fx-background-insets: 0 0 -20px 0;
     -fx-background-color: #E7C1FF;

@@ -136,16 +136,29 @@ public class OnionFileLoader {
         while (!Objects.equals(line = lines[lineNumber], "[pixels]")) {
             String name = line.substring(0, line.indexOf(':'));
             String stringRGB = line.substring(line.indexOf(':') + 1);
-            int[] RGB = new int[]{
-                    Integer.parseInt(stringRGB.substring(0, stringRGB.indexOf(','))),
-                    Integer.parseInt(stringRGB.substring(stringRGB.indexOf(',') + 1, stringRGB.lastIndexOf(','))),
-                    Integer.parseInt(stringRGB.substring(stringRGB.lastIndexOf(',') + 1))
-            };
-            colours.add(new Colour(name, RGB));
+            colours.add(new Colour(name, extractRGB(stringRGB)));
             lineNumber++;
         }
 
         return new ColourPalette(colours);
+    }
+
+    /**
+     * Helper method to loadProject;
+     * Extracts the RBG value from a String in the format: "255,255,255,255"
+     *
+     * @param str the string from which the RGB value will be extracted
+     * @return returns the RGB value contained in the String
+     */
+    public static int[] extractRGB(String str) {
+        int[] RGB = new int[4];
+        for (int i = 0; i < 3; i++) {
+            RGB[i] = Integer.parseInt(str.substring(0, str.indexOf(',')));
+            str = str.substring(str.indexOf(',') + 1);
+        }
+        RGB[RGB.length - 1] = Integer.parseInt(str);
+
+        return RGB;
     }
 
     /**
@@ -165,12 +178,7 @@ public class OnionFileLoader {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 line = lines[lineNumber];
-                int[] RGB = new int[]{
-                        Integer.parseInt(line.substring(0, line.indexOf(','))),
-                        Integer.parseInt(line.substring(line.indexOf(',') + 1, line.lastIndexOf(','))),
-                        Integer.parseInt(line.substring(line.lastIndexOf(',') + 1))
-                };
-                drawingCanvas[x][y] = new Pixel(RGB);
+                drawingCanvas[x][y] = new Pixel(extractRGB(line));
                 lineNumber++;
             }
         }

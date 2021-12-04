@@ -1,23 +1,26 @@
 package com.onionshop.controllers;
 
 import com.onionshop.entities.Pixel;
+import com.onionshop.entities.Shape;
 import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
@@ -30,25 +33,18 @@ import java.util.ResourceBundle;
  * drawing on canvas and selecting a colour(to be implemented).
  */
 public class ProjectStateController implements Initializable {
-    public Button eraser;
-    public Button rectangle;
-    public Button circle;
-    public Button line;
 
-    @FXML
-    private Button brushPen;
-    @FXML
-    private ColorPicker projectColourPicker;
-    @FXML
-    private Canvas projectDrawing;
-    @FXML
-    private Slider toolSizeSlider;
-    @FXML
-    private Button addToColourPalette;
-    @FXML
-    private FlowPane colourPalette;
-    @FXML
-    private Label colourPaletteLabel;
+    @FXML public Button eraser;
+    @FXML public Button rectangle;
+    @FXML public Button circle;
+    @FXML public Button line;
+    @FXML public AnchorPane container;
+    @FXML public VBox layersContainer;
+    @FXML public AnchorPane canvasCollection;
+    @FXML private ColorPicker projectColourPicker;
+    @FXML private Canvas projectDrawing;
+    @FXML private Slider toolSizeSlider;
+    @FXML private FlowPane colourPalette;
 
     private final DrawingManager projectDrawingManager = new DrawingManager();
     private final ToolStateManager toolStateManager = ToolStateManager.getInstance();
@@ -65,8 +61,24 @@ public class ProjectStateController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initCanvas();
+        initLayers();
         initColourPalette();
     }
+
+    /**
+     * Initializes scene with each layer
+     */
+    private void initLayers() {
+        /*
+         * TODO: Once backend is implemented, for each layer add a canvas LayerControlUI
+         */
+        layersContainer.getChildren().add(new LayerControlUI(0, event -> {}, projectDrawing));
+    }
+
+    /*
+     * TODO: Refactor to init each layer for the given frontend
+     *  canvas and backend layer
+     */
 
     /**
      * Initializes the canvas with current project's saved pixels
@@ -91,6 +103,8 @@ public class ProjectStateController implements Initializable {
                 pixelWriter.setColor(x, y, color);
             }
         }
+
+        container.setMinHeight(canvasHeight < 300 ? 475 : canvasHeight + (float)(canvasHeight / 500) * 125);
     }
 
     /**
@@ -162,7 +176,7 @@ public class ProjectStateController implements Initializable {
     }
 
 
-    /** A function that draws ovals as the user clicks and drags their mouse across the canvas
+    /** A function that draws as the user clicks and drags their mouse across the canvas
      *
      * @param canvasMouseLocation - A mouseEvent passed in containing the x and y coordinates of the mouse
      */
@@ -170,7 +184,19 @@ public class ProjectStateController implements Initializable {
     protected void onCanvasMouseDragged(MouseEvent canvasMouseLocation) {
         int[][] updatedPixels = canvasInputProcessor.processControllerDataForDrawingManager(canvasMouseLocation);
 
-        PixelWriter canvasPixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
+        PixelWriter canvasPixelWriter = ((Canvas) canvasMouseLocation.getSource()).getGraphicsContext2D().getPixelWriter();
+        for (int[] updatedPixel : updatedPixels) {
+            canvasPixelWriter.setColor(updatedPixel[0], updatedPixel[1], currentCanvasColour);
+        }
+    }
+
+    /** A function that updates the canvas given a set of pixels. We may want to add this as a helper
+     * function to the above onCanvasMouseDragged function.
+     *
+     * @param updatedPixels the pixels to update on the canvas
+     */
+    protected void updateCanvas(int[][] updatedPixels, Canvas layer) {
+        PixelWriter canvasPixelWriter = layer.getGraphicsContext2D().getPixelWriter();
         for (int[] updatedPixel : updatedPixels) {
             canvasPixelWriter.setColor(updatedPixel[0], updatedPixel[1], currentCanvasColour);
         }
@@ -237,6 +263,55 @@ public class ProjectStateController implements Initializable {
      * @param mouseDragEvent
      */
     public void onCanvasMouseReleased(MouseEvent mouseDragEvent) {
+        updateShapeOnMouseRelease(mouseDragEvent);
         projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray());
+    }
+
+    /**
+     * This function checks if the current tool is a shape and if it is it draws a shape on the canvas when the
+     * user releases their mouse
+     *
+     * @param mouseDragEvent The MouseEvent triggered when the user releases their mouse
+     */
+    public void updateShapeOnMouseRelease(MouseEvent mouseDragEvent) {
+        // These two if statement check if the current tool as a shape that needs to be drawn with click and drag
+        if (ToolStateManager.getInstance().getCurrentToolState() instanceof Shape) {
+            if (((Shape) ToolStateManager.getInstance().getCurrentToolState()).getDrawStage() == 2) {
+                // If it is a shape, this draws the shape on the canvas when the user releases their mouse
+                int[][] pixelsToUpdate = projectDrawingManager.drawShapeOnRelease((int) mouseDragEvent.getX(),
+                        (int) mouseDragEvent.getY());
+                //This calls a function to update the user end canvas
+                updateCanvas(pixelsToUpdate, (Canvas) mouseDragEvent.getSource());
+            }
+        }
+    }
+
+    /**
+     * Returns a new layer with the onMouseDragged and onMouseReleased event handlers
+     */
+    private Canvas createNewLayer() {
+        Canvas newLayer = new Canvas(
+                projectManager.getCurrentProject().getWidth(),
+                projectManager.getCurrentProject().getHeight()
+        );
+        newLayer.setOnMouseDragged(this::onCanvasMouseDragged);
+        newLayer.setOnMouseReleased(this::onCanvasMouseReleased);
+
+        return newLayer;
+    }
+
+
+    /**
+     * Create a new layer
+     */
+    public void addLayer(ActionEvent actionEvent) {
+        Canvas newLayer = createNewLayer();
+        canvasCollection.getChildren().add(newLayer);
+        layersContainer.getChildren().add(0,
+                new LayerControlUI(layersContainer.getChildren().size(), event -> {}, newLayer));
+
+        /*
+         * TODO: Link to backend layer manager
+         */
     }
 }
