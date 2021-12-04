@@ -23,7 +23,7 @@ public class UndoRedoManagerTest {
     }
 
     @Test
-    public void testUndo() {
+    public void testUndo() throws Exception {
         projectManager.undoDrawingState();
         String[] project = p.serialize();
         String[] expected = {
@@ -42,7 +42,7 @@ public class UndoRedoManagerTest {
     }
 
     @Test
-    public void testUndoTwice() {
+    public void testUndoTwice() throws Exception {
         projectManager.undoDrawingState();
         projectManager.undoDrawingState();
         String[] project = p.serialize();
@@ -62,7 +62,7 @@ public class UndoRedoManagerTest {
     }
 
     @Test
-    public void testRedo() {
+    public void testRedo() throws Exception {
         projectManager.undoDrawingState();
         projectManager.restoreDrawingState();
         String[] project = p.serialize();

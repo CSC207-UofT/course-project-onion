@@ -7,6 +7,7 @@ This is a storage class, all elements that are made public are intended to be ed
 package com.onionshop.entities;
 
 import com.onionshop.managers.OnionFileLoader;
+import com.onionshop.managers.ProjectManager;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,9 @@ public class Project {
 
     //2d array representing each pixel of the drawing canvas with Pixel
     public Pixel[][] drawingCanvas;
+
+    public ProjectManager projectManager = ProjectManager.getInstance();
+
 
     /**
      * Creates instance of project
@@ -194,5 +198,22 @@ public class Project {
 
     public void setDrawingCanvas(Pixel[][] newDrawingCanvas) {
         this.drawingCanvas = newDrawingCanvas;
+    }
+
+    /**
+     * Return the current pixel array of this project.
+     * @return the current pixel array of this project.
+     */
+    public Pixel[][] getPixelArray() {
+        Pixel[][] pixelArray = new Pixel[projectManager.getCurrentProject().getWidth()]
+                [projectManager.getCurrentProject().getHeight()];
+        for (int x = 0; x < this.width; x++) {
+            for (int y = 0; y < this.height; y++) {
+                int[] rgbValues = projectManager.getCurrentProject().getPixelByCoord(x, y).getRGB();
+                Pixel pixel = new Pixel(rgbValues);
+                pixelArray[x][y] = pixel;
+            }
+        }
+        return pixelArray;
     }
 }

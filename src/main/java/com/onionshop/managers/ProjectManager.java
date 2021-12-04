@@ -34,6 +34,7 @@ public class ProjectManager {
         if (!OnionFileLoader.doesFileAlreadyExist(path)) {
             currentProject = new Project(path, newProjectEvent.getWidth(), newProjectEvent.getHeight());
             OnionFileLoader.saveProject(currentProject);
+            this.updateDrawingCanvas(currentProject.getPixelArray());
         } else {
             throw new Exception("Error: File with that name already exists!");
         }
@@ -45,6 +46,7 @@ public class ProjectManager {
      */
     public void loadProject(String selectedOnionFilePath) throws Exception {
         currentProject = OnionFileLoader.loadProject(selectedOnionFilePath);
+        this.updateDrawingCanvas(currentProject.getPixelArray());
         System.out.println("Project:" + selectedOnionFilePath + " loaded");
     }
 
@@ -66,7 +68,6 @@ public class ProjectManager {
      */
     public void updateDrawingCanvas(Pixel[][] newCanvas) {
         if (newCanvas.length == currentProject.getWidth() && newCanvas[0].length == currentProject.getHeight()) {
-            currentProject.drawingCanvas = newCanvas;
             drawingState = new DrawingState(newCanvas);
             undoRedoState.update(drawingState);
         }
@@ -102,7 +103,7 @@ public class ProjectManager {
      * Redo the drawing and restore the canvas.
      */
     public void restoreDrawingState(){
-        currentProject.drawingCanvas = undoRedoState.redo().getState();
+        currentProject.setDrawingCanvas(undoRedoState.redo().getState());
     }
 
 }

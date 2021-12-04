@@ -26,6 +26,7 @@ import javafx.scene.paint.Color;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
 /**
  * records the action -> trigger methods -> send data to backend
  * Actions include: selecting a tool on the toolbar(ToolbarEvents - to be implemented), updating brush/pen sizes(Pen),
@@ -257,24 +258,13 @@ public class ProjectStateController implements Initializable {
         setDrawingColour();
     }
 
+    /**
+     * Update the current canvas state after each mouse drag event.
+     * @param mouseDragEvent
+     */
     public void onCanvasMouseReleased(MouseEvent mouseDragEvent) {
         updateShapeOnMouseRelease(mouseDragEvent);
-
-        PixelReader canvasPixelReader = ((Canvas) mouseDragEvent.getSource()).snapshot(null,null).getPixelReader();
-        Pixel[][] pixelArray = new Pixel[projectManager.getCurrentProject().getWidth()]
-                [projectManager.getCurrentProject().getHeight()];
-        for (int x = 0; x < projectManager.getCurrentProject().getWidth(); x++) {
-            for (int y = 0; y < projectManager.getCurrentProject().getHeight(); y++) {
-                Color color = canvasPixelReader.getColor(x, y);
-                int[] rgbValues = new int[]{
-                        (int)Math.round(color.getRed() * 255),
-                        (int)Math.round(color.getGreen() * 255), (int)Math.round(color.getBlue() * 255)
-                };
-                Pixel pixel = new Pixel(rgbValues);
-                pixelArray[x][y] = pixel;
-            }
-        }
-        projectManager.updateDrawingCanvas(pixelArray);
+        projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray());
     }
 
     /**
