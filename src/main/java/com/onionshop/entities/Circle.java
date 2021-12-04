@@ -16,14 +16,7 @@ public class Circle extends Shape implements Tool {
      * the boundary of the circle.
      */
     public void calculateEffectedPixels() {
-        if (drawStage == 0) {
-            pixelsEffectedByShape = new int[0][0];
-
-            // is incremented to enter stage 1 where we await for user's first input
-            drawStage ++;
-
-            // Initiated when the user makes the second click on the canvas
-        } else if (drawStage == 3) {
+        if (drawStage == 3) {
 
             //Get the width of the clicked positions
             int width = Math.abs(startingCoordinate[0] - endingCoordinate[0]);
@@ -55,6 +48,9 @@ public class Circle extends Shape implements Tool {
                 counter++;
                 plotCounter++;
             }
+        }
+        else {
+            pixelsEffectedByShape = new int[0][0];
         }
     }
 }
