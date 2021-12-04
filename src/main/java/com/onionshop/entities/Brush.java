@@ -100,7 +100,8 @@ public abstract class Brush implements Tool {
 
         for (int offset = 0; offset < pixelsEffectedByBrush.length; offset++) {
             //Check if the pixels are in the canvas
-            if (x + pixelsEffectedByBrush[offset][0] > 0 && x + pixelsEffectedByBrush[offset][0] < currentCanvas.width
+            if (x + pixelsEffectedByBrush[offset][0] > 0
+                    && x + pixelsEffectedByBrush[offset][0] < currentCanvas.width
                     && y + pixelsEffectedByBrush[offset][1] > 0 &&
                     y + pixelsEffectedByBrush[offset][1] < currentCanvas.height) {
                 //If they are, update the updated pixels list and the canvas itself
