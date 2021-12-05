@@ -66,11 +66,12 @@ public class ProjectManager {
 
     /**
      * Update the project and UndoRedoManager with newest the pixel array.
-     * @param newCanvas a new Canvas which represent in 2d pixel array
+     * @param updatedLayer the updated layer represented in 2d pixel array
      */
-    public void updateDrawingCanvas(Pixel[][] newCanvas) {
-        if (newCanvas.length == currentProject.getWidth() && newCanvas[0].length == currentProject.getHeight()) {
-            drawingState = new DrawingState(newCanvas);
+    public void updateDrawingCanvas(Pixel[][] updatedLayer) {
+        if (updatedLayer.length == currentProject.getWidth() && updatedLayer[0].length == currentProject.getHeight()) {
+            currentProject.layers.get(layerManager.getSelectedLayerIndex()).setLayerCanvas(updatedLayer);
+            drawingState = new DrawingState(updatedLayer);
             undoRedoState.update(drawingState);
         }
         else {
