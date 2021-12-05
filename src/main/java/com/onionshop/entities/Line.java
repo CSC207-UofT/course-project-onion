@@ -48,11 +48,6 @@ public class Line extends Shape implements Tool {
     }
 
 
-    @Override
-    public int[][] draw(Layer currentCanvas, Colour currentColour, int x, int y) {
-        return new int[0][];
-    }
-
     /**
      * The method calculateEffectedPixels is a part of the shape drawing flow and functions according to the drawStage
      * of the user input (See Shape class explanation)

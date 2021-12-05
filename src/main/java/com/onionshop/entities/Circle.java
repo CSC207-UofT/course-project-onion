@@ -10,10 +10,6 @@ public class Circle extends Shape implements Tool {
         this.calculateEffectedPixels();
     }
 
-    @Override
-    public int[][] draw(Layer currentCanvas, Colour currentColour, int x, int y) {
-        return new int[0][];
-    }
 
     /**
      * Calculates the pixels that will be drawn on. The first drawstage places a dot where the user first clicks. The

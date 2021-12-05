@@ -135,6 +135,14 @@ public class ProjectManager {
     }
 
     /**
+     * Returns the selected layer
+     * @return the selected layer
+     */
+    public Layer getCurrentLayer(){
+        return layerManager.getSelectedLayer();
+    }
+
+    /**
      * set the Drawing State.
      * @param drawingState a new drawing state
      */

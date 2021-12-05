@@ -37,7 +37,7 @@ public class DrawingManager {
      */
     public int[][] updateCanvasAfterStroke(int x, int y) {
         return toolStateManager.getCurrentToolState().draw(
-                layerManager.getSelectedLayer(),
+                projectManager.getCurrentProject(),
                 toolStateManager.getCurrentColourState(), x, y);
     }
 
@@ -115,7 +115,7 @@ public class DrawingManager {
         Shape tempShape = (Shape) ToolStateManager.getInstance().getCurrentToolState();
         tempShape.incrementDrawingStage();
         //Calls the shape draw function to draw stage 3 for the shape (basically drawing it on the canvas)
-        return tempShape.draw(layerManager.getSelectedLayer(),
+        return tempShape.draw(projectManager.getCurrentProject(),
                 toolStateManager.getCurrentColourState(), x, y);
     }
 }
