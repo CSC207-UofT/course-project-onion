@@ -1,5 +1,7 @@
 package com.onionshop.entities;
 
+import com.onionshop.managers.LayerManager;
+
 public abstract class Shape implements Tool {
 
     /**
@@ -172,6 +174,7 @@ public abstract class Shape implements Tool {
      */
     private void updatePixelsOnCanvas(Project currentCanvas, Colour currentColour,
                                         int[][] pixelsToUpdate, int[][] pixelsEffectedByShape) {
+        LayerManager layerManager = new LayerManager(currentCanvas);
         for (int pixel = 0; pixel < pixelsEffectedByShape.length; pixel++) {
             // Check if the pixels are in the canvas, the calculation done in calculateEffectedPixels already
             // computed the exact coordinates
@@ -183,7 +186,7 @@ public abstract class Shape implements Tool {
                 //If they are, update the updated pixels list and the canvas itself
                 pixelsToUpdate[pixel][0] = pixelsEffectedByShape[pixel][0];
                 pixelsToUpdate[pixel][1] = pixelsEffectedByShape[pixel][1];
-                currentCanvas.drawingCanvas[pixelsEffectedByShape[pixel][0]]
+                layerManager.getSelectedLayer().layerCanvas[pixelsEffectedByShape[pixel][0]]
                         [pixelsEffectedByShape[pixel][1]].setRGB(currentColour.getRGB());
             }
         }

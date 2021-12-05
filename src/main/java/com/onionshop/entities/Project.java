@@ -10,6 +10,7 @@ import com.onionshop.managers.OnionFileLoader;
 import com.onionshop.managers.ProjectManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Project {
     // Drawing width in pixels
@@ -24,6 +25,8 @@ public class Project {
 
     //2d array representing each pixel of the drawing canvas with Pixel
     public Pixel[][] drawingCanvas;
+
+    public List<Layer> layers = new ArrayList<>();
 
     public ProjectManager projectManager = ProjectManager.getInstance();
 
