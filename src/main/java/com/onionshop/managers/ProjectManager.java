@@ -1,10 +1,11 @@
 package com.onionshop.managers;
 
 import com.onionshop.entities.DrawingState;
-import com.onionshop.entities.Layer;
 import com.onionshop.entities.Pixel;
 import com.onionshop.entities.Project;
 import com.onionshop.events.NewProjectEvent;
+
+import java.io.File;
 
 public class ProjectManager {
     /**
@@ -13,7 +14,6 @@ public class ProjectManager {
 
     private final static ProjectManager instance = new ProjectManager();
     private Project currentProject;
-    private LayerManager layerManager;
     private final UndoRedoManager undoRedoState = new UndoRedoManager();
     private DrawingState drawingState;
 
@@ -34,60 +34,11 @@ public class ProjectManager {
         if (!OnionFileLoader.doesFileAlreadyExist(path)) {
             currentProject = new Project(path, newProjectEvent.getWidth(), newProjectEvent.getHeight());
             OnionFileLoader.saveProject(currentProject);
+            this.updateDrawingCanvas(currentProject.getPixelArray());
         } else {
             throw new Exception("Error: File with that name already exists!");
         }
-
-        layerManager = new LayerManager(currentProject);
     }
-
-    /**
-     * Adds a given layer to the project by calling method in LayerManager
-     * @param layer: the layer
-     */
-    public void addLayer(Layer layer) {
-        layerManager.addLayer(layer);
-    }
-
-    /**
-     * Creates a new layer in the project without a specified background color
-     */
-    public void newLayer(){
-        layerManager.newLayer();
-    }
-
-    /**
-     * Creates a new layer in the project with a background color
-     * @param layerRGB: the background color
-     */
-    public void newLayer(int[] layerRGB) {
-        layerManager.newLayer(layerRGB);
-    }
-
-    /**
-     * Removes an existing layer by calling method in LayerManager
-     * @param layer: the layer
-     */
-    public void removeLayer(Layer layer){
-        layerManager.removeLayer(layer);
-    }
-
-    /**
-     * Selects a layer by selecting its index in the layers list
-     * @param index: the index in the layers list
-     */
-    public void selectLayer(int index){
-        layerManager.selectLayer(index);
-    }
-
-    /**
-     * Selects a layer by directly selecting the layer object
-     * @param layer: the layer
-     */
-    public void selectLayer(Layer layer){
-        layerManager.selectLayer(layer);
-    }
-
 
     /**
      * Loads the selectedOnionFile as the currentProject
@@ -95,6 +46,7 @@ public class ProjectManager {
      */
     public void loadProject(String selectedOnionFilePath) throws Exception {
         currentProject = OnionFileLoader.loadProject(selectedOnionFilePath);
+        this.updateDrawingCanvas(currentProject.getPixelArray());
         System.out.println("Project:" + selectedOnionFilePath + " loaded");
     }
 
@@ -112,14 +64,12 @@ public class ProjectManager {
 
     /**
      * Update the project and UndoRedoManager with newest the pixel array.
-     * @param updatedLayer a new Canvas which represent in 2d pixel array
+     * @param newCanvas a new Canvas which represent in 2d pixel array
      */
-    public void updateDrawingCanvas(Pixel[][] updatedLayer) {
-        if (updatedLayer.length == currentProject.getWidth() && updatedLayer[0].length == currentProject.getHeight()) {
-            currentProject.layers.get(layerManager.getSelectedLayerIndex()).setLayerCanvas(updatedLayer);
-            drawingState = new DrawingState(updatedLayer);
+    public void updateDrawingCanvas(Pixel[][] newCanvas) {
+        if (newCanvas.length == currentProject.getWidth() && newCanvas[0].length == currentProject.getHeight()) {
+            drawingState = new DrawingState(newCanvas);
             undoRedoState.update(drawingState);
-
         }
         else {
             throw new IndexOutOfBoundsException("Updated drawingCanvas does not match initialized drawingCanvas size");
@@ -135,14 +85,6 @@ public class ProjectManager {
     }
 
     /**
-     * Returns the selected layer
-     * @return the selected layer
-     */
-    public Layer getCurrentLayer(){
-        return layerManager.getSelectedLayer();
-    }
-
-    /**
      * set the Drawing State.
      * @param drawingState a new drawing state
      */
@@ -154,16 +96,14 @@ public class ProjectManager {
      * Update the canvas if undo the Drawing State.
      */
     public void undoDrawingState() {
-        currentProject.layers.get(layerManager.getSelectedLayerIndex()).setLayerCanvas(undoRedoState.undo().getState());
-
+        currentProject.setDrawingCanvas(undoRedoState.undo().getState());
     }
 
     /**
      * Redo the drawing and restore the canvas.
      */
     public void restoreDrawingState(){
-        currentProject.layers.get(layerManager.getSelectedLayerIndex()).layerCanvas = undoRedoState.redo().getState();
-
+        currentProject.setDrawingCanvas(undoRedoState.redo().getState());
     }
 
 }

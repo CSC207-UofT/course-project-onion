@@ -1,7 +1,5 @@
 package com.onionshop.entities;
 
-import com.onionshop.managers.LayerManager;
-
 public abstract class Shape implements Tool {
 
     /**
@@ -21,16 +19,17 @@ public abstract class Shape implements Tool {
      *                          currently active
      *
      * === drawStage and each stages' purpose ===
-     * When drawStage = 0
-     *      This is the initial stage prior to the user drawing anything on the canvas
-     *
+
      * When drawStage = 1
-     *      This is the stage where the user have drawn the first dot, the canvas should display the starting point
-     *      accordingly
+     *      This is the stage where the user presses their mouse down for the start stage. The start coordinate is
+     *      recorded but nothing is displayed yet
      *
      * When drawStage = 2
-     *      This is the stage where the user have clicked on the canvas a second time, the canvas should display the
-     *      actual shape by calculation
+     *      This is the stage where the canvas is waiting for the user to release their mouse. Nothing is displayed yet
+     *
+     * When drawStage = 3
+     *      This is the stage when the user releases their mouse. At this point, the end coordinate is recorded and the
+     *      shape is calculated and displayed based on where the user released their mouse
      */
 
     protected int[][] pixelsEffectedByShape;
@@ -41,7 +40,7 @@ public abstract class Shape implements Tool {
 
     public Shape(int brushSize) {
         this.lineThickness = 1;
-        this.drawStage = 0;
+        this.drawStage = 1;
         this.startingCoordinate = new int[2];
         this.endingCoordinate = new int[2];
     }
@@ -116,26 +115,10 @@ public abstract class Shape implements Tool {
         // Creating a new array to store the pixels that are updated in this method. These will then
         // Be sent back up to javafx to be rendered on the canvas.
         int[][] pixelsToUpdate = new int[pixelsEffectedByShape.length][2];
-        LayerManager layerManager = new LayerManager(currentCanvas);
 
-        // Initiated when the user first clicked on the canvas
+        // Initiated when the user first clicks on the canvas
         if (drawStage == 1) {
-            // draws the pixelsEffectedByShape which per the calculation of <calculateEffectedPixels> specific for each
-            // shape, is going to be a square on the first drawStage
-            for (int offset = 0; offset < pixelsEffectedByShape.length; offset++) {
-                //Check if the pixels are in the canvas, we have the
-                if (x + pixelsEffectedByShape[offset][0] > 0
-                        && x + pixelsEffectedByShape[offset][0] < currentCanvas.width
-                        && y + pixelsEffectedByShape[offset][1] > 0
-                        && y + pixelsEffectedByShape[offset][1] < currentCanvas.height) {
-                    //If they are, update the updated pixels list and the canvas itself
-                    pixelsToUpdate[offset][0] = x + pixelsEffectedByShape[offset][0];
-                    pixelsToUpdate[offset][1] = y + pixelsEffectedByShape[offset][1];
-
-                    layerManager.getSelectedLayer().layerCanvas[x + pixelsEffectedByShape[offset][0]]
-                            [y + pixelsEffectedByShape[offset][1]].setRGB(currentColour.getRGB());
-                }
-            }
+            pixelsToUpdate = new int[0][0];
 
             // increment the drawStage by 1 since we have completed updating method pixelsToUpdate to draw out a dot
             drawStage++;
@@ -144,7 +127,6 @@ public abstract class Shape implements Tool {
             this.startingCoordinate[0] = x;
             this.startingCoordinate[1] = y;
 
-        // Initiated when the user makes the second click on the canvas
         }
         else if (drawStage == 2) {
             //This draw stage returns an empty array while waiting for the user to release their mouse
@@ -152,6 +134,7 @@ public abstract class Shape implements Tool {
             pixelsToUpdate = new int[0][0];
         }
         else if (drawStage == 3) {
+            //This stage is triggered when the user releases their mouse
 
             // store the current (x, y) coordinate into the array of endingCoordinate
             this.endingCoordinate[0] = x;
@@ -162,33 +145,48 @@ public abstract class Shape implements Tool {
             this.calculateEffectedPixels();
 
             pixelsToUpdate = new int[pixelsEffectedByShape.length][2];
+
             // variable <pixel> is getting the exact amount of pixels we have to plot in the pixelsEffectedByShape
             // array
-            for (int pixel = 0; pixel < pixelsEffectedByShape.length; pixel++) {
-                // Check if the pixels are in the canvas, the calculation done in calculateEffectedPixels already
-                // computed the exact coordinates
-                if (pixelsEffectedByShape[pixel][0] > 0  // x > 0
-                        && pixelsEffectedByShape[pixel][0] < currentCanvas.width  // x < width of canvas
-                        && pixelsEffectedByShape[pixel][1] > 0  // y > 0
-                        && pixelsEffectedByShape[pixel][1] < currentCanvas.height) {  // y < width of canvas
+            updatePixelsOnCanvas(currentCanvas, currentColour, pixelsToUpdate, pixelsEffectedByShape);
 
-                    //If they are, update the updated pixels list and the canvas itself
-                    pixelsToUpdate[pixel][0] = pixelsEffectedByShape[pixel][0];
-                    pixelsToUpdate[pixel][1] = pixelsEffectedByShape[pixel][1];
-                    layerManager.getSelectedLayer().layerCanvas[pixelsEffectedByShape[pixel][0]]
-                            [pixelsEffectedByShape[pixel][1]].setRGB(currentColour.getRGB());
-                }
-
-            }
-
-            // reset the drawStage to 0 as we have completed updating method pixelsToUpdate to draw out the shape, the
+            // reset the drawStage to 1 as we have completed updating method pixelsToUpdate to draw out the shape, the
             // user can now redo the entire process over again
-            drawStage = 0;
-            // initiate the calculateEffectedPixels for stage 1 of dot drawing
-            this.calculateEffectedPixels();
+            drawStage = 1;
         }
         // return the array of coordinates as desired which will be drawn by javaFx onto the canvas
         return pixelsToUpdate;
+    }
+
+    /**
+     * This function takes in the list of pixels to be updated based on where the user clicked and
+     * released and then updates those pixels on the backend canvas, while also modifying the list of
+     * pixels that will be sent to the frontend canvas to update for the user.
+     *
+     * @param currentCanvas The current project the user is drawing on
+     * @param currentColour The current colour the user is using
+     * @param pixelsToUpdate The list of pixels that are modified on the backend (will not include pixels outside the
+     *                       canvas
+     * @param pixelsEffectedByShape The calculated list of pixels that should be modified based on where the user
+     *                              released their mouse (may include pixels that are outside the canvas)
+     */
+    private void updatePixelsOnCanvas(Project currentCanvas, Colour currentColour,
+                                        int[][] pixelsToUpdate, int[][] pixelsEffectedByShape) {
+        for (int pixel = 0; pixel < pixelsEffectedByShape.length; pixel++) {
+            // Check if the pixels are in the canvas, the calculation done in calculateEffectedPixels already
+            // computed the exact coordinates
+            if (pixelsEffectedByShape[pixel][0] > 0  // x > 0
+                    && pixelsEffectedByShape[pixel][0] < currentCanvas.width  // x < width of canvas
+                    && pixelsEffectedByShape[pixel][1] > 0  // y > 0
+                    && pixelsEffectedByShape[pixel][1] < currentCanvas.height) {  // y < width of canvas
+
+                //If they are, update the updated pixels list and the canvas itself
+                pixelsToUpdate[pixel][0] = pixelsEffectedByShape[pixel][0];
+                pixelsToUpdate[pixel][1] = pixelsEffectedByShape[pixel][1];
+                currentCanvas.drawingCanvas[pixelsEffectedByShape[pixel][0]]
+                        [pixelsEffectedByShape[pixel][1]].setRGB(currentColour.getRGB());
+            }
+        }
     }
 
     /**

@@ -7,9 +7,9 @@ This is a storage class, all elements that are made public are intended to be ed
 package com.onionshop.entities;
 
 import com.onionshop.managers.OnionFileLoader;
+import com.onionshop.managers.ProjectManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Project {
     // Drawing width in pixels
@@ -22,8 +22,11 @@ public class Project {
     // An array that holds default and user created colours
     private ColourPalette colourPalette;
 
-    //Layers on the canvas
-    public List<Layer> layers = new ArrayList<>();
+    //2d array representing each pixel of the drawing canvas with Pixel
+    public Pixel[][] drawingCanvas;
+
+    public ProjectManager projectManager = ProjectManager.getInstance();
+
 
     /**
      * Creates instance of project
@@ -37,7 +40,38 @@ public class Project {
         this.width = width;
         this.height = height;
 
-        this.colourPalette = new ColourPalette(new ArrayList<>());
+        this.colourPalette = new ColourPalette(new ArrayList<Colour>());
+
+        this.drawingCanvas = new Pixel[width][height];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                drawingCanvas[x][y] = new Pixel(new int[]{255, 255, 255, 255}); //White by default
+            }
+        }
+    }
+
+    /**
+     * Creates instance of project with a given background colour
+     *
+     * @param path:          location of .onion project file
+     * @param width:         width of drawing
+     * @param height:        height of drawing
+     * @param backgroundRGB: colour of drawing canvas background
+     */
+    public Project(String path, int width, int height, int[] backgroundRGB) {
+        this.path = path;
+        this.width = width;
+        this.height = height;
+
+        colourPalette = new ColourPalette(new ArrayList<Colour>());
+
+        this.drawingCanvas = new Pixel[width][height];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                drawingCanvas[x][y] = new Pixel(backgroundRGB);
+            }
+        }
+
     }
 
     /**
@@ -85,9 +119,9 @@ public class Project {
      *
      * @return the pixel located at the given x-y coordinates
      */
-//    public Pixel getPixelByCoord(int layerIndex, int x, int y) {
-//
-//    }
+    public Pixel getPixelByCoord(int x, int y) {
+        return this.drawingCanvas[x][y];
+    }
 
     /**
      * Serializes this Project instance to .onion file format
@@ -118,22 +152,19 @@ public class Project {
             lineNumber++;
         }
 
-        // Saving layers
-        for (int i=0; i< layers.size(); i++) {
-            Layer l = layers.get(i);
-            serialization[lineNumber] = "[layer:" + i + "]";
-            lineNumber++;
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    serialization[lineNumber] = l.layerCanvas[x][y].RGB[0] + "," +
-                            l.layerCanvas[x][y].RGB[1] + "," +
-                            l.layerCanvas[x][y].RGB[2] + "," +
-                            l.layerCanvas[x][y].RGB[3];
-                    lineNumber++;
-                }
+        serialization[lineNumber] = "[pixels]";
+        lineNumber++;
+
+        // Adding Pixel RGB values -> R,G,B
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                serialization[lineNumber] = String.valueOf(drawingCanvas[x][y].RGB[0]) + "," +
+                        String.valueOf(drawingCanvas[x][y].RGB[1]) + "," +
+                        String.valueOf(drawingCanvas[x][y].RGB[2]) + "," +
+                        String.valueOf(drawingCanvas[x][y].RGB[3]);
+                lineNumber++;
             }
         }
-
         serialization[lineNumber] = "[end]";
         return serialization;
     }
@@ -165,4 +196,24 @@ public class Project {
         this.colourPalette = newColourPalette;
     }
 
+    public void setDrawingCanvas(Pixel[][] newDrawingCanvas) {
+        this.drawingCanvas = newDrawingCanvas;
+    }
+
+    /**
+     * Return the current pixel array of this project.
+     * @return the current pixel array of this project.
+     */
+    public Pixel[][] getPixelArray() {
+        Pixel[][] pixelArray = new Pixel[projectManager.getCurrentProject().getWidth()]
+                [projectManager.getCurrentProject().getHeight()];
+        for (int x = 0; x < this.width; x++) {
+            for (int y = 0; y < this.height; y++) {
+                int[] rgbValues = projectManager.getCurrentProject().getPixelByCoord(x, y).getRGB();
+                Pixel pixel = new Pixel(rgbValues);
+                pixelArray[x][y] = pixel;
+            }
+        }
+        return pixelArray;
+    }
 }

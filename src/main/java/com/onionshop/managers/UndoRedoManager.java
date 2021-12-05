@@ -8,8 +8,9 @@ public class UndoRedoManager {
     /**
      * Store up to five steps of Drawing instance and keep track on canvas state.
      */
-    private int maxStackSize = 5 + 1; //number of previous states PLUS the current state (+1)
-    private final Stack<DrawingState> undoStack = new Stack<>();
+
+    private int maxStackSize = 5 + 1 + 1; //number of previous states PLUS the current state (+1) Plus the initial state
+    public final Stack<DrawingState> undoStack = new Stack<>();
     private final Stack<DrawingState> redoStack = new Stack<>();
 
     /**
@@ -42,7 +43,13 @@ public class UndoRedoManager {
      * @return returns 2D Pixel array, corresponding to the canvas
      */
     public DrawingState undo() {
-        redoStack.push(undoStack.pop());
+        if (undoStack.size() > 1) {
+            DrawingState currentState = undoStack.pop();
+            redoStack.push(currentState);
+        }
+        else {
+            System.out.println("Error: You can't undo more steps!");
+        }
         return undoStack.peek();
     }
 
@@ -52,7 +59,13 @@ public class UndoRedoManager {
     * @return returns 2D Pixel array, corresponding to the canvas
     */
     public DrawingState redo() {
-        this.update(redoStack.pop());
-        return redoStack.peek();
+        if (redoStack.size() > 0) {
+            undoStack.push(redoStack.peek());
+            return redoStack.pop();
+        }
+        else {
+            System.out.println("Error: You cannot redo now because there are no steps need to redo!");
+            return undoStack.peek();
+        }
     }
 }

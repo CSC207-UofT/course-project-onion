@@ -22,6 +22,6 @@ public class DrawingState {
      * @return return the pixel array of drawing state
      */
     public Pixel[][] getState(){
-        return state;
+        return this.state;
     }
 }

@@ -54,13 +54,8 @@ public class Line extends Shape implements Tool {
      *
      * The purpose of calculateEffectedPixels is to calculate and update the variable <pixelsEffectedByShape> by the
      * coordinates of the shape which must be drawn at which drawStage.
-     *
-     * When drawStage = 0,
-     *      As a result of such stage being the default stage where the user have not yet started building the shape,
-     *      we reuse the same calculation as per brush tool's calculateEffectedPixels to possibly draw a square when
-     *      draw() is called.
-     *
-     * When drawStage = 2,
+
+     * When drawStage = 3,
      *      calculateEffectedPixels calculates and updates <pixelsEffectedByShape> by the coordinates of the line. The
      *      calculation is as follows:
      *      1. Calculate the line referring to the x-axis, by incrementing the x coordinate by 1 each time and evaluate
@@ -72,15 +67,7 @@ public class Line extends Shape implements Tool {
      * occur.
      */
     public void calculateEffectedPixels() {
-        // Provide the coordinates of a dot to be drawn by draw() if the drawStage is 0
-        if (drawStage == 0) {
-            pixelsEffectedByShape = new int[0][0];
-
-            // is incremented to enter stage 1 where we await for user's first input
-            drawStage ++;
-
-        // Initiated when the user makes the second click on the canvas
-        } else if (drawStage == 3) {
+        if (drawStage == 3) {
 
             // import the start and end coordinate distances
             int[] distances = calculateStartEndDistance();
@@ -121,6 +108,9 @@ public class Line extends Shape implements Tool {
                 }
 
             }
+        }
+        else {
+            pixelsEffectedByShape = new int[0][0];
         }
     }
 }
