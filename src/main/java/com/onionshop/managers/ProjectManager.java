@@ -2,6 +2,7 @@ package com.onionshop.managers;
 
 import com.onionshop.entities.DrawingState;
 import com.onionshop.entities.Pixel;
+import com.onionshop.entities.Layer;
 import com.onionshop.entities.Project;
 import com.onionshop.events.NewProjectEvent;
 
@@ -14,6 +15,7 @@ public class ProjectManager {
 
     private final static ProjectManager instance = new ProjectManager();
     private Project currentProject;
+    private LayerManager layerManager = new LayerManager(currentProject);
     private final UndoRedoManager undoRedoState = new UndoRedoManager();
     private DrawingState drawingState;
 
@@ -77,11 +79,66 @@ public class ProjectManager {
     }
 
     /**
+     * Add a new layer
+     * @param layer: the new layer
+     */
+    public void addLayer(Layer layer){
+        layerManager.addLayer(layer);
+    }
+
+    /**
+     * Removes an existing layer
+     * @param layer: the layer to be removed
+     */
+    public void removeLayer(Layer layer){
+        layerManager.removeLayer(layer);
+    }
+
+    /**
+     * Creates a default white layer
+     */
+    public void newLayer(){
+        layerManager.newLayer();
+    }
+
+    /**
+     * Creates a layer with a specified background color
+     * @param layerRGB: the background color
+     */
+    public void newLayer(int[] layerRGB){
+        layerManager.newLayer(layerRGB);
+    }
+
+    /**
+     * Selects a layer by selecting the layer object
+     * @param layer: the layer to be selected
+     */
+    public void selectLayer(Layer layer){
+        layerManager.selectLayer(layer);
+    }
+
+    /**
+     * Selects a layer by selecting its index in layers list
+     * @param index: the index of the layer to be selected
+     */
+    public void selectLayer(int index){
+        layerManager.selectLayer(index);
+    }
+
+    /**
      * Returns the current project
      * @return the Current Project
      */
     public Project getCurrentProject() {
         return currentProject;
+    }
+
+    /**
+     * Returns the current layer
+     * @return the current layer
+     */
+    public Layer getCurrentLayer(){
+        return layerManager.getSelectedLayer();
     }
 
     /**
