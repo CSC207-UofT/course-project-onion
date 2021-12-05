@@ -43,13 +43,53 @@ public class ProjectManager {
         layerManager = new LayerManager(currentProject);
     }
 
+    /**
+     * Adds a given layer to the project by calling method in LayerManager
+     * @param layer: the layer
+     */
     public void addLayer(Layer layer) {
         layerManager.addLayer(layer);
     }
 
-    public void newLayer() {
-        //TODO
+    /**
+     * Creates a new layer in the project without a specified background color
+     */
+    public void newLayer(){
+        layerManager.newLayer();
     }
+
+    /**
+     * Creates a new layer in the project with a background color
+     * @param layerRGB: the background color
+     */
+    public void newLayer(int[] layerRGB) {
+        layerManager.newLayer(layerRGB);
+    }
+
+    /**
+     * Removes an existing layer by calling method in LayerManager
+     * @param layer: the layer
+     */
+    public void removeLayer(Layer layer){
+        layerManager.removeLayer(layer);
+    }
+
+    /**
+     * Selects a layer by selecting its index in the layers list
+     * @param index: the index in the layers list
+     */
+    public void selectLayer(int index){
+        layerManager.selectLayer(index);
+    }
+
+    /**
+     * Selects a layer by directly selecting the layer object
+     * @param layer: the layer
+     */
+    public void selectLayer(Layer layer){
+        layerManager.selectLayer(layer);
+    }
+
 
     /**
      * Loads the selectedOnionFile as the currentProject
