@@ -12,4 +12,9 @@ public class Pen extends Brush {
         super(brushShape, brushSize);
         this.calculateEffectedPixels();
     }
+
+    @Override
+    public int[][] draw(Layer currentCanvas, Colour currentColour, int x, int y) {
+        return new int[0][];
+    }
 }

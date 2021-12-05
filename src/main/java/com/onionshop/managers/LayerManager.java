@@ -9,6 +9,7 @@ public class LayerManager {
     /**
      * Save and manage layers created in an onion file
      */
+
     // the list of layers (layer ~ Project objects)
     public List<Layer> layers;
 
@@ -34,7 +35,6 @@ public class LayerManager {
     /**
      * Returns a Layer instance of the current selected layer.
      *
-     * @return
      */
     public Layer getSelectedLayer() {
         return this.layers.get(this.selectedLayerIndex);
