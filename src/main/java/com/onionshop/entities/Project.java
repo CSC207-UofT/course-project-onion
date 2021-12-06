@@ -6,9 +6,7 @@ This is a storage class, all elements that are made public are intended to be ed
  */
 package com.onionshop.entities;
 
-import com.onionshop.managers.OnionFileLoader;
-import com.onionshop.managers.ProjectManager;
-
+import java.io.File;
 import java.util.ArrayList;
 
 public class Project {
@@ -24,9 +22,6 @@ public class Project {
 
     //2d array representing each pixel of the drawing canvas with Pixel
     public Pixel[][] drawingCanvas;
-
-    public ProjectManager projectManager = ProjectManager.getInstance();
-
 
     /**
      * Creates instance of project
@@ -89,7 +84,9 @@ public class Project {
      * @param newPath the new path to which this.path will be set
      */
     public void updatePath(String newPath) throws Exception {
-        if (OnionFileLoader.isDirectoryValid(newPath)) {
+        File newFile = new File(newPath);
+
+        if (newFile.exists() && newFile.canRead() && newFile.canWrite()) {
             path = newPath;
         } else {
             throw new Exception("Invalid path was given: " + newPath);
