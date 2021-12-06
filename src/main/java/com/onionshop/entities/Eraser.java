@@ -1,5 +1,7 @@
 package com.onionshop.entities;
 
+import com.onionshop.managers.LayerManager;
+
 public class Eraser extends Brush {
 
     /**
@@ -23,7 +25,8 @@ public class Eraser extends Brush {
      * @return pixels that are updating after the draw action.
      */
 
-    @Override public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y) {
+    public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y) {
         return super.draw(currentCanvas, new Colour("white", new int[]{255, 255, 255}), x, y);
     }
+
 }

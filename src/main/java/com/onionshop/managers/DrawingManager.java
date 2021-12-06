@@ -114,8 +114,7 @@ public class DrawingManager {
         Shape tempShape = (Shape) ToolStateManager.getInstance().getCurrentToolState();
         tempShape.incrementDrawingStage();
         //Calls the shape draw function to draw stage 3 for the shape (basically drawing it on the canvas)
-        int[][] editedPixels = tempShape.draw(projectManager.getCurrentProject(),
+        return tempShape.draw(projectManager.getCurrentProject(),
                 toolStateManager.getCurrentColourState(), x, y);
-        return editedPixels;
     }
 }

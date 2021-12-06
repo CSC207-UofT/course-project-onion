@@ -10,20 +10,14 @@ public class Rectangle extends Shape implements Tool {
         this.calculateEffectedPixels();
     }
 
+
     /**
      * Calculates the pixels that will be drawn on. The first drawstage places a dot where the user first clicks. The
      * second draw stage takes the start and end positions of the rectangle and calculates all of the pixels that are in
      * the rectangle.
      */
     public void calculateEffectedPixels() {
-        if (drawStage == 0) {
-            pixelsEffectedByShape = new int[0][0];
-
-            // is incremented to enter stage 1 where we await for user's first input
-            drawStage ++;
-
-            // Initiated when the user makes the second click on the canvas
-        } else if (drawStage == 3) {
+        if (drawStage == 3) {
 
             //Get the width and height of the rectangle
             int width = Math.abs(startingCoordinate[0] - endingCoordinate[0]);
@@ -45,6 +39,9 @@ public class Rectangle extends Shape implements Tool {
             }
 
 
+        }
+        else {
+            pixelsEffectedByShape = new int[0][0];
         }
     }
 

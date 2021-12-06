@@ -27,6 +27,7 @@ import javafx.scene.paint.Color;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
 /**
  * records the action -> trigger methods -> send data to backend
  * Actions include: selecting a tool on the toolbar(ToolbarEvents - to be implemented), updating brush/pen sizes(Pen),
@@ -74,23 +75,6 @@ public class ProjectStateController implements Initializable {
          * TODO: Once backend is implemented, for each layer add a canvas LayerControlUI
          */
         layersContainer.getChildren().add(new LayerControlUI(0, event -> {}, projectDrawing));
-        int width = projectManager.getCurrentProject().getWidth();
-        int height = projectManager.getCurrentProject().getHeight();
-        Canvas layer1 = new Canvas(width, height);
-        Canvas layer2 = new Canvas(width, height);
-        PixelWriter pixelWriter1 = layer1.getGraphicsContext2D().getPixelWriter();
-        PixelWriter pixelWriter2 = layer2.getGraphicsContext2D().getPixelWriter();
-        for (int x = 0; x < 20; x++) {
-            for (int y = 0; y < 20; y++) {
-                pixelWriter1.setColor(x, y, Color.AQUA);
-                pixelWriter2.setColor(x, y, Color.RED);
-            }
-        }
-
-        canvasCollection.getChildren().add(layer1);
-        layersContainer.getChildren().add(0, new LayerControlUI(1, event -> {}, layer1));
-        canvasCollection.getChildren().add(layer2);
-        layersContainer.getChildren().add(0, new LayerControlUI(2, event -> {}, layer2));
     }
 
     /*
@@ -123,7 +107,7 @@ public class ProjectStateController implements Initializable {
             }
         }
 
-        container.setMinHeight(canvasHeight < 300 ? 475 : canvasHeight + 125);
+        container.setMinHeight(canvasHeight < 300 ? 475 : canvasHeight + (float)(canvasHeight / 500) * 125);
     }
 
     /**
@@ -203,7 +187,7 @@ public class ProjectStateController implements Initializable {
     protected void onCanvasMouseDragged(MouseEvent canvasMouseLocation) {
         int[][] updatedPixels = canvasInputProcessor.processControllerDataForDrawingManager(canvasMouseLocation);
 
-        PixelWriter canvasPixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
+        PixelWriter canvasPixelWriter = ((Canvas) canvasMouseLocation.getSource()).getGraphicsContext2D().getPixelWriter();
         for (int[] updatedPixel : updatedPixels) {
             canvasPixelWriter.setColor(updatedPixel[0], updatedPixel[1], currentCanvasColour);
         }
@@ -214,8 +198,8 @@ public class ProjectStateController implements Initializable {
      *
      * @param updatedPixels the pixels to update on the canvas
      */
-    protected void updateCanvas(int[][] updatedPixels) {
-        PixelWriter canvasPixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
+    protected void updateCanvas(int[][] updatedPixels, Canvas layer) {
+        PixelWriter canvasPixelWriter = layer.getGraphicsContext2D().getPixelWriter();
         for (int[] updatedPixel : updatedPixels) {
             canvasPixelWriter.setColor(updatedPixel[0], updatedPixel[1], currentCanvasColour);
         }
@@ -277,24 +261,13 @@ public class ProjectStateController implements Initializable {
         setDrawingColour();
     }
 
+    /**
+     * Update the current canvas state after each mouse drag event.
+     * @param mouseDragEvent
+     */
     public void onCanvasMouseReleased(MouseEvent mouseDragEvent) {
         updateShapeOnMouseRelease(mouseDragEvent);
-
-        PixelReader canvasPixelReader = projectDrawing.snapshot(null,null).getPixelReader();
-        Pixel[][] pixelArray = new Pixel[projectManager.getCurrentProject().getWidth()]
-                [projectManager.getCurrentProject().getHeight()];
-        for (int x = 0; x < projectManager.getCurrentProject().getWidth(); x++) {
-            for (int y = 0; y < projectManager.getCurrentProject().getHeight(); y++) {
-                Color color = canvasPixelReader.getColor(x, y);
-                int[] rgbValues = new int[]{
-                        (int)Math.round(color.getRed() * 255),
-                        (int)Math.round(color.getGreen() * 255), (int)Math.round(color.getBlue() * 255)
-                };
-                Pixel pixel = new Pixel(rgbValues);
-                pixelArray[x][y] = pixel;
-            }
-        }
-        projectManager.updateDrawingCanvas(pixelArray);
+        projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray());
     }
 
     /**
@@ -311,17 +284,31 @@ public class ProjectStateController implements Initializable {
                 int[][] pixelsToUpdate = projectDrawingManager.drawShapeOnRelease((int) mouseDragEvent.getX(),
                         (int) mouseDragEvent.getY());
                 //This calls a function to update the user end canvas
-                updateCanvas(pixelsToUpdate);
+                updateCanvas(pixelsToUpdate, (Canvas) mouseDragEvent.getSource());
             }
         }
     }
 
     /**
+     * Returns a new layer with the onMouseDragged and onMouseReleased event handlers
+     */
+    private Canvas createNewLayer() {
+        Canvas newLayer = new Canvas(
+                projectManager.getCurrentProject().getWidth(),
+                projectManager.getCurrentProject().getHeight()
+        );
+        newLayer.setOnMouseDragged(this::onCanvasMouseDragged);
+        newLayer.setOnMouseReleased(this::onCanvasMouseReleased);
+
+        return newLayer;
+    }
+
+
+    /**
      * Create a new layer
      */
     public void addLayer(ActionEvent actionEvent) {
-        Canvas newLayer = new Canvas(projectManager.getCurrentProject().getWidth(),
-                projectManager.getCurrentProject().getHeight());
+        Canvas newLayer = createNewLayer();
         canvasCollection.getChildren().add(newLayer);
         layersContainer.getChildren().add(0,
                 new LayerControlUI(layersContainer.getChildren().size(), event -> {}, newLayer));

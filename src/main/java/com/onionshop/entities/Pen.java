@@ -12,4 +12,6 @@ public class Pen extends Brush {
         super(brushShape, brushSize);
         this.calculateEffectedPixels();
     }
+
+
 }
