@@ -38,10 +38,18 @@ public class KeyboardEventController implements EventHandler<KeyEvent> {
         if (Undo.match(event)){
             projectManager.undoDrawingState();
             projectStateController.initCanvas();
+            /*
+             * TODO: Make sure the layers are also reinitialized when we undo
+             *  so that creating and removing layers is undoable
+             */
         }
         else if (Redo.match(event)) {
             projectManager.restoreDrawingState();
             projectStateController.initCanvas();
+            /*
+             * TODO: Make sure the layers are also reinitialized when we redo
+             *  so that creating and removing layers is redo-able
+             */
         }
         else if (Save.match(event)){
             try {
