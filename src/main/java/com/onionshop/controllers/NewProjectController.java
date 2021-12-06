@@ -58,7 +58,7 @@ public class NewProjectController {
                 NewProjectEvent newProjectEvent = new NewProjectEvent(projectName, savDir, width, height);
                 ProjectManager.getInstance().newProject(newProjectEvent);
                 mostRecentProjectManager
-                        .addMostRecentProject(projectName, savDir + "/" + projectName + ".onion");
+                        .addMostRecentProject(projectName, savDir + "\\" + projectName + ".onion");
 
                 // switch to the canvas scene
                 SceneSwitcher.switchSceneWithKeyEventsInit(getClass(), event, "/com/onionshop/main-canvas-view.fxml");
