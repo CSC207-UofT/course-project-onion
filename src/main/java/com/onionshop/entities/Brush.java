@@ -1,5 +1,7 @@
 package com.onionshop.entities;
 
+import com.onionshop.managers.LayerManager;
+
 import java.util.Arrays;
 
 public abstract class Brush implements Tool {
@@ -108,7 +110,9 @@ public abstract class Brush implements Tool {
 
                 pixelsToUpdate[offset][0] = x + pixelsEffectedByBrush[offset][0];
                 pixelsToUpdate[offset][1] = y + pixelsEffectedByBrush[offset][1];
-                currentCanvas.drawingCanvas[x + pixelsEffectedByBrush[offset][0]]
+                LayerManager layerManager = new LayerManager(currentCanvas);
+                Layer layer = layerManager.getSelectedLayer();
+                layer.layerCanvas[x + pixelsEffectedByBrush[offset][0]]
                         [y + pixelsEffectedByBrush[offset][1]].setRGB(currentColour.getRGB());
             }
         }

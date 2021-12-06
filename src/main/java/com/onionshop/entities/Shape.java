@@ -1,5 +1,7 @@
 package com.onionshop.entities;
 
+import com.onionshop.managers.LayerManager;
+
 public abstract class Shape implements Tool {
 
     /**
@@ -183,7 +185,9 @@ public abstract class Shape implements Tool {
                 //If they are, update the updated pixels list and the canvas itself
                 pixelsToUpdate[pixel][0] = pixelsEffectedByShape[pixel][0];
                 pixelsToUpdate[pixel][1] = pixelsEffectedByShape[pixel][1];
-                currentCanvas.drawingCanvas[pixelsEffectedByShape[pixel][0]]
+                LayerManager layerManager = new LayerManager(currentCanvas);
+                Layer layer = layerManager.getSelectedLayer();
+                layer.layerCanvas[pixelsEffectedByShape[pixel][0]]
                         [pixelsEffectedByShape[pixel][1]].setRGB(currentColour.getRGB());
             }
         }

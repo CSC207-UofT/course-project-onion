@@ -75,7 +75,8 @@ public class OnionFileLoader {
         String[] lines = getFileLines(path);
         Project loadedProject = generateProjectInstance(lines, path);
         loadedProject.setColourPalette(generateColourPalette(lines));
-        loadedProject.drawingCanvas = generatePixelArray(loadedProject.getWidth(), loadedProject.getHeight(), lines);
+        LayerManager layerManager = new LayerManager(loadedProject);
+        layerManager.getSelectedLayer().layerCanvas = generatePixelArray(loadedProject.getWidth(), loadedProject.getHeight(), lines);
         return loadedProject;
     }
 
