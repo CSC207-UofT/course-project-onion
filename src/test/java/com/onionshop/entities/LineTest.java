@@ -62,19 +62,13 @@ public class LineTest {
     }
 
     /**
-     * This test tests the calculateEffectedPixels method when draw stage is 0.
+     * This test tests the calculateEffectedPixels method when draw stage is not 3.
      */
     @Test
-    public void calculateEffectedPixelsDrawStageZeroTest() {
+    public void calculateEffectedPixelsDrawStageOtherTest() {
         line.drawStage = 0;
 
-        int[][] expected = new int[][] {
-                {-2, -2},{-2, -1},{-2, 0},{-2, 1},{-2, 2},
-                {-1, -2},{-1, -1},{-1, 0},{-1, 1},{-1, 2},
-                {0, -2},{0, -1},{0, 0},{0, 1},{0, 2},
-                {1, -2},{1, -1},{1, 0},{1, 1},{1, 2},
-                {2, -2},{2, -1},{2, 0},{2, 1},{2, 2},
-        };
+        int[][] expected = new int[][] {};
 
         line.calculateEffectedPixels();
 
@@ -84,11 +78,11 @@ public class LineTest {
     }
 
     /**
-     * This test tests the calculateEffectedPixels method when draw stage is 2.
+     * This test tests the calculateEffectedPixels method when draw stage is 3.
      */
     @Test
-    public void calculateEffectedPixelsDrawStageTwoTest() {
-        line.drawStage = 2;
+    public void calculateEffectedPixelsDrawStageThreeTest() {
+        line.drawStage = 3;
 
         int[] startingCoordinate = {1, 1};
         int[] endingCoordinate = {6, 11};
@@ -108,41 +102,5 @@ public class LineTest {
         int[][] actual = line.pixelsEffectedByShape;
 
         assertArrayEquals(expected, actual);
-    }
-
-    /**
-     * This test tests the draw() method for the entire drawing process.
-     */
-    @Test
-    public void DrawTest() {
-
-        line.drawStage = 0;
-        line.calculateEffectedPixels();
-
-        assertEquals(1, line.drawStage);
-
-        Project project = new Project("path", 30, 30);
-        Colour colour = new Colour("red", new int[]{255, 0, 0});
-
-        int[][] expected1 = new int[][] {
-                {0, 0},{0, 0},{0, 0},{0, 0},{0, 0},
-                {0, 0},{0, 0},{0, 0},{0, 0},{0, 0},
-                {0, 0},{0, 0},{1, 1},{1, 2},{1, 3},
-                {0, 0},{0, 0},{2, 1},{2, 2},{2, 3},
-                {0, 0},{0, 0},{3, 1},{3, 2},{3, 3},
-        };
-        int[][] actual1 = line.draw(project, colour, 1, 1);
-
-        assertArrayEquals(expected1, actual1);
-        assertEquals(2, line.drawStage);
-
-        int[][] expected2 = new int[][] {
-                {1, 1},{2, 3},{3, 5},{4, 7},{5, 9},{6, 11},
-                {1, 1},{1, 2},{2, 3},{2, 4},{3, 5},{3, 6},{4, 7},{4, 8},{5, 9},{5, 10},{6, 11}
-        };
-
-        int[][] actual2 = line.draw(project, colour, 6, 11);
-
-        assertArrayEquals(expected2, actual2);
     }
 }
