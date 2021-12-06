@@ -154,14 +154,14 @@ public class ProjectManager {
      * Update the canvas if undo the Drawing State.
      */
     public void undoDrawingState() {
-        currentProject.setDrawingCanvas(undoRedoState.undo().getState());
+        currentProject.layers.get(layerManager.getSelectedLayerIndex()).setLayerCanvas(undoRedoState.undo().getState());
     }
 
     /**
      * Redo the drawing and restore the canvas.
      */
     public void restoreDrawingState(){
-        currentProject.setDrawingCanvas(undoRedoState.redo().getState());
+        currentProject.layers.get(layerManager.getSelectedLayerIndex()).layerCanvas = undoRedoState.redo().getState();
     }
 
 }
