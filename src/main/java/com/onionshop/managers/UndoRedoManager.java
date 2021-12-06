@@ -11,7 +11,7 @@ public class UndoRedoManager {
 
     private int maxStackSize = 5 + 1 + 1; //number of previous states PLUS the current state (+1) Plus the initial state
     public final Stack<DrawingState> undoStack = new Stack<>();
-    private final Stack<DrawingState> redoStack = new Stack<>();
+    public final Stack<DrawingState> redoStack = new Stack<>();
 
     /**
      * Changes the number of previous states of the drawing canvas that are stored at one time;
@@ -68,4 +68,5 @@ public class UndoRedoManager {
             return undoStack.peek();
         }
     }
+
 }
