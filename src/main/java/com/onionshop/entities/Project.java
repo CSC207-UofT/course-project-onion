@@ -6,6 +6,7 @@ This is a storage class, all elements that are made public are intended to be ed
  */
 package com.onionshop.entities;
 
+import com.onionshop.managers.LayerManager;
 import com.onionshop.managers.OnionFileLoader;
 import com.onionshop.managers.ProjectManager;
 
@@ -20,15 +21,15 @@ public class Project {
     // represents the project path and name, e.g. users/finn/drawings/drawing1.onion -- drawing1 is the name
     private String path;
 
+    public List<Layer> layers = new ArrayList<>();
+
+    private Layer currLayer;
+
     // An array that holds default and user created colours
     private ColourPalette colourPalette;
 
-    //2d array representing each pixel of the drawing canvas with Pixel
-    public Pixel[][] drawingCanvas;
-
-    public List<Layer> layers = new ArrayList<>();
-
     public ProjectManager projectManager = ProjectManager.getInstance();
+
 
 
     /**
@@ -43,14 +44,12 @@ public class Project {
         this.width = width;
         this.height = height;
 
-        this.colourPalette = new ColourPalette(new ArrayList<Colour>());
 
-        this.drawingCanvas = new Pixel[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                drawingCanvas[x][y] = new Pixel(new int[]{255, 255, 255, 255}); //White by default
-            }
-        }
+        this.colourPalette = new ColourPalette(new ArrayList<Colour>());
+        // create a new layer in layers
+        // set layer.layerCanvas to this
+        this.currLayer = new Layer(this.width, this.height, new int[]{255, 255, 255, 255});
+        layers.add(this.currLayer);
     }
 
     /**
@@ -66,14 +65,10 @@ public class Project {
         this.width = width;
         this.height = height;
 
-        colourPalette = new ColourPalette(new ArrayList<Colour>());
+        this.colourPalette = new ColourPalette(new ArrayList<Colour>());
+        this.currLayer = new Layer(this.width, this.height, backgroundRGB);
+        layers.add(currLayer);
 
-        this.drawingCanvas = new Pixel[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                drawingCanvas[x][y] = new Pixel(backgroundRGB);
-            }
-        }
 
     }
 
@@ -85,6 +80,8 @@ public class Project {
     public String getPath() {
         return path;
     }
+
+    public List<Layer> getLayers(){ return this.layers;}
 
     /**
      * Sets new path
@@ -118,12 +115,13 @@ public class Project {
     }
 
     /**
-     * Returns the pixel located at the given x-y coordinates of this projects drawing canvas
+     * Returns the pixel located at the given x-y coordinates of this projects current layer
      *
      * @return the pixel located at the given x-y coordinates
      */
     public Pixel getPixelByCoord(int x, int y) {
-        return this.drawingCanvas[x][y];
+        return this.currLayer.layerCanvas[x][y];
+
     }
 
     /**
@@ -158,16 +156,22 @@ public class Project {
         serialization[lineNumber] = "[pixels]";
         lineNumber++;
 
-        // Adding Pixel RGB values -> R,G,B
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                serialization[lineNumber] = String.valueOf(drawingCanvas[x][y].RGB[0]) + "," +
-                        String.valueOf(drawingCanvas[x][y].RGB[1]) + "," +
-                        String.valueOf(drawingCanvas[x][y].RGB[2]) + "," +
-                        String.valueOf(drawingCanvas[x][y].RGB[3]);
-                lineNumber++;
+        // Saving layers
+        for (int i=0; i< layers.size(); i++) {
+            Layer l = layers.get(i);
+            serialization[lineNumber] = "[layer:" + i + "]";
+            lineNumber++;
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    serialization[lineNumber] = l.layerCanvas[x][y].RGB[0] + "," +
+                            l.layerCanvas[x][y].RGB[1] + "," +
+                            l.layerCanvas[x][y].RGB[2] + "," +
+                            l.layerCanvas[x][y].RGB[3];
+                    lineNumber++;
+                }
             }
         }
+
         serialization[lineNumber] = "[end]";
         return serialization;
     }
@@ -199,9 +203,7 @@ public class Project {
         this.colourPalette = newColourPalette;
     }
 
-    public void setDrawingCanvas(Pixel[][] newDrawingCanvas) {
-        this.drawingCanvas = newDrawingCanvas;
-    }
+    public void setDrawingCanvas(Pixel[][] newDrawingCanvas) { this.currLayer.setLayerCanvas(newDrawingCanvas); }
 
     /**
      * Return the current pixel array of this project.
