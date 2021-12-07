@@ -11,6 +11,7 @@
     </stylesheets>
     <CheckBox fx:id="layerCheckBox" selected="true"/>
     <Label fx:id="layerName"/>
+    <Button text="X" fx:id="removeLayerButton" style="-fx-background-color: #f09275; -fx-font-weight: bold"/>
 </fx:root>
 
 
