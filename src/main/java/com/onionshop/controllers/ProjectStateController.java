@@ -236,7 +236,7 @@ public class ProjectStateController implements Initializable {
     @FXML
     public void onEraserClick() {
         canvasInputProcessor.setTool(Tools.ERASER, brushSize);
-        currentCanvasColour = Color.WHITE;
+        currentCanvasColour = new Color(1, 1, 1, 0);
         onToolSizeSliderMove();
         setSelectedToolButton(eraser);
     }
