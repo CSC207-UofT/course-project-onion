@@ -9,6 +9,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -35,7 +36,7 @@ public class DrawingManagerTest {
         NewProjectEvent newProjectEvent = new NewProjectEvent("TestProject", savePath, 1000,
                 500);
         ProjectManager.getInstance().newProject(newProjectEvent);
-        ArrayList<Colour> colours = new ArrayList<Colour>();
+        List<Colour> colours = new ArrayList<Colour>();
         ColourPalette colourPalette = new ColourPalette(colours);
         ProjectManager.getInstance().getCurrentProject().setColourPalette(colourPalette);
         drawingManager = new DrawingManager();

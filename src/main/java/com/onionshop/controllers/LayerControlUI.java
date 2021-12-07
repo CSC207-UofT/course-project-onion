@@ -96,6 +96,10 @@ public class LayerControlUI extends HBox {
         name().set("Layer " + index);
     }
 
+    /**
+     * Sets the index of the layer
+     * @param index number to set the index to
+     */
     public void setLayerIndex(int index) {layerIndex = index; }
 
     /**

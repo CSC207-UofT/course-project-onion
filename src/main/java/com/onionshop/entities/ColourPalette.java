@@ -1,19 +1,19 @@
 package com.onionshop.entities;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ColourPalette {
 
     // An array that holds default and user created colours
-    public ArrayList<Colour> colours;
+    public List<Colour> colours;
 
     /**
      * Creates instance of ColourPalette
      *
      * @param colours: initial list of colours for the colour palette
      */
-    public ColourPalette(ArrayList<Colour> colours) {
+    public ColourPalette(List<Colour> colours) {
         this.colours = colours;
     }
 
@@ -72,7 +72,7 @@ public class ColourPalette {
      *
      * @return the colours in this colour palette
      */
-    public ArrayList<Colour> getColours() {
+    public List<Colour> getColours() {
         return this.colours;
     }
 
