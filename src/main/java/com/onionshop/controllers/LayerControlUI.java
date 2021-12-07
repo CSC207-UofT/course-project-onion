@@ -20,7 +20,7 @@ public class LayerControlUI extends HBox {
     @FXML private CheckBox layerCheckBox;
     @FXML private final Canvas layer;
     @FXML private Button removeLayerButton;
-    private final int layerIndex;
+    private int layerIndex;
 
     /**
      * Constructor for initializing MostRecentProjectUI with a name, path, and click event handler
@@ -35,7 +35,7 @@ public class LayerControlUI extends HBox {
         layerCheckBox.setOnMouseClicked(event -> layer.visibleProperty().set(!layer.isVisible()));
         removeLayerButton.setOnMouseClicked(mouseClickRemoveLayer);
 
-        //We don't want users to remove the background layer
+        //Remove the remove button for the background layer
         if (index == 0) {
             this.getChildren().remove(removeLayerButton);
         }
@@ -95,6 +95,8 @@ public class LayerControlUI extends HBox {
     public void setName(int index) {
         name().set("Layer " + index);
     }
+
+    public void setLayerIndex(int index) {layerIndex = index; }
 
     /**
      * Returns the text property of the layerText label

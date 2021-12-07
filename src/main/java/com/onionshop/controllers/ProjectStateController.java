@@ -350,7 +350,8 @@ public class ProjectStateController implements Initializable {
     }
 
     /**
-     * Remove an existing layer
+     * Remove an existing layer and then updates the indices of the other layers to reflect its removal
+     *
      * @param removeButtonClick The event triggered when the user clicks the remove button
      */
     public void onRemoveLayer(MouseEvent removeButtonClick) {
@@ -358,18 +359,21 @@ public class ProjectStateController implements Initializable {
         LayerControlUI layerToRemoveControlUI = (LayerControlUI) selectedRemoveButton.getParent();
         int removedLayerIndex = layerToRemoveControlUI.getIndex();
 
+        //Make sure we're not removing the background layer
         if (removedLayerIndex != 0) {
+            //Remove the layer from the layer container pane and the canvas itself
             Canvas layerToRemove = layerToRemoveControlUI.getLayer();
             canvasCollection.getChildren().remove(layerToRemove);
             layersContainer.getChildren().remove(layerToRemoveControlUI);
 
-            //update canvas collection to update indices
-            /*for (Node layer: layersContainer.getChildren()) {
+            //Update the indices of the other layers after removing one
+            for (Node layer: layersContainer.getChildren()) {
                 LayerControlUI currentLayer = (LayerControlUI) layer;
-                currentLayer.
-            }*/
+                if (currentLayer.getIndex() > removedLayerIndex) {
+                    currentLayer.setLayerIndex(currentLayer.getIndex() - 1);
+                }
+            }
 
-            //update layer collection to update indices
         }
 
 
