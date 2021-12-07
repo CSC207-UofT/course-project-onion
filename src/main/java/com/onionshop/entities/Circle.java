@@ -11,9 +11,7 @@ public class Circle extends Shape implements Tool {
     }
 
     /**
-     * Calculates the pixels that will be drawn on. The first drawstage places a dot where the user first clicks. The
-     * second draw stage takes the start and end positions of the rectangle and calculates all of the pixels that are in
-     * the boundary of the circle.
+     * Calculates the pixels that will be drawn on.
      */
     public void calculateEffectedPixels() {
         if (drawStage == 3) {
@@ -24,7 +22,7 @@ public class Circle extends Shape implements Tool {
             //Get center x coordinate of the circle
             double centerX = (double) (width) / 2;
 
-            //Get the top left corner of the rectangle to start drawing pixels from
+            //Get the top left corner of the circle to start drawing pixels from
             int[] newStartingCoordinate = new int[]{Math.min(startingCoordinate[0], endingCoordinate[0]),
                     Math.min(endingCoordinate[1], startingCoordinate[1])};
 
@@ -39,12 +37,22 @@ public class Circle extends Shape implements Tool {
                 // the calculation of the circle
                 double calculation = Math.sqrt(Math.pow((centerX), 2) - Math.pow((plotCounter), 2));
 
+                // adding of four quarters of the circle
                 this.pixelsEffectedByShape[counter][0] = newStartingCoordinate[0] + counter;
                 this.pixelsEffectedByShape[counter][1] = newStartingCoordinate[1] + (int) (centerX - calculation);
 
                 this.pixelsEffectedByShape[counter + width][0] = newStartingCoordinate[0] + counter;
                 this.pixelsEffectedByShape[counter + width][1] = newStartingCoordinate[1] +
                         (int) (centerX + calculation);
+
+                this.pixelsEffectedByShape[counter + width * 2][0] = newStartingCoordinate[0]
+                        + (int) (centerX + calculation);
+                this.pixelsEffectedByShape[counter + width * 2][1] = newStartingCoordinate[1] + counter;
+
+                this.pixelsEffectedByShape[counter + width * 3][0] = newStartingCoordinate[0]
+                        + (int) (centerX - calculation);
+                this.pixelsEffectedByShape[counter + width * 3][1] = newStartingCoordinate[1] + counter;
+
                 counter++;
                 plotCounter++;
             }

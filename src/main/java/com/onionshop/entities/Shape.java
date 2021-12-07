@@ -10,13 +10,13 @@ public abstract class Shape implements Tool {
      * explained below:
      *
      * === Expectation of the function of the Shape tool on canvas ===
-     * 1. User clicks on canvas, creates a dot which acts as the starting point of any shape
-     * 2. User clicks again on any point on the canvas again, the shape is drawn in between the start point and this
-     *    point – the end point.
+     * 1. User clicks on canvas without releasing the mouse
+     * 2. User drags the cursor to anywere on the canvas and release the mouse, a shape is drawn between the click
+     * and the release
      *
      * === How it's implemented ===
      * startingCoordinate       the first coordinates which the user clicked on
-     * endingCoordinate         the second coordinates which the user clicked on
+     * endingCoordinate         the second coordinates which the user released their mouse on
      * drawStage                a variable that keeps track of which stage of the shape tool drawing process is
      *                          currently active
      *
