@@ -1,17 +1,20 @@
 package com.onionshop.entities;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-public class RectangleTest {
+public class CircleTest {
 
     /**
      * This class is a junit test class that test specifically the Shape.
      */
 
-    Rectangle rectangle;
+    Circle circle;
     Colour colour;
 
     /**
@@ -25,12 +28,11 @@ public class RectangleTest {
         int[] startingCoordinate = {1, 2};
         int[] endingCoordinate = {40, 80};
 
-        rectangle = new Rectangle();
+        circle = new Circle();
         colour = new Colour("red", color);
 
-        rectangle.setStartingCoordinate(startingCoordinate);
-        rectangle.setEndingCoordinate(endingCoordinate);
-
+        circle.setStartingCoordinate(startingCoordinate);
+        circle.setEndingCoordinate(endingCoordinate);
     }
 
     /**
@@ -38,13 +40,13 @@ public class RectangleTest {
      */
     @Test
     public void calculateEffectedPixelsTestDrawStageOtherTest() {
-        rectangle.drawStage = 0;
+        circle.drawStage = 0;
 
         int[][] expected = new int[][] {};
 
-        rectangle.calculateEffectedPixels();
+        circle.calculateEffectedPixels();
 
-        int[][] actual = rectangle.pixelsEffectedByShape;
+        int[][] actual = circle.pixelsEffectedByShape;
 
         assertArrayEquals(expected, actual);
     }
@@ -54,25 +56,22 @@ public class RectangleTest {
      */
     @Test
     public void calculateEffectedPixelsTestDrawStageThreeTest() {
-        rectangle.drawStage = 3;
+        circle.drawStage = 3;
 
         int[] startingCoordinate = {1, 1};
         int[] endingCoordinate = {4, 5};
 
-        rectangle.setStartingCoordinate(startingCoordinate);
-        rectangle.setEndingCoordinate(endingCoordinate);
+        circle.setStartingCoordinate(startingCoordinate);
+        circle.setEndingCoordinate(endingCoordinate);
 
         int[][] expected = new int[][] {
-                {1, 1},{2, 1},{3, 1},
-                {1, 2},{2, 2},{3, 2},
-                {1, 3},{2, 3},{3, 3},
-                {1, 4},{2, 4},{3, 4},
+                {1, 1},{2, 1},{3, 1}, {4, 1}, {2, 4}, {3, 3}, {4, 1},
+                {0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},
         };
 
-        rectangle.calculateEffectedPixels();
+        circle.calculateEffectedPixels();
 
-        int[][] actual = rectangle.pixelsEffectedByShape;
-
+        int[][] actual = circle.pixelsEffectedByShape;
         assertArrayEquals(expected, actual);
     }
 }
