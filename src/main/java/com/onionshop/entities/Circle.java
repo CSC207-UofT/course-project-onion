@@ -24,7 +24,7 @@ public class Circle extends Shape implements Tool {
             //Get center x coordinate of the circle
             double centerX = (double) (width) / 2;
 
-            //Get the top left corner of the rectangle to start drawing pixels from
+            //Get the top left corner of the circle to start drawing pixels from
             int[] newStartingCoordinate = new int[]{Math.min(startingCoordinate[0], endingCoordinate[0]),
                     Math.min(endingCoordinate[1], startingCoordinate[1])};
 
@@ -45,6 +45,15 @@ public class Circle extends Shape implements Tool {
                 this.pixelsEffectedByShape[counter + width][0] = newStartingCoordinate[0] + counter;
                 this.pixelsEffectedByShape[counter + width][1] = newStartingCoordinate[1] +
                         (int) (centerX + calculation);
+
+                this.pixelsEffectedByShape[counter + width * 2][0] = newStartingCoordinate[0]
+                        + (int) (centerX + calculation);
+                this.pixelsEffectedByShape[counter + width * 2][1] = newStartingCoordinate[1] + counter;
+
+                this.pixelsEffectedByShape[counter + width * 3][0] = newStartingCoordinate[0]
+                        + (int) (centerX - calculation);
+                this.pixelsEffectedByShape[counter + width * 3][1] = newStartingCoordinate[1] + counter;
+
                 counter++;
                 plotCounter++;
             }
