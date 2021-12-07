@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -17,6 +18,7 @@ public class LayerControlUI extends HBox {
     @FXML private Label layerName;
     @FXML private CheckBox layerCheckBox;
     @FXML private final Canvas layer;
+    @FXML private Button removeLayerButton;
     private final int layerIndex;
 
     /**

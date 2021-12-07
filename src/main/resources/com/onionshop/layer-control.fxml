@@ -11,6 +11,7 @@
     </stylesheets>
     <CheckBox fx:id="layerCheckBox" selected="true"/>
     <Label fx:id="layerName"/>
+    <Button fx:id="removeLayerButton"/>
 </fx:root>
 
 
