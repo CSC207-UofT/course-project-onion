@@ -21,7 +21,7 @@ public class Project {
     // represents the project path and name, e.g. users/finn/drawings/drawing1.onion -- drawing1 is the name
     private String path;
 
-    public List<Layer> layers = new ArrayList<>();
+    public List<Layer> layers;
 
     private Layer currLayer;
 
@@ -43,13 +43,14 @@ public class Project {
         this.path = path;
         this.width = width;
         this.height = height;
+        this.layers = new ArrayList<>();
 
 
         this.colourPalette = new ColourPalette(new ArrayList<Colour>());
         // create a new layer in layers
         // set layer.layerCanvas to this
         this.currLayer = new Layer(this.width, this.height, new int[]{255, 255, 255, 255});
-        layers.add(this.currLayer);
+        this.layers.add(this.currLayer);
     }
 
     /**
@@ -64,10 +65,11 @@ public class Project {
         this.path = path;
         this.width = width;
         this.height = height;
+        this.layers = new ArrayList<>();
 
         this.colourPalette = new ColourPalette(new ArrayList<Colour>());
         this.currLayer = new Layer(this.width, this.height, backgroundRGB);
-        layers.add(currLayer);
+        this.layers.add(currLayer);
 
 
     }
@@ -130,7 +132,7 @@ public class Project {
      * @return serialization returns serialized Project in onion format
      */
     public String[] serialize() {
-        int numberOfLines = this.width * this.height + colourPalette.size() + 6;
+        int numberOfLines = this.width * this.height * this.layers.size() + colourPalette.size() + 6;
         int lineNumber = 0;
         String[] serialization = new String[numberOfLines];
 
@@ -157,7 +159,7 @@ public class Project {
         lineNumber++;
 
         // Saving layers
-        for (int i=0; i< layers.size(); i++) {
+        for (int i=0; i < layers.size(); i++) {
             Layer l = layers.get(i);
             serialization[lineNumber] = "[layer:" + i + "]";
             lineNumber++;
@@ -172,7 +174,11 @@ public class Project {
             }
         }
 
+        //System.out.println(lineNumber);
+        //System.out.println(numberOfLines);
+
         serialization[lineNumber - 1] = "[end]"; //TODO: this might be causing problems
+
         return serialization;
     }
 

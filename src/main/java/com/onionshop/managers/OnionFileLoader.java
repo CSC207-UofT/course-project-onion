@@ -24,9 +24,14 @@ public class OnionFileLoader {
             FileWriter writer = new FileWriter(project.getPath());
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
 
+            //int count = 0;
+            System.out.println("Layer size: " + project.layers.size());
             for (String line : project.serialize()) {
+                //System.out.println(count);
+                //System.out.println(line);
                 bufferedWriter.write(line);
                 bufferedWriter.newLine();
+                //count++;
             }
             bufferedWriter.close();
             return true;

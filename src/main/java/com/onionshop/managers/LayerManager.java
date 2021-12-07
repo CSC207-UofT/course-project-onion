@@ -71,6 +71,15 @@ public class LayerManager {
     }
 
     /**
+     * When the user deletes a layer, remove the corresponding canvas from the layers list
+     *
+     * @param layerIndex: the layer index to be removed
+     */
+    public void removeLayer(int layerIndex) {
+        this.layers.remove(layerIndex);
+    }
+
+    /**
      * Set selected layer so that when user draws on the board, he is drawing on the correct layer
      *
      * @param index the index of the new selected Layer
