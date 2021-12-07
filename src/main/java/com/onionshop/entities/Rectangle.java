@@ -36,8 +36,6 @@ public class Rectangle extends Shape implements Tool {
                     counter++;
                 }
             }
-
-
         }
         else {
             pixelsEffectedByShape = new int[0][0];

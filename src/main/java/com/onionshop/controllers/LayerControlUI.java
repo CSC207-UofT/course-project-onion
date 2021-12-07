@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -18,19 +19,26 @@ public class LayerControlUI extends HBox {
     @FXML private Label layerName;
     @FXML private CheckBox layerCheckBox;
     @FXML private final Canvas layer;
-    private final int layerIndex;
+    @FXML private Button removeLayerButton;
+    private int layerIndex;
 
     /**
      * Constructor for initializing MostRecentProjectUI with a name, path, and click event handler
      */
     public LayerControlUI(int index, EventHandler<MouseEvent> mouseClickHandler,
-                          Canvas canvas) {
+                         EventHandler<MouseEvent> mouseClickRemoveLayer, Canvas canvas) {
         initializeControl();
         setName(index);
         layerIndex = index;
         this.setOnMouseClicked(mouseClickHandler);
         this.layer = canvas;
         layerCheckBox.setOnMouseClicked(event -> layer.visibleProperty().set(!layer.isVisible()));
+        removeLayerButton.setOnMouseClicked(mouseClickRemoveLayer);
+
+        //Remove the remove button for the background layer
+        if (index == 0) {
+            this.getChildren().remove(removeLayerButton);
+        }
     }
 
     /**
@@ -87,6 +95,12 @@ public class LayerControlUI extends HBox {
     public void setName(int index) {
         name().set("Layer " + index);
     }
+
+    /**
+     * Sets the index of the layer
+     * @param index number to set the index to
+     */
+    public void setLayerIndex(int index) {layerIndex = index; }
 
     /**
      * Returns the text property of the layerText label

@@ -9,6 +9,7 @@ import com.onionshop.managers.LayerManager;
 import com.onionshop.managers.OnionFileLoader;
 import com.onionshop.managers.ProjectManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

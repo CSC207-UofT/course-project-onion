@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -76,7 +77,7 @@ public class ProjectStateController implements Initializable {
          * TODO: Once backend is implemented, for each layer add a canvas LayerControlUI
          *       - We can just make initial selected layer the top layer (or whichever is easiest)
          */
-        selectedLayerUIControl = new LayerControlUI(0, this::onSelectLayer, selectedLayer);
+        selectedLayerUIControl = new LayerControlUI(0, this::onSelectLayer, this::onRemoveLayer, selectedLayer);
         selectedLayerUIControl.setAsActive();
         layersContainer.getChildren().add(selectedLayerUIControl);
     }
@@ -235,7 +236,7 @@ public class ProjectStateController implements Initializable {
     @FXML
     public void onEraserClick() {
         canvasInputProcessor.setTool(Tools.ERASER, brushSize);
-        currentCanvasColour = Color.WHITE;
+        currentCanvasColour = new Color(1, 1, 1, 0);
         onToolSizeSliderMove();
         setSelectedToolButton(eraser);
     }
@@ -344,6 +345,37 @@ public class ProjectStateController implements Initializable {
         Canvas newLayer = createNewLayer();
         canvasCollection.getChildren().add(newLayer);
         layersContainer.getChildren().add(0,
-                new LayerControlUI(layersContainer.getChildren().size(), this::onSelectLayer, newLayer));
+                new LayerControlUI(layersContainer.getChildren().size(), this::onSelectLayer, this::onRemoveLayer,
+                        newLayer));
+    }
+
+    /**
+     * Remove an existing layer and then updates the indices of the other layers to reflect its removal
+     *
+     * @param removeButtonClick The event triggered when the user clicks the remove button
+     */
+    public void onRemoveLayer(MouseEvent removeButtonClick) {
+        Button selectedRemoveButton =  (Button) removeButtonClick.getSource();
+        LayerControlUI layerToRemoveControlUI = (LayerControlUI) selectedRemoveButton.getParent();
+        int removedLayerIndex = layerToRemoveControlUI.getIndex();
+
+        //Make sure we're not removing the background layer
+        if (removedLayerIndex != 0) {
+            //Remove the layer from the layer container pane and the canvas itself
+            Canvas layerToRemove = layerToRemoveControlUI.getLayer();
+            canvasCollection.getChildren().remove(layerToRemove);
+            layersContainer.getChildren().remove(layerToRemoveControlUI);
+
+            //Update the indices of the other layers after removing one
+            for (Node layer: layersContainer.getChildren()) {
+                LayerControlUI currentLayer = (LayerControlUI) layer;
+                if (currentLayer.getIndex() > removedLayerIndex) {
+                    currentLayer.setLayerIndex(currentLayer.getIndex() - 1);
+                }
+            }
+
+        }
+
+
     }
 }

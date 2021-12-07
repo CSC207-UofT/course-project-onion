@@ -18,7 +18,7 @@ public class ColourPaletteTest {
         red = new Colour("red", new int[]{255, 0, 0});
         green = new Colour("green", new int[]{0, 255, 0, 128});
 
-        ArrayList<Colour> colours = new ArrayList<Colour>(List.of(new Colour[]{red, green}));
+        List<Colour> colours = new ArrayList<Colour>(List.of(new Colour[]{red, green}));
         colourPalette = new ColourPalette(colours);
     }
 
@@ -50,7 +50,7 @@ public class ColourPaletteTest {
     }
 
     @Test void testRemoveColourByIndex() {
-        ArrayList<Colour> colours = colourPalette.getColours();
+        List<Colour> colours = colourPalette.getColours();
         colours.remove(0);
         colourPalette.removeColour(0);
         assertEquals(colourPalette.getColours(), colours);
