@@ -3,6 +3,7 @@ package com.onionshop.managers;
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class MostRecentProjectManager {
@@ -98,13 +99,13 @@ public class MostRecentProjectManager {
         Stack<String> stack = new Stack<String>();
         writeStackFromFile(stack);
 
-        ArrayList<ArrayList<String>> mostRecentProj = new ArrayList<ArrayList<String>>();
+        List<List<String>> mostRecentProj = new ArrayList<List<String>>();
 
         for (int i = stack.size() - 1; i >= 0; i --) {
             String project = stack.get(i);
             String projectName = project.substring(1, project.indexOf(','));
             String projectDirectory = project.substring(project.indexOf(',') + 1, project.length() - 1);
-            ArrayList<String> toAdd = new ArrayList<String>();
+            List<String> toAdd = new ArrayList<String>();
             toAdd.add(projectName);
             toAdd.add(projectDirectory);
             mostRecentProj.add(toAdd);
