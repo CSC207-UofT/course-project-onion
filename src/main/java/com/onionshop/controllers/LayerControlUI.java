@@ -26,13 +26,19 @@ public class LayerControlUI extends HBox {
      * Constructor for initializing MostRecentProjectUI with a name, path, and click event handler
      */
     public LayerControlUI(int index, EventHandler<MouseEvent> mouseClickHandler,
-                          Canvas canvas) {
+                         EventHandler<MouseEvent> mouseClickRemoveLayer, Canvas canvas) {
         initializeControl();
         setName(index);
         layerIndex = index;
         this.setOnMouseClicked(mouseClickHandler);
         this.layer = canvas;
         layerCheckBox.setOnMouseClicked(event -> layer.visibleProperty().set(!layer.isVisible()));
+        removeLayerButton.setOnMouseClicked(mouseClickRemoveLayer);
+
+        //We don't want users to remove the background layer
+        if (index == 0) {
+            this.getChildren().remove(removeLayerButton);
+        }
     }
 
     /**
