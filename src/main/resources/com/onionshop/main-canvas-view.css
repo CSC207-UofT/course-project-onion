@@ -7,6 +7,7 @@
     -fx-pref-height: 26;
     -fx-font-size: 10;
     -fx-background-insets: 0 10px;
+    -fx-background-color: #ddd;
 }
 
 .tool-container {

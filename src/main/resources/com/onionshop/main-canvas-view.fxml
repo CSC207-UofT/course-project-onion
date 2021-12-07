@@ -103,7 +103,7 @@
 
       <!-- Canvas -->
        <AnchorPane maxHeight="-Infinity" fx:id="canvasCollection">
-           <Canvas fx:id="projectDrawing" onMouseDragged="#onCanvasMouseDragged"
+           <Canvas fx:id="selectedLayer" onMouseDragged="#onCanvasMouseDragged"
                    onMouseReleased="#onCanvasMouseReleased" styleClass="canvas"/>
        </AnchorPane>
 
