@@ -11,9 +11,7 @@ public class Circle extends Shape implements Tool {
     }
 
     /**
-     * Calculates the pixels that will be drawn on. The first drawstage places a dot where the user first clicks. The
-     * second draw stage takes the start and end positions of the rectangle and calculates all of the pixels that are in
-     * the boundary of the circle.
+     * Calculates the pixels that will be drawn on.
      */
     public void calculateEffectedPixels() {
         if (drawStage == 3) {
@@ -39,6 +37,7 @@ public class Circle extends Shape implements Tool {
                 // the calculation of the circle
                 double calculation = Math.sqrt(Math.pow((centerX), 2) - Math.pow((plotCounter), 2));
 
+                // adding of four quarters of the circle
                 this.pixelsEffectedByShape[counter][0] = newStartingCoordinate[0] + counter;
                 this.pixelsEffectedByShape[counter][1] = newStartingCoordinate[1] + (int) (centerX - calculation);
 
