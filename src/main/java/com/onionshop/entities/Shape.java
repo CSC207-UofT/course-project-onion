@@ -113,7 +113,7 @@ public abstract class Shape implements Tool {
      * @return                  AN array collection of arrays of integer coordinates around the (x, y) coordinates in
      *                          the shape of pixelsEffectedByBrush
      */
-    public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y) {
+    public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y, Layer layer) {
         // Creating a new array to store the pixels that are updated in this method. These will then
         // Be sent back up to javafx to be rendered on the canvas.
         int[][] pixelsToUpdate = new int[pixelsEffectedByShape.length][2];
@@ -150,7 +150,7 @@ public abstract class Shape implements Tool {
 
             // variable <pixel> is getting the exact amount of pixels we have to plot in the pixelsEffectedByShape
             // array
-            updatePixelsOnCanvas(currentCanvas, currentColour, pixelsToUpdate, pixelsEffectedByShape);
+            updatePixelsOnCanvas(currentCanvas, currentColour, pixelsToUpdate, pixelsEffectedByShape, layer);
 
             // reset the drawStage to 1 as we have completed updating method pixelsToUpdate to draw out the shape, the
             // user can now redo the entire process over again
@@ -173,7 +173,7 @@ public abstract class Shape implements Tool {
      *                              released their mouse (may include pixels that are outside the canvas)
      */
     private void updatePixelsOnCanvas(Project currentCanvas, Colour currentColour,
-                                        int[][] pixelsToUpdate, int[][] pixelsEffectedByShape) {
+                                        int[][] pixelsToUpdate, int[][] pixelsEffectedByShape, Layer layer) {
         for (int pixel = 0; pixel < pixelsEffectedByShape.length; pixel++) {
             // Check if the pixels are in the canvas, the calculation done in calculateEffectedPixels already
             // computed the exact coordinates
@@ -185,8 +185,6 @@ public abstract class Shape implements Tool {
                 //If they are, update the updated pixels list and the canvas itself
                 pixelsToUpdate[pixel][0] = pixelsEffectedByShape[pixel][0];
                 pixelsToUpdate[pixel][1] = pixelsEffectedByShape[pixel][1];
-                LayerManager layerManager = new LayerManager(currentCanvas);
-                Layer layer = layerManager.getSelectedLayer();
                 layer.layerCanvas[pixelsEffectedByShape[pixel][0]]
                         [pixelsEffectedByShape[pixel][1]].setRGB(currentColour.getRGB());
             }
