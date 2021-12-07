@@ -10,6 +10,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
@@ -47,6 +48,22 @@ public class LayerControlUI extends HBox {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    public void setAsActive() {
+        this.setStyle("-fx-background-color: #bbb");
+    }
+
+    public void setAsInactive() {
+        this.setStyle("-fx-background-color: #ddd");
+    }
+
+    /**
+     * Returns the Canvas instance of this layer
+     * @return the Canvas instance of this layer
+     */
+    public Canvas getLayer() {
+        return layer;
     }
 
     /**

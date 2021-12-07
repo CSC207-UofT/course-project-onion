@@ -1,6 +1,5 @@
 package com.onionshop.controllers;
 
-import com.onionshop.entities.Pixel;
 import com.onionshop.entities.Shape;
 import com.onionshop.events.CanvasEvents;
 import com.onionshop.managers.DrawingManager;
@@ -14,7 +13,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
-import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -38,14 +36,17 @@ public class ProjectStateController implements Initializable {
     @FXML public Button rectangle;
     @FXML public Button circle;
     @FXML public Button line;
+    @FXML public Button brushPen;
     @FXML public AnchorPane container;
     @FXML public VBox layersContainer;
     @FXML public AnchorPane canvasCollection;
     @FXML private ColorPicker projectColourPicker;
-    @FXML private Canvas projectDrawing;
+    @FXML private Canvas selectedLayer;
     @FXML private Slider toolSizeSlider;
     @FXML private FlowPane colourPalette;
 
+    private LayerControlUI selectedLayerUIControl;
+    private Button selectedToolButton;
     private final DrawingManager projectDrawingManager = new DrawingManager();
     private final ToolStateManager toolStateManager = ToolStateManager.getInstance();
     private final CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
@@ -63,6 +64,8 @@ public class ProjectStateController implements Initializable {
         initCanvas();
         initLayers();
         initColourPalette();
+        selectedToolButton = brushPen;
+        setSelectedToolButton(brushPen);
     }
 
     /**
@@ -71,15 +74,17 @@ public class ProjectStateController implements Initializable {
     private void initLayers() {
         /*
          * TODO: Once backend is implemented, for each layer add a canvas LayerControlUI
+         *       - We can just make initial selected layer the top layer (or whichever is easiest)
          */
-        layersContainer.getChildren().add(new LayerControlUI(0, event -> {}, projectDrawing));
+        selectedLayerUIControl = new LayerControlUI(0, this::onSelectLayer, selectedLayer);
+        selectedLayerUIControl.setAsActive();
+        layersContainer.getChildren().add(selectedLayerUIControl);
     }
 
     /*
      * TODO: Refactor to init each layer for the given frontend
      *  canvas and backend layer
      */
-
     /**
      * Initializes the canvas with current project's saved pixels
      * Sets the height and width of the canvas
@@ -90,10 +95,10 @@ public class ProjectStateController implements Initializable {
         int canvasWidth = projectManager.getCurrentProject().getWidth();
 
         // set width and height of the canvas UI
-        projectDrawing.setHeight(canvasHeight);
-        projectDrawing.setWidth(canvasWidth);
+        selectedLayer.setHeight(canvasHeight);
+        selectedLayer.setWidth(canvasWidth);
 
-        PixelWriter pixelWriter = projectDrawing.getGraphicsContext2D().getPixelWriter();
+        PixelWriter pixelWriter = selectedLayer.getGraphicsContext2D().getPixelWriter();
 
         // set canvas pixels to match the pixels of the current project
         for (int x = 0; x < canvasWidth; x++) {
@@ -126,7 +131,7 @@ public class ProjectStateController implements Initializable {
     protected void setDrawingColour() {
         if (!toolStateManager.getColourLocked()) {
             currentCanvasColour = canvasInputProcessor.processSelectedColour(projectColourPicker.getValue());
-            projectDrawing.getGraphicsContext2D().setFill(currentCanvasColour);
+            selectedLayer.getGraphicsContext2D().setFill(currentCanvasColour);
         }
     }
 
@@ -184,7 +189,7 @@ public class ProjectStateController implements Initializable {
     protected void onCanvasMouseDragged(MouseEvent canvasMouseLocation) {
         int[][] updatedPixels = canvasInputProcessor.processControllerDataForDrawingManager(canvasMouseLocation);
 
-        PixelWriter canvasPixelWriter = ((Canvas) canvasMouseLocation.getSource()).getGraphicsContext2D().getPixelWriter();
+        PixelWriter canvasPixelWriter = selectedLayer.getGraphicsContext2D().getPixelWriter();
         for (int[] updatedPixel : updatedPixels) {
             canvasPixelWriter.setColor(updatedPixel[0], updatedPixel[1], currentCanvasColour);
         }
@@ -195,8 +200,8 @@ public class ProjectStateController implements Initializable {
      *
      * @param updatedPixels the pixels to update on the canvas
      */
-    protected void updateCanvas(int[][] updatedPixels, Canvas layer) {
-        PixelWriter canvasPixelWriter = layer.getGraphicsContext2D().getPixelWriter();
+    protected void updateCanvas(int[][] updatedPixels) {
+        PixelWriter canvasPixelWriter = selectedLayer.getGraphicsContext2D().getPixelWriter();
         for (int[] updatedPixel : updatedPixels) {
             canvasPixelWriter.setColor(updatedPixel[0], updatedPixel[1], currentCanvasColour);
         }
@@ -212,6 +217,7 @@ public class ProjectStateController implements Initializable {
         toolStateManager.updateCurrentToolState(brushSize);
     }
 
+
     /**
      * Sets the current tool being used to brush
      */
@@ -220,6 +226,7 @@ public class ProjectStateController implements Initializable {
         canvasInputProcessor.setTool(Tools.PEN, brushSize);
         setDrawingColour();
         onToolSizeSliderMove();
+        setSelectedToolButton(brushPen);
     }
 
     /**
@@ -230,32 +237,42 @@ public class ProjectStateController implements Initializable {
         canvasInputProcessor.setTool(Tools.ERASER, brushSize);
         currentCanvasColour = Color.WHITE;
         onToolSizeSliderMove();
+        setSelectedToolButton(eraser);
     }
 
 
     /**
      * Sets the current tool being used to line
      */
-    public void onLineToolClick() {
+    public void onLineToolClick(ActionEvent event) {
         canvasInputProcessor.setTool(Tools.LINE, brushSize);
         setDrawingColour();
+        setSelectedToolButton(line);
     }
 
 
     /**
      * Sets the current tool being used to circle
      */
-    public void onCircleToolClick() {
+    public void onCircleToolClick(ActionEvent event) {
         canvasInputProcessor.setTool(Tools.CIRCLE, brushSize);
         setDrawingColour();
+        setSelectedToolButton(circle);
     }
 
     /**
      * Sets the current tool being used to rectangle
      */
-    public void onRectangleToolClick() {
+    public void onRectangleToolClick(ActionEvent event) {
         canvasInputProcessor.setTool(Tools.RECTANGLE, brushSize);
         setDrawingColour();
+        setSelectedToolButton(rectangle);
+    }
+
+    private void setSelectedToolButton(Button button) {
+        selectedToolButton.setStyle("-fx-background-color: #ddd;");
+        selectedToolButton = button;
+        button.setStyle("-fx-background-color: #fff;");
     }
 
     /**
@@ -281,10 +298,26 @@ public class ProjectStateController implements Initializable {
                 int[][] pixelsToUpdate = projectDrawingManager.drawShapeOnRelease((int) mouseDragEvent.getX(),
                         (int) mouseDragEvent.getY());
                 //This calls a function to update the user end canvas
-                updateCanvas(pixelsToUpdate, (Canvas) mouseDragEvent.getSource());
+                updateCanvas(pixelsToUpdate);
             }
         }
     }
+
+
+    /*
+     * TODO: Link to backend layer manager and undo redo manager
+     */
+    /**
+     * Changes the selected layer to the one that one clicked on
+     */
+    private void onSelectLayer(MouseEvent mouseEvent) {
+        LayerControlUI layerControlUI = (LayerControlUI) mouseEvent.getSource();
+        selectedLayerUIControl.setAsInactive();
+        selectedLayer = layerControlUI.getLayer();
+        selectedLayerUIControl = layerControlUI;
+        layerControlUI.setAsActive();
+    }
+
 
     /**
      * Returns a new layer with the onMouseDragged and onMouseReleased event handlers
@@ -301,6 +334,9 @@ public class ProjectStateController implements Initializable {
     }
 
 
+    /*
+     * TODO: Link to backend layer manager and undo redo manager
+     */
     /**
      * Create a new layer
      */
@@ -308,10 +344,6 @@ public class ProjectStateController implements Initializable {
         Canvas newLayer = createNewLayer();
         canvasCollection.getChildren().add(newLayer);
         layersContainer.getChildren().add(0,
-                new LayerControlUI(layersContainer.getChildren().size(), event -> {}, newLayer));
-
-        /*
-         * TODO: Link to backend layer manager
-         */
+                new LayerControlUI(layersContainer.getChildren().size(), this::onSelectLayer, newLayer));
     }
 }

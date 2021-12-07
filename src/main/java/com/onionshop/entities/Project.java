@@ -6,9 +6,7 @@ This is a storage class, all elements that are made public are intended to be ed
  */
 package com.onionshop.entities;
 
-import com.onionshop.managers.OnionFileLoader;
-import com.onionshop.managers.ProjectManager;
-
+import java.io.File;
 import java.util.ArrayList;
 
 public class Project {
@@ -24,9 +22,6 @@ public class Project {
 
     //2d array representing each pixel of the drawing canvas with Pixel
     public Pixel[][] drawingCanvas;
-
-    public ProjectManager projectManager = ProjectManager.getInstance();
-
 
     /**
      * Creates instance of project
@@ -89,7 +84,9 @@ public class Project {
      * @param newPath the new path to which this.path will be set
      */
     public void updatePath(String newPath) throws Exception {
-        if (OnionFileLoader.isDirectoryValid(newPath)) {
+        File newFile = new File(newPath);
+
+        if (newFile.exists() && newFile.canRead() && newFile.canWrite()) {
             path = newPath;
         } else {
             throw new Exception("Invalid path was given: " + newPath);
@@ -196,6 +193,10 @@ public class Project {
         this.colourPalette = newColourPalette;
     }
 
+    /**
+     * Set the drawing canvas, especially work for undo and redo function.
+     * @param newDrawingCanvas the newest pixel array of the drawing canvas.
+     */
     public void setDrawingCanvas(Pixel[][] newDrawingCanvas) {
         this.drawingCanvas = newDrawingCanvas;
     }
@@ -205,11 +206,10 @@ public class Project {
      * @return the current pixel array of this project.
      */
     public Pixel[][] getPixelArray() {
-        Pixel[][] pixelArray = new Pixel[projectManager.getCurrentProject().getWidth()]
-                [projectManager.getCurrentProject().getHeight()];
+        Pixel[][] pixelArray = new Pixel[this.getWidth()][this.getHeight()];
         for (int x = 0; x < this.width; x++) {
             for (int y = 0; y < this.height; y++) {
-                int[] rgbValues = projectManager.getCurrentProject().getPixelByCoord(x, y).getRGB();
+                int[] rgbValues = this.getPixelByCoord(x, y).getRGB();
                 Pixel pixel = new Pixel(rgbValues);
                 pixelArray[x][y] = pixel;
             }
