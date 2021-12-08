@@ -24,7 +24,8 @@ public class Eraser extends Brush {
      */
 
     @Override public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y, Layer layer) {
-        return super.draw(currentCanvas, new Colour("white", new int[]{255, 255, 255}), x, y, layer);
+
+        return super.draw(currentCanvas, new Colour("white", new int[]{255, 255, 255, 0}), x, y, layer);
 
     }
 }

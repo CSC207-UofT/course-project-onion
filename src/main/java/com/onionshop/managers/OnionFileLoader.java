@@ -69,19 +69,14 @@ public class OnionFileLoader {
      * @return returns a Project instance if there are no files errors, returns null if there are errors
      */
     public static Project loadProject(String path) throws Exception {
-        ProjectManager projectManager = ProjectManager.getInstance();
-        LayerManager layerManager = new LayerManager(projectManager.getCurrentProject());
+        //ProjectManager projectManager = ProjectManager.getInstance();
+        //LayerManager layerManager = new LayerManager(projectManager.getCurrentProject());
 
         String[] lines = getFileLines(path);
         Project loadedProject = generateProjectInstance(lines, path);
         loadedProject.setColourPalette(generateColourPalette(lines));
-
-        List<Layer> layers = generateLayers(loadedProject.getWidth(), loadedProject.getHeight(), lines);
-        for (Layer l : layers) {
-            projectManager.addLayer(l, layerManager);
-        }
-
-
+        loadedProject.setLayers(generateLayers(loadedProject.getWidth(), loadedProject.getHeight(), lines));
+        loadedProject.setCurrLayer(0);
         return loadedProject;
     }
 
@@ -125,7 +120,7 @@ public class OnionFileLoader {
     private static Project generateProjectInstance(String[] lines, String path) {
         int width = Integer.parseInt(lines[1].substring(lines[1].indexOf(':') + 1));
         int height = Integer.parseInt(lines[2].substring(lines[2].indexOf(':') + 1));
-        return new Project(path, width, height);
+        return new Project(path, width, height, true);
     }
 
     /**
@@ -179,16 +174,16 @@ public class OnionFileLoader {
      */
     private static List<Layer> generateLayers(int width, int height, String[] lines) throws Exception {
         List<Layer> layers = new ArrayList<>();
-        int lineNumber = getIndexOfString("[layer:0]", lines) + 1;
+        int lineNumber = getIndexOfString("[layer:0]", lines);
         int layerNumber = 0;
         String line = lines[lineNumber];
 
         while (!Objects.equals(line, "[end]")) {
             line = lines[lineNumber];
-            lineNumber++;
 
             assert Integer.parseInt(line.substring(line.indexOf(":") + 1, line.indexOf("]"))) == layerNumber;
             layerNumber++;
+            lineNumber++;
 
             Layer layer = new Layer(width, height, new int[]{0,0,0,0});
             for (int x = 0; x < width; x++) {
@@ -198,6 +193,9 @@ public class OnionFileLoader {
                     lineNumber++;
                 }
             }
+            layers.add(layer);
+            line = lines[lineNumber];
+
         }
         return layers;
     }

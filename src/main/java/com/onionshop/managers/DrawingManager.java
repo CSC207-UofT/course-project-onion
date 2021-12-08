@@ -25,6 +25,8 @@ public class DrawingManager {
     public DrawingManager() {
     }
 
+    public LayerManager getLayerManager() {return layerManager;}
+
     /**
      * Calls the draw method on the tool and passes the canvas, x coordinate, y coordinate and current color to it. The
      * draw method then updates the backend canvas and returns a list of pixels that were altered. These pixels should

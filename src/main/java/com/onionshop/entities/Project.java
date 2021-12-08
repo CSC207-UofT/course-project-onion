@@ -21,7 +21,7 @@ public class Project {
     // represents the project path and name, e.g. users/finn/drawings/drawing1.onion -- drawing1 is the name
     private String path;
 
-    public List<Layer> layers = new ArrayList<>();
+    public List<Layer> layers;
 
     private Layer currLayer;
 
@@ -33,7 +33,6 @@ public class Project {
 
     //2d array representing each pixel of the drawing canvas with Pixel
     public Pixel[][] drawingCanvas;
-
     /**
      * Creates instance of project
      *
@@ -45,13 +44,34 @@ public class Project {
         this.path = path;
         this.width = width;
         this.height = height;
+        this.layers = new ArrayList<>();
 
 
         this.colourPalette = new ColourPalette(new ArrayList<Colour>());
         // create a new layer in layers
         // set layer.layerCanvas to this
         this.currLayer = new Layer(this.width, this.height, new int[]{255, 255, 255, 255});
-        layers.add(this.currLayer);
+        this.layers.add(this.currLayer);
+    }
+
+    /**
+     * Creates instance of project that already has layers that will be instantiated
+     *
+     * @param path:   location of .onion project file
+     * @param width:  width of drawing
+     * @param height: height of drawing
+     */
+    public Project(String path, int width, int height, boolean hasLayers) {
+        this.path = path;
+        this.width = width;
+        this.height = height;
+        this.layers = new ArrayList<>();
+
+
+        this.colourPalette = new ColourPalette(new ArrayList<Colour>());
+        // create a new layer in layers
+        // set layer.layerCanvas to this
+        this.currLayer = new Layer(this.width, this.height, new int[]{255, 255, 255, 255});
     }
 
     /**
@@ -66,10 +86,11 @@ public class Project {
         this.path = path;
         this.width = width;
         this.height = height;
+        this.layers = new ArrayList<>();
 
         this.colourPalette = new ColourPalette(new ArrayList<Colour>());
         this.currLayer = new Layer(this.width, this.height, backgroundRGB);
-        layers.add(currLayer);
+        this.layers.add(currLayer);
 
 
     }
@@ -92,7 +113,6 @@ public class Project {
      */
     public void updatePath(String newPath) throws Exception {
         File newFile = new File(newPath);
-
         if (newFile.exists() && newFile.canRead() && newFile.canWrite()) {
             path = newPath;
         } else {
@@ -134,7 +154,8 @@ public class Project {
      * @return serialization returns serialized Project in onion format
      */
     public String[] serialize() {
-        int numberOfLines = this.width * this.height + colourPalette.size() + 6;
+        int numberOfLines = this.width * this.height * this.layers.size() + colourPalette.size() + 6 +
+                this.layers.size();
         int lineNumber = 0;
         String[] serialization = new String[numberOfLines];
 
@@ -161,7 +182,7 @@ public class Project {
         lineNumber++;
 
         // Saving layers
-        for (int i=0; i< layers.size(); i++) {
+        for (int i=0; i < layers.size(); i++) {
             Layer l = layers.get(i);
             serialization[lineNumber] = "[layer:" + i + "]";
             lineNumber++;
@@ -176,7 +197,9 @@ public class Project {
             }
         }
 
-        serialization[lineNumber - 1] = "[end]"; //TODO: this might be causing problems
+
+        serialization[lineNumber] = "[end]";
+
         return serialization;
     }
 
@@ -209,16 +232,20 @@ public class Project {
 
     public void setDrawingCanvas(Pixel[][] newDrawingCanvas) { this.currLayer.setLayerCanvas(newDrawingCanvas); }
 
+    public void setLayers(List<Layer> newLayers) { this.layers = newLayers; }
+
+    public void setCurrLayer(int layerIndex) {this.currLayer = layers.get(layerIndex);}
+
     /**
      * Return the current pixel array of this project.
      * @return the current pixel array of this project.
      */
     public Pixel[][] getPixelArray() {
-        Pixel[][] pixelArray = new Pixel[projectManager.getCurrentProject().getWidth()]
-                [projectManager.getCurrentProject().getHeight()];
+        Pixel[][] pixelArray = new Pixel[getWidth()]
+                [getHeight()];
         for (int x = 0; x < this.width; x++) {
             for (int y = 0; y < this.height; y++) {
-                int[] rgbValues = projectManager.getCurrentProject().getPixelByCoord(x, y).getRGB();
+                int[] rgbValues = getPixelByCoord(x, y).getRGB();
                 Pixel pixel = new Pixel(rgbValues);
                 pixelArray[x][y] = pixel;
             }
