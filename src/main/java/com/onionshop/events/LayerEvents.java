@@ -9,6 +9,9 @@ public class LayerEvents {
     //This is used to convert between our colours (0-255) and javaFx's colors (0.0-1.0)
     private final float conversionValue = 255;
 
+    /**
+     * Creates an instance of LayerEvents with the given DrawingManager
+     */
     public LayerEvents(DrawingManager projectDrawingManager){
         this.currentDrawingManager = projectDrawingManager;
         this.currentLayerManager = projectDrawingManager.getLayerManager();
