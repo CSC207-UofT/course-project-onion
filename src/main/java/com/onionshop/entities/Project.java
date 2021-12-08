@@ -209,7 +209,13 @@ public class Project {
      * @return the project name.
      */
     public String extractProjectName() {
-        return path.substring(path.lastIndexOf("\\") + 1, path.indexOf(".onion"));
+        String operatingSystem = System.getProperty("os.name");
+        if (operatingSystem.substring(0, 3).equals("Mac")) {
+            return path.substring(path.lastIndexOf("/") + 1, path.indexOf(".onion"));
+        } else {
+            return path.substring(path.lastIndexOf("\\") + 1, path.indexOf(".onion"));
+
+        }
     }
 
     /**
