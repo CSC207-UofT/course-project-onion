@@ -132,7 +132,8 @@ public class Project {
      * @return serialization returns serialized Project in onion format
      */
     public String[] serialize() {
-        int numberOfLines = this.width * this.height * this.layers.size() + colourPalette.size() + 6;
+        int numberOfLines = this.width * this.height * this.layers.size() + colourPalette.size() + 5 +
+                this.layers.size();
         int lineNumber = 0;
         String[] serialization = new String[numberOfLines];
 
@@ -174,8 +175,6 @@ public class Project {
             }
         }
 
-        //System.out.println(lineNumber);
-        //System.out.println(numberOfLines);
 
         serialization[lineNumber - 1] = "[end]"; //TODO: this might be causing problems
 
