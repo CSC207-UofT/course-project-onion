@@ -205,7 +205,6 @@ public class Project {
             return path.substring(path.lastIndexOf("/") + 1, path.indexOf(".onion"));
         } else {
             return path.substring(path.lastIndexOf("\\") + 1, path.indexOf(".onion"));
-
         }
     }
 

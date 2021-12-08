@@ -40,6 +40,8 @@ public class NewProjectController {
 
     private String savDir;
 
+    private ProjectManager projectManager = ProjectManager.getInstance();
+
     /**
         When the submit button is clicked, and each field has valid input (integer values for height
         and width, valid directory path), create a new project.
@@ -56,9 +58,9 @@ public class NewProjectController {
 
                 // If there are no errors above, create a new project
                 NewProjectEvent newProjectEvent = new NewProjectEvent(projectName, savDir, width, height);
-                ProjectManager.getInstance().newProject(newProjectEvent);
+                projectManager.newProject(newProjectEvent);
                 mostRecentProjectManager
-                        .addMostRecentProject(projectName, savDir + "\\" + projectName + ".onion");
+                        .addMostRecentProject(projectName, projectManager.getCurrentProject().getPath());
 
                 // switch to the canvas scene
                 SceneSwitcher.switchSceneWithKeyEventsInit(getClass(), event, "/com/onionshop/main-canvas-view.fxml");
