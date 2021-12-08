@@ -32,6 +32,7 @@ public class ProjectTest {
                 "height:2",
                 "[saved colours]",
                 "[pixels]",
+                "[layer:0]",
                 "255,255,255,255",
                 "255,255,255,255",
                 "255,255,255,255",

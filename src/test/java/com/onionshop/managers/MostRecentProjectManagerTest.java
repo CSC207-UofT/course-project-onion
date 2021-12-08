@@ -5,37 +5,29 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
-import java.io.IOException;
 
 public class MostRecentProjectManagerTest {
-    MostRecentProjectManager manager;
-    String defaultPath;
+    static MostRecentProjectManager manager;
+    static String defaultPath;
+    static String operatingSystem;
 
     @BeforeEach
     public void setUp() {
         manager = new MostRecentProjectManager();
         defaultPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+        operatingSystem = System.getProperty("os.name");
     }
 
     @Test
-    public void testLoadMostRecentProjectsWindows() {
-        File mostRecentProjectFile = new File(defaultPath + "\\fresh-onions.txt");
+    public void testLoadMostRecentProjects() {
+        File mostRecentProjectFile;
+
+        if (operatingSystem.substring(0, 3).equals("Mac")) {
+            mostRecentProjectFile = new File(defaultPath + "/Documents/fresh-onions.txt");
+        } else {
+            mostRecentProjectFile = new File(defaultPath + "\\fresh-onions.txt");
+        }
         manager.loadMostRecentProjects();
         assertEquals(mostRecentProjectFile, manager.getMostRecentProjectFile());
-    }
-
-    @Test
-    public void testAddMostRecentProject() throws IOException {
-//        manager.loadMostRecentProjects();
-//        manager.addMostRecentProject("testOne.onion", "\"C:\\Users\\65rgr\\Documents\\testOne.onion\"");
-//        String[][] mostRecentProjects = {{"testOne.onion", "\"C:\\Users\\65rgr\\Documents\\testOne.onion\""}};
-//        System.out.println(mostRecentProjects);
-//        System.out.println(manager.getMostRecentProjects());
-//        assertEquals(mostRecentProjects, manager.getMostRecentProjects());
-    }
-
-    @Test
-    public void testGetMostRecentProjects() {
-
     }
 }
