@@ -31,8 +31,8 @@ public class UndoRedoManagerTest {
     public TemporaryFolder folder= new TemporaryFolder();
 
 
-    Pixel pixel1 = new Pixel(new int[]{255, 255, 255});
-    Pixel pixel2 = new Pixel(new int[]{0, 0, 0});
+    Pixel pixel1 = new Pixel(new int[]{255, 255, 255, 255});
+    Pixel pixel2 = new Pixel(new int[]{0, 0, 0, 0});
 
 
     /**
