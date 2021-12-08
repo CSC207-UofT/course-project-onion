@@ -34,7 +34,7 @@ public class BrushTest {
                 {6, 7}, {6, 8}, {6, 9}, {7, 7}, {7, 8},
                 {7, 9}, {8, 7}, {8, 8}, {8, 9}
         };
-        int[][] actual = brush.draw(project, colour, 7, 8);
+        int[][] actual = brush.draw(project, colour, 7, 8, new Layer(10, 10, new int[]{0, 0, 0, 0}));
 
         assertArrayEquals(expected, actual);
     }
