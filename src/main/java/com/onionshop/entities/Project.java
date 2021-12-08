@@ -9,6 +9,7 @@ import com.onionshop.managers.LayerManager;
 import com.onionshop.managers.OnionFileLoader;
 import com.onionshop.managers.ProjectManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,8 @@ public class Project {
     public ProjectManager projectManager = ProjectManager.getInstance();
 
 
+    //2d array representing each pixel of the drawing canvas with Pixel
+    public Pixel[][] drawingCanvas;
 
     /**
      * Creates instance of project
@@ -88,7 +91,9 @@ public class Project {
      * @param newPath the new path to which this.path will be set
      */
     public void updatePath(String newPath) throws Exception {
-        if (OnionFileLoader.isDirectoryValid(newPath)) {
+        File newFile = new File(newPath);
+
+        if (newFile.exists() && newFile.canRead() && newFile.canWrite()) {
             path = newPath;
         } else {
             throw new Exception("Invalid path was given: " + newPath);

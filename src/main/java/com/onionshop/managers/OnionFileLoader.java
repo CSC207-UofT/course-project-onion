@@ -93,7 +93,7 @@ public class OnionFileLoader {
      */
     private static String[] getFileLines(String path) {
         String line;
-        ArrayList<String> lines = new ArrayList<>();
+        List<String> lines = new ArrayList<>();
 
         //reading and storing lines of file at path
         try {
@@ -136,7 +136,7 @@ public class OnionFileLoader {
      * @return arrayList of saved colours read from lines
      */
     private static ColourPalette generateColourPalette(String[] lines) throws Exception {
-        ArrayList<Colour> colours = new ArrayList<>();
+        List<Colour> colours = new ArrayList<>();
         int lineNumber = getIndexOfString("[saved colours]", lines) + 1;
         String line;
         while (!Objects.equals(line = lines[lineNumber], "[pixels]")) {
