@@ -35,7 +35,7 @@ public class ProjectManager {
         if (!OnionFileLoader.doesFileAlreadyExist(path)) {
             currentProject = new Project(path, newProjectEvent.getWidth(), newProjectEvent.getHeight());
             OnionFileLoader.saveProject(currentProject);
-            this.updateDrawingCanvas(currentProject.getPixelArray());
+            this.updateDrawingCanvas(currentProject.getPixelArray(), false, false);
         } else {
             throw new Exception("Error: File with that name already exists!");
         }
@@ -47,7 +47,7 @@ public class ProjectManager {
      */
     public void loadProject(String selectedOnionFilePath) throws Exception {
         currentProject = OnionFileLoader.loadProject(selectedOnionFilePath);
-        this.updateDrawingCanvas(currentProject.getPixelArray());
+        this.updateDrawingCanvas(currentProject.getPixelArray(), false, false);
         System.out.println("Project:" + selectedOnionFilePath + " loaded");
     }
 
@@ -67,9 +67,10 @@ public class ProjectManager {
      * Update the project and UndoRedoManager with newest the pixel array.
      * @param newCanvas a new Canvas which represent in 2d pixel array
      */
-    public void updateDrawingCanvas(Pixel[][] newCanvas) {
+    public void updateDrawingCanvas(Pixel[][] newCanvas, boolean layerCreated, boolean layerDeleted) {
         if (newCanvas.length == currentProject.getWidth() && newCanvas[0].length == currentProject.getHeight()) {
-            drawingState = new DrawingState(newCanvas);
+            drawingState = new DrawingState(newCanvas, currentProject.layers.indexOf(currentProject.getCurrLayer()),
+                    layerCreated, layerDeleted);
             undoRedoState.update(drawingState);
         }
         else {
@@ -140,6 +141,8 @@ public class ProjectManager {
         return layerManager.getSelectedLayer();
     }
 
+    public int getCurrentLayerIndex() { return currentProject.layers.indexOf(currentProject.getCurrLayer()); }
+
     /**
      * set the Drawing State.
      * @param drawingState a new drawing state
@@ -151,15 +154,53 @@ public class ProjectManager {
     /**
      * Update the canvas if undo the Drawing State.
      */
-    public void undoDrawingState() {
-        currentProject.setDrawingCanvas(undoRedoState.undo().getState());
+    public int undoDrawingState() {
+        DrawingState topState = undoRedoState.getTopUndoStack();
+        if (topState.getLayerCreated() || topState.getLayerDeleted()) {
+            undoRedoState.undo();
+            currentProject.setDrawingCanvasByLayer(topState.getState(), topState.getLayerIndex(),
+                    topState.getLayerCreated(), topState.getLayerDeleted());
+            if (topState.getLayerDeleted()) {
+                return 1;
+            }
+            else {
+                return 2;
+            }
+        }
+        else {
+            DrawingState lastState = undoRedoState.undo();
+            currentProject.setDrawingCanvasByLayer(lastState.getState(), lastState.getLayerIndex(),
+                    lastState.getLayerCreated(), lastState.getLayerDeleted());
+            return 0;
+        }
+
+    }
+
+    public int getUndoDrawingStateIndex() {
+        return undoRedoState.getTopUndoStack().getLayerIndex();
+    }
+    public int getRedoDrawingStateIndex() {
+        return undoRedoState.getTopRedoStack().getLayerIndex();
     }
 
     /**
      * Redo the drawing and restore the canvas.
      */
-    public void restoreDrawingState(){
-        currentProject.setDrawingCanvas(undoRedoState.redo().getState());
+    public int restoreDrawingState(){
+        DrawingState nextState = undoRedoState.redo();
+        currentProject.setDrawingCanvasByLayer(nextState.getState(), nextState.getLayerIndex(),
+                !nextState.getLayerCreated(), !nextState.getLayerDeleted());
+        if (!nextState.getLayerDeleted() && !nextState.getLayerCreated()) {
+            return 0;
+        }
+        else if (nextState.getLayerDeleted()) {
+            return 1;
+        }
+        else {
+            return 2;
+        }
+
+
     }
 
 }

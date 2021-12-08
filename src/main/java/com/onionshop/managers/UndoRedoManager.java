@@ -53,11 +53,19 @@ public class UndoRedoManager {
         return undoStack.peek();
     }
 
+    public DrawingState getTopUndoStack() {
+        return undoStack.peek();
+    }
+
+    public DrawingState getTopRedoStack() {
+        return redoStack.peek();
+    }
+
     /**
-    * Returns an undone state of the drawing canvas, allowing a user to undo an undo.
-    *
-    * @return returns 2D Pixel array, corresponding to the canvas
-    */
+     * Returns an undone state of the drawing canvas, allowing a user to undo an undo.
+     *
+     * @return returns 2D Pixel array, corresponding to the canvas
+     */
     public DrawingState redo() {
         if (redoStack.size() > 0) {
             undoStack.push(redoStack.peek());

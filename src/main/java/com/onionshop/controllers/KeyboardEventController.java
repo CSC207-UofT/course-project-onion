@@ -36,20 +36,55 @@ public class KeyboardEventController implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
         if (Undo.match(event)){
-            projectManager.undoDrawingState();
-            projectStateController.initCanvas();
+            int currentlySelectedLayer = projectManager.getCurrentLayerIndex();
+            int updatedLayer = projectManager.getUndoDrawingStateIndex();
+            int updateType = projectManager.undoDrawingState();
+
+            if (updateType == 0) {
+                updatedLayer = projectManager.getUndoDrawingStateIndex();
+                projectStateController.selectLayerByIndex(updatedLayer);
+                projectStateController.updateCanvas(updatedLayer);
+                projectStateController.selectLayerByIndex(currentlySelectedLayer);
+            }
+            else if (updateType == 1) {
+                //undoing a layer deletion
+                projectStateController.addLayerAtIndex(updatedLayer);
+                projectStateController.selectLayerByIndex(updatedLayer);
+                projectStateController.updateCanvas(updatedLayer);
+                projectStateController.selectLayerByIndex(currentlySelectedLayer);
+            }
+            else {
+                //undoing a layer creation
+                projectStateController.removeLayerAtIndex(updatedLayer);
+            }
+
+
+
             /*
              * TODO: Make sure the layers are also reinitialized when we undo
              *  so that creating and removing layers is undoable
              */
         }
         else if (Redo.match(event)) {
-            projectManager.restoreDrawingState();
-            projectStateController.initCanvas();
-            /*
-             * TODO: Make sure the layers are also reinitialized when we redo
-             *  so that creating and removing layers is redo-able
-             */
+            int currentlySelectedLayer = projectManager.getCurrentLayerIndex();
+            int updatedLayer = projectManager.getRedoDrawingStateIndex();
+            int updateType = projectManager.restoreDrawingState();
+            if (updateType == 0) {
+                projectStateController.selectLayerByIndex(updatedLayer);
+                projectStateController.updateCanvas(updatedLayer);
+                projectStateController.selectLayerByIndex(currentlySelectedLayer);
+            }
+            else if (updateType == 1) {
+                //redoing a layer deletion
+                projectStateController.removeLayerAtIndex(updatedLayer);
+            }
+            else {
+                //undoing a layer creation
+                projectStateController.addLayerAtIndex(updatedLayer);
+                projectStateController.selectLayerByIndex(updatedLayer);
+                projectStateController.updateCanvas(updatedLayer);
+                projectStateController.selectLayerByIndex(currentlySelectedLayer);
+            }
         }
         else if (Save.match(event)){
             try {

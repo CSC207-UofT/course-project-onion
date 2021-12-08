@@ -228,11 +228,33 @@ public class Project {
         this.colourPalette = newColourPalette;
     }
 
-    public void setDrawingCanvas(Pixel[][] newDrawingCanvas) { this.currLayer.setLayerCanvas(newDrawingCanvas); }
+    public void setDrawingCanvas(Pixel[][] newDrawingCanvas) {
+        this.currLayer.setLayerCanvas(newDrawingCanvas);
+    }
+
+    public void setDrawingCanvasByLayer(Pixel[][] newDrawingCanvas, int layerIndex, boolean layerCreated,
+                                        boolean layerDeleted) {
+        if (!layerCreated && !layerDeleted){
+            if (layerIndex >= 0 && layerIndex < layers.size()) {
+                layers.get(layerIndex).setLayerCanvas(newDrawingCanvas);
+            }
+        }
+        else if (layerCreated) {
+            layers.remove(layerIndex);
+        }
+        else if (layerDeleted) {
+            Layer deletedLayer = new Layer(width, height, new int[]{0,0,0,0});
+            deletedLayer.setLayerCanvas(newDrawingCanvas);
+            layers.add(layerIndex, deletedLayer);
+        }
+
+    }
 
     public void setLayers(List<Layer> newLayers) { this.layers = newLayers; }
 
     public void setCurrLayer(int layerIndex) {this.currLayer = layers.get(layerIndex);}
+
+    public Layer getCurrLayer() { return this.currLayer; }
 
     /**
      * Return the current pixel array of this project.

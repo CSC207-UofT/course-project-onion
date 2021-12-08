@@ -57,6 +57,7 @@ public class ProjectStateController implements Initializable {
     private final LayerEvents layerInputProcessor = new LayerEvents(projectDrawingManager);
     private final ProjectManager projectManager = ProjectManager.getInstance();
     private Color currentCanvasColour = Color.BLACK;
+    //private boolean firstUserInteration;
 
 
     private int brushSize;
@@ -78,7 +79,6 @@ public class ProjectStateController implements Initializable {
      */
     private void initLayers() {
         int layerNumber = projectManager.getCurrentProject().layers.size();
-        System.out.println("Layer Num " + layerNumber);
         for (int currentLayer = 0; currentLayer < layerNumber; currentLayer++) {
             layerInputProcessor.processSelectLayer(currentLayer);
             initCanvas();
@@ -117,6 +117,23 @@ public class ProjectStateController implements Initializable {
                         newLayer));
 
         container.setMinHeight(canvasHeight < 300 ? 475 : canvasHeight + (float)(canvasHeight / 500) * 125);
+    }
+
+    public void updateCanvas(int index) {
+        Canvas layerToUpdate = (Canvas) canvasCollection.getChildren().get(index + 1);
+        double conversionValue = 255.0;
+        int canvasHeight = projectManager.getCurrentProject().getHeight();
+        int canvasWidth = projectManager.getCurrentProject().getWidth();
+
+        PixelWriter pixelWriter = layerToUpdate.getGraphicsContext2D().getPixelWriter();
+
+        for (int x = 0; x < canvasWidth; x++) {
+            for (int y = 0; y < canvasHeight; y++) {
+                int[] rgb = projectManager.getCurrentProject().getPixelByCoord(x, y).getRGB();
+                Color color = Color.rgb(rgb[0], rgb[1], rgb[2], (double) rgb[3] / conversionValue);
+                pixelWriter.setColor(x, y, color);
+            }
+        }
     }
 
     /**
@@ -194,6 +211,11 @@ public class ProjectStateController implements Initializable {
      */
     @FXML
     protected void onCanvasMouseDragged(MouseEvent canvasMouseLocation) {
+        //Including this since we don't know which layer the user will first draw on for the initial state
+        /*if (firstUserInteration) {
+            projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray(), );
+            firstUserInteration = false;
+        }*/
         int[][] updatedPixels = canvasInputProcessor.processControllerDataForDrawingManager(canvasMouseLocation);
 
         PixelWriter canvasPixelWriter = selectedLayer.getGraphicsContext2D().getPixelWriter();
@@ -288,7 +310,8 @@ public class ProjectStateController implements Initializable {
      */
     public void onCanvasMouseReleased(MouseEvent mouseDragEvent) {
         updateShapeOnMouseRelease(mouseDragEvent);
-        projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray());
+        projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray(),
+                false, false);
     }
 
     /**
@@ -321,7 +344,6 @@ public class ProjectStateController implements Initializable {
         LayerControlUI layerControlUI = (LayerControlUI) mouseEvent.getSource();
 
         layerInputProcessor.processSelectLayer(layerControlUI.getIndex());
-
         selectedLayerUIControl.setAsInactive();
         selectedLayer = layerControlUI.getLayer();
         selectedLayerUIControl = layerControlUI;
@@ -329,6 +351,9 @@ public class ProjectStateController implements Initializable {
 
     }
 
+    public void selectLayerByIndex(int index) {
+        layerInputProcessor.processSelectLayer(index);
+    }
 
     /**
      * Returns a new layer with the onMouseDragged and onMouseReleased event handlers
@@ -345,6 +370,16 @@ public class ProjectStateController implements Initializable {
     }
 
 
+    public void addLayerAtIndex(int index) {
+        Canvas newLayer = createNewLayer();
+        canvasCollection.getChildren().add(index, newLayer);
+        layersContainer.getChildren().add(index,
+                new LayerControlUI(layersContainer.getChildren().size(), this::onSelectLayer, this::onRemoveLayer,
+                        newLayer));
+
+        updateIndicesAfterLayerAdded(index);
+    }
+
     /**
      * Create a new layer
      */
@@ -355,6 +390,17 @@ public class ProjectStateController implements Initializable {
         layersContainer.getChildren().add(0,
                 new LayerControlUI(layersContainer.getChildren().size(), this::onSelectLayer, this::onRemoveLayer,
                         newLayer));
+    }
+
+    public void removeLayerAtIndex(int index) {
+        int numOfLayers = layersContainer.getChildren().size();
+        LayerControlUI layerToRemoveControlUI = (LayerControlUI) layersContainer.getChildren().get(numOfLayers - index
+                - 1);
+        Canvas layerToRemove = layerToRemoveControlUI.getLayer();
+        canvasCollection.getChildren().remove(layerToRemove);
+        layersContainer.getChildren().remove(layerToRemoveControlUI);
+
+        updateIndicesAfterLayerRemoved(index);
     }
 
     /**
@@ -377,13 +423,25 @@ public class ProjectStateController implements Initializable {
             layersContainer.getChildren().remove(layerToRemoveControlUI);
 
             //Update the indices of the other layers after removing one
-            for (Node layer: layersContainer.getChildren()) {
-                LayerControlUI currentLayer = (LayerControlUI) layer;
-                if (currentLayer.getIndex() > removedLayerIndex) {
-                    currentLayer.setLayerIndex(currentLayer.getIndex() - 1);
-                }
-            }
+            updateIndicesAfterLayerRemoved(removedLayerIndex);
 
+        }
+    }
+
+    public void updateIndicesAfterLayerRemoved(int removedLayerIndex) {
+        for (Node layer: layersContainer.getChildren()) {
+            LayerControlUI currentLayer = (LayerControlUI) layer;
+            if (currentLayer.getIndex() > removedLayerIndex) {
+                currentLayer.setLayerIndex(currentLayer.getIndex() - 1);
+            }
+        }
+    }
+    public void updateIndicesAfterLayerAdded(int addedLayerIndex) {
+        for (Node layer: layersContainer.getChildren()) {
+            LayerControlUI currentLayer = (LayerControlUI) layer;
+            if (currentLayer.getIndex() > addedLayerIndex) {
+                currentLayer.setLayerIndex(currentLayer.getIndex() + 1);
+            }
         }
     }
 }
