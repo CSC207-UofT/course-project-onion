@@ -61,7 +61,8 @@ class CanvasEventsTest {
         int conversionValue = 255;
         Color testColor = new Color(1.0, .7, .25, 1.0);
         int[] colourArray = new int[]{(int)(testColor.getRed()*conversionValue ),
-                (int)(testColor.getGreen()*conversionValue ), (int)(testColor.getBlue()*conversionValue )};
+                (int)(testColor.getGreen()*conversionValue), (int)(testColor.getBlue()*conversionValue),
+                (int)(testColor.getOpacity()*conversionValue)};
         canvasEvents.processSelectedColour(testColor);
         assertArrayEquals(ToolStateManager.getInstance().getCurrentColourState().getRGB(), colourArray);
     }
@@ -75,7 +76,8 @@ class CanvasEventsTest {
         int conversionValue = 255;
         Color testColor = new Color(0.811, 0.188, 0.188, 1.0);
         int[] colourArray = new int[]{(int)(testColor.getRed()*conversionValue ),
-                (int)(testColor.getGreen()*conversionValue ), (int)(testColor.getBlue()*conversionValue )};
+                (int)(testColor.getGreen()*conversionValue ), (int)(testColor.getBlue()*conversionValue),
+                (int)(testColor.getOpacity()*conversionValue)};
 
         String hexColorValue = String.format("#%02x%02x%02x", colourArray[0], colourArray[1], colourArray[2]);
         String testColorString = canvasEvents.processColourToAddToPalette(testColor);
