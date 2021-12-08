@@ -76,8 +76,8 @@ public class DrawingManager {
 
         System.out.println("ERROR :: FAILED TO FIND COLOUR IN BACKEND COLOUR PALETTE :: colorId - " + colourId);
 
-        toolStateManager.setCurrentColourState(new Colour("", new int[] {0, 0, 0}));
-        return new int[]{0, 0, 0};
+        toolStateManager.setCurrentColourState(new Colour("", new int[] {0, 0, 0, 255}));
+        return new int[]{0, 0, 0, 255};
     }
 
     /**

@@ -63,9 +63,9 @@ public class ToolStateManagerTest {
      */
     @Test
     public void testUpdateCurrentColourState() {
-        int[] new_c = {3, 6, 7};
+        int[] new_c = {3, 6, 7, 255};
         manager.updateCurrentColourState(new_c);
         assert(manager.getCurrentToolState() instanceof Pen);
-        assertArrayEquals(new int[]{3, 6, 7}, manager.getCurrentColourState().getRGB());
+        assertArrayEquals(new_c, manager.getCurrentColourState().getRGB());
     }
 }
