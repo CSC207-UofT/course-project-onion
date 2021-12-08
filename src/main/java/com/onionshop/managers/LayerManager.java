@@ -3,6 +3,7 @@ package com.onionshop.managers;
 import com.onionshop.entities.Layer;
 import com.onionshop.entities.Project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LayerManager {
@@ -24,6 +25,12 @@ public class LayerManager {
         this.currentProject = currentProject;
 
         newLayer(new int[]{255, 255, 255, 255});
+
+    }
+
+    public LayerManager(Project currentProject, boolean layersInitiated) {
+        this.layers = new ArrayList<>();
+        this.currentProject = currentProject;
 
     }
 

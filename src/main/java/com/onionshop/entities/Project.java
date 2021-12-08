@@ -132,7 +132,7 @@ public class Project {
      * @return serialization returns serialized Project in onion format
      */
     public String[] serialize() {
-        int numberOfLines = this.width * this.height * this.layers.size() + colourPalette.size() + 5 +
+        int numberOfLines = this.width * this.height * this.layers.size() + colourPalette.size() + 6 +
                 this.layers.size();
         int lineNumber = 0;
         String[] serialization = new String[numberOfLines];
@@ -176,7 +176,7 @@ public class Project {
         }
 
 
-        serialization[lineNumber - 1] = "[end]"; //TODO: this might be causing problems
+        serialization[lineNumber] = "[end]"; //TODO: this might be causing problems
 
         return serialization;
     }
@@ -209,6 +209,8 @@ public class Project {
     }
 
     public void setDrawingCanvas(Pixel[][] newDrawingCanvas) { this.currLayer.setLayerCanvas(newDrawingCanvas); }
+
+    public void setLayers(List<Layer> newLayers) { this.layers = newLayers; }
 
     /**
      * Return the current pixel array of this project.
