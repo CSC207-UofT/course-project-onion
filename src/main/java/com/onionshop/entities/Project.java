@@ -30,8 +30,6 @@ public class Project {
 
     public ProjectManager projectManager = ProjectManager.getInstance();
 
-
-
     /**
      * Creates instance of project
      *
