@@ -76,7 +76,7 @@ public class ProjectExplorerController implements Initializable {
      * @param path path of the project being opened
      * @param event the event that caused the project to be opened
      */
-    private void openMostRecentProject (String name, String path, Event event) {
+    private void openMostRecentProject(String name, String path, Event event) {
         try {
             if(name != null && path != null && !name.equals("") && !path.equals("")) {
                 projectManager.loadProject(path);
