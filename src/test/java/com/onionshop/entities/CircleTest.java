@@ -66,16 +66,12 @@ public class CircleTest {
 
         int[][] expected = new int[][] {
                 {1, 1},{2, 1},{3, 1}, {4, 1}, {2, 4}, {3, 3}, {4, 1},
-                {4, 2},{3, 3},{1, 4},{1, 2},{1, 3},{1, 4},
-                {0, 0},{0, 0},{0, 0},{0, 0},{0, 0}
+                {0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},
         };
 
         circle.calculateEffectedPixels();
 
         int[][] actual = circle.pixelsEffectedByShape;
-
-        System.out.println(Arrays.deepToString(actual));
-
         assertArrayEquals(expected, actual);
     }
 }
