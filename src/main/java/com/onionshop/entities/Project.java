@@ -54,6 +54,26 @@ public class Project {
     }
 
     /**
+     * Creates instance of project that already has layers that will be instantiated
+     *
+     * @param path:   location of .onion project file
+     * @param width:  width of drawing
+     * @param height: height of drawing
+     */
+    public Project(String path, int width, int height, boolean hasLayers) {
+        this.path = path;
+        this.width = width;
+        this.height = height;
+        this.layers = new ArrayList<>();
+
+
+        this.colourPalette = new ColourPalette(new ArrayList<Colour>());
+        // create a new layer in layers
+        // set layer.layerCanvas to this
+        this.currLayer = new Layer(this.width, this.height, new int[]{255, 255, 255, 255});
+    }
+
+    /**
      * Creates instance of project with a given background colour
      *
      * @param path:          location of .onion project file
@@ -211,6 +231,8 @@ public class Project {
     public void setDrawingCanvas(Pixel[][] newDrawingCanvas) { this.currLayer.setLayerCanvas(newDrawingCanvas); }
 
     public void setLayers(List<Layer> newLayers) { this.layers = newLayers; }
+
+    public void setCurrLayer(int layerIndex) {this.currLayer = layers.get(layerIndex);}
 
     /**
      * Return the current pixel array of this project.

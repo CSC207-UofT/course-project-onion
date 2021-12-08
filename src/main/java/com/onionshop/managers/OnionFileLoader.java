@@ -76,6 +76,7 @@ public class OnionFileLoader {
         Project loadedProject = generateProjectInstance(lines, path);
         loadedProject.setColourPalette(generateColourPalette(lines));
         loadedProject.setLayers(generateLayers(loadedProject.getWidth(), loadedProject.getHeight(), lines));
+        loadedProject.setCurrLayer(0);
         return loadedProject;
     }
 
@@ -119,7 +120,7 @@ public class OnionFileLoader {
     private static Project generateProjectInstance(String[] lines, String path) {
         int width = Integer.parseInt(lines[1].substring(lines[1].indexOf(':') + 1));
         int height = Integer.parseInt(lines[2].substring(lines[2].indexOf(':') + 1));
-        return new Project(path, width, height);
+        return new Project(path, width, height, true);
     }
 
     /**

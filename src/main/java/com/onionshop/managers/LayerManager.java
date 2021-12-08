@@ -23,15 +23,6 @@ public class LayerManager {
     public LayerManager(Project currentProject) {
         this.layers = currentProject.getLayers();
         this.currentProject = currentProject;
-
-        newLayer(new int[]{255, 255, 255, 255});
-
-    }
-
-    public LayerManager(Project currentProject, boolean layersInitiated) {
-        this.layers = new ArrayList<>();
-        this.currentProject = currentProject;
-
     }
 
 
@@ -44,14 +35,14 @@ public class LayerManager {
      *
      */
     public Layer getSelectedLayer() {
-        return this.layers.get(this.selectedLayerIndex);
+        return currentProject.getLayers().get(this.selectedLayerIndex);
     }
 
     /**
      * When the user creates a new layer, add a new blank canvas to the layers list
      */
     public void newLayer() {
-        layers.add(new Layer(currentProject.getWidth(), currentProject.getHeight(), new int[]{0, 0, 0, 0}));
+        currentProject.getLayers().add(new Layer(currentProject.getWidth(), currentProject.getHeight(), new int[]{0, 0, 0, 0}));
     }
 
     /**
@@ -60,11 +51,11 @@ public class LayerManager {
      * @param layerRGB The colour to which the entire layer will be set
      */
     public void newLayer(int[] layerRGB) {
-        layers.add(new Layer(currentProject.getWidth(), currentProject.getHeight(), layerRGB));
+        currentProject.getLayers().add(new Layer(currentProject.getWidth(), currentProject.getHeight(), layerRGB));
     }
 
     public void addLayer(Layer layer) {
-        layers.add(layer);
+        currentProject.getLayers().add(layer);
     }
 
     /**
@@ -74,7 +65,7 @@ public class LayerManager {
      *               Precondition: layer in layers
      */
     public void removeLayer(Layer layer) {
-        this.layers.remove(layer);
+        currentProject.getLayers().remove(layer);
     }
 
     /**
@@ -83,7 +74,7 @@ public class LayerManager {
      * @param layerIndex: the layer index to be removed
      */
     public void removeLayer(int layerIndex) {
-        this.layers.remove(layerIndex);
+        currentProject.getLayers().remove(layerIndex);
     }
 
     /**
@@ -92,8 +83,9 @@ public class LayerManager {
      * @param index the index of the new selected Layer
      */
     public void selectLayer(int index) {
-        if (0 <= index && index < layers.size()) {
+        if (0 <= index && index < currentProject.getLayers().size()) {
             this.selectedLayerIndex = index;
+            currentProject.setCurrLayer(index);
         } else {
             throw new IndexOutOfBoundsException();
         }
@@ -106,6 +98,7 @@ public class LayerManager {
      */
     public void selectLayer(Layer layer) {
         selectedLayerIndex = layers.indexOf(layer);
+        currentProject.setCurrLayer(selectedLayerIndex);
     }
 
 

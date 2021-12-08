@@ -83,15 +83,11 @@ public class ProjectStateController implements Initializable {
             layerInputProcessor.processSelectLayer(currentLayer);
             initCanvas();
         }
-        selectedLayer = (Canvas) canvasCollection.getChildren().get(layerNumber - 1);
+        selectedLayer = (Canvas) canvasCollection.getChildren().get(layerNumber);
         selectedLayerUIControl = (LayerControlUI) layersContainer.getChildren().get(0);
         selectedLayerUIControl.setAsActive();
     }
 
-    /*
-     * TODO: Refactor to init each layer for the given frontend
-     *  canvas and backend layer
-     */
     /**
      * Initializes the canvas with current project's saved pixels
      * Sets the height and width of the canvas
