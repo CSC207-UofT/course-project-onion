@@ -17,14 +17,25 @@ public class LayerEvents {
         this.currentLayerManager = projectDrawingManager.getLayerManager();
     }
 
+    /**
+     * Adds a layer to the LayerManger
+     */
     public void processAddLayer() {
         currentLayerManager.newLayer();
     }
 
+
+    /**
+     * Removes a layer from the LayerManger
+     */
     public void processRemoveLayer(int layerIndexToRemove) {
         currentLayerManager.removeLayer(layerIndexToRemove);
     }
 
+
+    /**
+     * Makes a layer selected in the LayerManager
+     */
     public void processSelectLayer(int layerSelectedIndex) {
         currentLayerManager.selectLayer(layerSelectedIndex);
     }
