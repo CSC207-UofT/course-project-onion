@@ -1,8 +1,11 @@
 package com.onionshop.controllers;
 
+import com.onionshop.entities.Layer;
 import com.onionshop.entities.Shape;
 import com.onionshop.events.CanvasEvents;
+import com.onionshop.events.LayerEvents;
 import com.onionshop.managers.DrawingManager;
+import com.onionshop.managers.LayerManager;
 import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
 import javafx.event.ActionEvent;
@@ -51,8 +54,10 @@ public class ProjectStateController implements Initializable {
     private final DrawingManager projectDrawingManager = new DrawingManager();
     private final ToolStateManager toolStateManager = ToolStateManager.getInstance();
     private final CanvasEvents canvasInputProcessor = new CanvasEvents(projectDrawingManager);
+    private final LayerEvents layerInputProcessor = new LayerEvents(projectDrawingManager);
     private final ProjectManager projectManager = ProjectManager.getInstance();
     private Color currentCanvasColour = Color.BLACK;
+
 
     private int brushSize;
 
@@ -62,7 +67,6 @@ public class ProjectStateController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initCanvas();
         initLayers();
         initColourPalette();
         selectedToolButton = brushPen;
@@ -73,42 +77,44 @@ public class ProjectStateController implements Initializable {
      * Initializes scene with each layer
      */
     private void initLayers() {
-        /*
-         * TODO: Once backend is implemented, for each layer add a canvas LayerControlUI
-         *       - We can just make initial selected layer the top layer (or whichever is easiest)
-         */
-        selectedLayerUIControl = new LayerControlUI(0, this::onSelectLayer, this::onRemoveLayer, selectedLayer);
+        int layerNumber = projectManager.getCurrentProject().layers.size();
+        System.out.println("Layer Num " + layerNumber);
+        for (int currentLayer = 0; currentLayer < layerNumber; currentLayer++) {
+            layerInputProcessor.processSelectLayer(currentLayer);
+            initCanvas();
+        }
+        selectedLayer = (Canvas) canvasCollection.getChildren().get(layerNumber);
+        selectedLayerUIControl = (LayerControlUI) layersContainer.getChildren().get(0);
         selectedLayerUIControl.setAsActive();
-        layersContainer.getChildren().add(selectedLayerUIControl);
     }
 
-    /*
-     * TODO: Refactor to init each layer for the given frontend
-     *  canvas and backend layer
-     */
     /**
      * Initializes the canvas with current project's saved pixels
      * Sets the height and width of the canvas
      */
 
     public void initCanvas() {
+        double conversionValue = 255.0;
         int canvasHeight = projectManager.getCurrentProject().getHeight();
         int canvasWidth = projectManager.getCurrentProject().getWidth();
 
-        // set width and height of the canvas UI
-        selectedLayer.setHeight(canvasHeight);
-        selectedLayer.setWidth(canvasWidth);
+        Canvas newLayer = createNewLayer();
 
-        PixelWriter pixelWriter = selectedLayer.getGraphicsContext2D().getPixelWriter();
+        PixelWriter pixelWriter = newLayer.getGraphicsContext2D().getPixelWriter();
 
         // set canvas pixels to match the pixels of the current project
         for (int x = 0; x < canvasWidth; x++) {
             for (int y = 0; y < canvasHeight; y++) {
                 int[] rgb = projectManager.getCurrentProject().getPixelByCoord(x, y).getRGB();
-                Color color = Color.rgb(rgb[0], rgb[1], rgb[2], 1);
+                Color color = Color.rgb(rgb[0], rgb[1], rgb[2], (double) rgb[3] / conversionValue);
                 pixelWriter.setColor(x, y, color);
             }
         }
+
+        canvasCollection.getChildren().add(newLayer);
+        layersContainer.getChildren().add(0,
+                new LayerControlUI(layersContainer.getChildren().size(), this::onSelectLayer, this::onRemoveLayer,
+                        newLayer));
 
         container.setMinHeight(canvasHeight < 300 ? 475 : canvasHeight + (float)(canvasHeight / 500) * 125);
     }
@@ -313,10 +319,14 @@ public class ProjectStateController implements Initializable {
      */
     private void onSelectLayer(MouseEvent mouseEvent) {
         LayerControlUI layerControlUI = (LayerControlUI) mouseEvent.getSource();
+
+        layerInputProcessor.processSelectLayer(layerControlUI.getIndex());
+
         selectedLayerUIControl.setAsInactive();
         selectedLayer = layerControlUI.getLayer();
         selectedLayerUIControl = layerControlUI;
         layerControlUI.setAsActive();
+
     }
 
 
@@ -335,13 +345,11 @@ public class ProjectStateController implements Initializable {
     }
 
 
-    /*
-     * TODO: Link to backend layer manager and undo redo manager
-     */
     /**
      * Create a new layer
      */
     public void addLayer(ActionEvent actionEvent) {
+        layerInputProcessor.processAddLayer();
         Canvas newLayer = createNewLayer();
         canvasCollection.getChildren().add(newLayer);
         layersContainer.getChildren().add(0,
@@ -361,6 +369,8 @@ public class ProjectStateController implements Initializable {
 
         //Make sure we're not removing the background layer
         if (removedLayerIndex != 0) {
+            layerInputProcessor.processRemoveLayer(removedLayerIndex);
+
             //Remove the layer from the layer container pane and the canvas itself
             Canvas layerToRemove = layerToRemoveControlUI.getLayer();
             canvasCollection.getChildren().remove(layerToRemove);
@@ -375,7 +385,5 @@ public class ProjectStateController implements Initializable {
             }
 
         }
-
-
     }
 }

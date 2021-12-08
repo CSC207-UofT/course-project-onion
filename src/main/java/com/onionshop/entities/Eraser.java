@@ -23,7 +23,7 @@ public class Eraser extends Brush {
      * @return pixels that are updating after the draw action.
      */
 
-    @Override public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y) {
-        return super.draw(currentCanvas, new Colour("white", new int[]{255, 255, 255, 0}), x, y);
+    @Override public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y, Layer layer) {
+        return super.draw(currentCanvas, new Colour("white", new int[]{255, 255, 255, 0}), x, y, layer);
     }
 }

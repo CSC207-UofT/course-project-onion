@@ -1,5 +1,7 @@
 package com.onionshop.entities;
 
+import com.onionshop.managers.LayerManager;
+
 import java.util.Arrays;
 
 public abstract class Brush implements Tool {
@@ -93,7 +95,7 @@ public abstract class Brush implements Tool {
      * @return                  AN array collection of arrays of integer coordinates around the (x, y) coordinates in
      *                          the shape of pixelsEffectedByBrush
      */
-    public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y) {
+    public int[][] draw(Project currentCanvas, Colour currentColour, int x, int y, Layer layer) {
         // Creating a new array to store the pixels that are updated in this method. These will then
         // Be sent back up to javafx to be rendered on the canvas.
         int[][] pixelsToUpdate = new int[pixelsEffectedByBrush.length][2];
@@ -108,7 +110,7 @@ public abstract class Brush implements Tool {
 
                 pixelsToUpdate[offset][0] = x + pixelsEffectedByBrush[offset][0];
                 pixelsToUpdate[offset][1] = y + pixelsEffectedByBrush[offset][1];
-                currentCanvas.drawingCanvas[x + pixelsEffectedByBrush[offset][0]]
+                layer.layerCanvas[x + pixelsEffectedByBrush[offset][0]]
                         [y + pixelsEffectedByBrush[offset][1]].setRGB(currentColour.getRGB());
             }
         }

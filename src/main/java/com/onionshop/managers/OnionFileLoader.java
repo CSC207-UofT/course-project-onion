@@ -1,14 +1,10 @@
 /*
 Implements static save and load functionality for .onion files and Project serialization
-
 @author Finn Williams
  */
 package com.onionshop.managers;
 
-import com.onionshop.entities.Colour;
-import com.onionshop.entities.ColourPalette;
-import com.onionshop.entities.Pixel;
-import com.onionshop.entities.Project;
+import com.onionshop.entities.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -73,10 +69,14 @@ public class OnionFileLoader {
      * @return returns a Project instance if there are no files errors, returns null if there are errors
      */
     public static Project loadProject(String path) throws Exception {
+        //ProjectManager projectManager = ProjectManager.getInstance();
+        //LayerManager layerManager = new LayerManager(projectManager.getCurrentProject());
+
         String[] lines = getFileLines(path);
         Project loadedProject = generateProjectInstance(lines, path);
         loadedProject.setColourPalette(generateColourPalette(lines));
-        loadedProject.drawingCanvas = generatePixelArray(loadedProject.getWidth(), loadedProject.getHeight(), lines);
+        loadedProject.setLayers(generateLayers(loadedProject.getWidth(), loadedProject.getHeight(), lines));
+        loadedProject.setCurrLayer(0);
         return loadedProject;
     }
 
@@ -120,7 +120,7 @@ public class OnionFileLoader {
     private static Project generateProjectInstance(String[] lines, String path) {
         int width = Integer.parseInt(lines[1].substring(lines[1].indexOf(':') + 1));
         int height = Integer.parseInt(lines[2].substring(lines[2].indexOf(':') + 1));
-        return new Project(path, width, height);
+        return new Project(path, width, height, true);
     }
 
     /**
@@ -170,20 +170,34 @@ public class OnionFileLoader {
      * @param width  width of canvas in pixels
      * @param height height of canvas in pixels
      * @param lines  array of Strings where array[i] is the i-th line of a file
-     * @return returns 2D mapped array of Pixels where arr[x][y] is a pixel on the screen at (x, y)
+     * @return returns Layer of Pixels where Layer.canvas[x][y] is a pixel on the screen at (x, y)
      */
-    private static Pixel[][] generatePixelArray(int width, int height, String[] lines) throws Exception {
-        Pixel[][] drawingCanvas = new Pixel[width][height];
-        String line;
-        int lineNumber = getIndexOfString("[pixels]", lines) + 1;
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                line = lines[lineNumber];
-                drawingCanvas[x][y] = new Pixel(extractRGB(line));
-                lineNumber++;
+    private static List<Layer> generateLayers(int width, int height, String[] lines) throws Exception {
+        List<Layer> layers = new ArrayList<>();
+        int lineNumber = getIndexOfString("[layer:0]", lines);
+        int layerNumber = 0;
+        String line = lines[lineNumber];
+
+        while (!Objects.equals(line, "[end]")) {
+            line = lines[lineNumber];
+
+            assert Integer.parseInt(line.substring(line.indexOf(":") + 1, line.indexOf("]"))) == layerNumber;
+            layerNumber++;
+            lineNumber++;
+
+            Layer layer = new Layer(width, height, new int[]{0,0,0,0});
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    line = lines[lineNumber];
+                    layer.layerCanvas[x][y] = new Pixel(extractRGB(line));
+                    lineNumber++;
+                }
             }
+            layers.add(layer);
+            line = lines[lineNumber];
+
         }
-        return drawingCanvas;
+        return layers;
     }
 
     /**

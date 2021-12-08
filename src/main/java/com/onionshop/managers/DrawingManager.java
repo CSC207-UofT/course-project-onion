@@ -20,9 +20,12 @@ public class DrawingManager {
      */
     ToolStateManager toolStateManager = ToolStateManager.getInstance();
     ProjectManager projectManager = ProjectManager.getInstance();
+    LayerManager layerManager = new LayerManager(projectManager.getCurrentProject());
 
     public DrawingManager() {
     }
+
+    public LayerManager getLayerManager() {return layerManager;}
 
     /**
      * Calls the draw method on the tool and passes the canvas, x coordinate, y coordinate and current color to it. The
@@ -37,7 +40,7 @@ public class DrawingManager {
     public int[][] updateCanvasAfterStroke(int x, int y) {
         return toolStateManager.getCurrentToolState().draw(
                 projectManager.getCurrentProject(),
-                toolStateManager.getCurrentColourState(), x, y);
+                toolStateManager.getCurrentColourState(), x, y, layerManager.getSelectedLayer());
     }
 
     /**
@@ -115,7 +118,7 @@ public class DrawingManager {
         tempShape.incrementDrawingStage();
         //Calls the shape draw function to draw stage 3 for the shape (basically drawing it on the canvas)
         int[][] editedPixels = tempShape.draw(projectManager.getCurrentProject(),
-                toolStateManager.getCurrentColourState(), x, y);
+                toolStateManager.getCurrentColourState(), x, y, layerManager.getSelectedLayer());
         return editedPixels;
     }
 }

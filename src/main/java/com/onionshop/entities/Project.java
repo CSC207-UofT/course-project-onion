@@ -1,13 +1,13 @@
 /*
 Used to store all project aspects that need to be saved between opening and closing.
 This is a storage class, all elements that are made public are intended to be edited by a manager during runtime.
-
 @author Finn Williams
  */
 package com.onionshop.entities;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Project {
     // Drawing width in pixels
@@ -17,11 +17,12 @@ public class Project {
     // represents the project path and name, e.g. users/finn/drawings/drawing1.onion -- drawing1 is the name
     private String path;
 
+    public List<Layer> layers;
+
+    private Layer currLayer;
+
     // An array that holds default and user created colours
     private ColourPalette colourPalette;
-
-    //2d array representing each pixel of the drawing canvas with Pixel
-    public Pixel[][] drawingCanvas;
 
     /**
      * Creates instance of project
@@ -34,15 +35,34 @@ public class Project {
         this.path = path;
         this.width = width;
         this.height = height;
+        this.layers = new ArrayList<>();
+
 
         this.colourPalette = new ColourPalette(new ArrayList<Colour>());
+        // create a new layer in layers
+        // set layer.layerCanvas to this
+        this.currLayer = new Layer(this.width, this.height, new int[]{255, 255, 255, 255});
+        this.layers.add(this.currLayer);
+    }
 
-        this.drawingCanvas = new Pixel[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                drawingCanvas[x][y] = new Pixel(new int[]{255, 255, 255, 255}); //White by default
-            }
-        }
+    /**
+     * Creates instance of project that already has layers that will be instantiated
+     *
+     * @param path:   location of .onion project file
+     * @param width:  width of drawing
+     * @param height: height of drawing
+     */
+    public Project(String path, int width, int height, boolean hasLayers) {
+        this.path = path;
+        this.width = width;
+        this.height = height;
+        this.layers = new ArrayList<>();
+
+
+        this.colourPalette = new ColourPalette(new ArrayList<Colour>());
+        // create a new layer in layers
+        // set layer.layerCanvas to this
+        this.currLayer = new Layer(this.width, this.height, new int[]{255, 255, 255, 255});
     }
 
     /**
@@ -57,15 +77,12 @@ public class Project {
         this.path = path;
         this.width = width;
         this.height = height;
+        this.layers = new ArrayList<>();
 
-        colourPalette = new ColourPalette(new ArrayList<Colour>());
+        this.colourPalette = new ColourPalette(new ArrayList<Colour>());
+        this.currLayer = new Layer(this.width, this.height, backgroundRGB);
+        this.layers.add(currLayer);
 
-        this.drawingCanvas = new Pixel[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                drawingCanvas[x][y] = new Pixel(backgroundRGB);
-            }
-        }
 
     }
 
@@ -78,6 +95,8 @@ public class Project {
         return path;
     }
 
+    public List<Layer> getLayers(){ return this.layers;}
+
     /**
      * Sets new path
      *
@@ -85,7 +104,6 @@ public class Project {
      */
     public void updatePath(String newPath) throws Exception {
         File newFile = new File(newPath);
-
         if (newFile.exists() && newFile.canRead() && newFile.canWrite()) {
             path = newPath;
         } else {
@@ -112,12 +130,13 @@ public class Project {
     }
 
     /**
-     * Returns the pixel located at the given x-y coordinates of this projects drawing canvas
+     * Returns the pixel located at the given x-y coordinates of this projects current layer
      *
      * @return the pixel located at the given x-y coordinates
      */
     public Pixel getPixelByCoord(int x, int y) {
-        return this.drawingCanvas[x][y];
+        return this.currLayer.layerCanvas[x][y];
+
     }
 
     /**
@@ -126,7 +145,8 @@ public class Project {
      * @return serialization returns serialized Project in onion format
      */
     public String[] serialize() {
-        int numberOfLines = this.width * this.height + colourPalette.size() + 6;
+        int numberOfLines = this.width * this.height * this.layers.size() + colourPalette.size() + 6 +
+                this.layers.size();
         int lineNumber = 0;
         String[] serialization = new String[numberOfLines];
 
@@ -152,17 +172,25 @@ public class Project {
         serialization[lineNumber] = "[pixels]";
         lineNumber++;
 
-        // Adding Pixel RGB values -> R,G,B
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                serialization[lineNumber] = String.valueOf(drawingCanvas[x][y].RGB[0]) + "," +
-                        String.valueOf(drawingCanvas[x][y].RGB[1]) + "," +
-                        String.valueOf(drawingCanvas[x][y].RGB[2]) + "," +
-                        String.valueOf(drawingCanvas[x][y].RGB[3]);
-                lineNumber++;
+        // Saving layers
+        for (int i=0; i < layers.size(); i++) {
+            Layer l = layers.get(i);
+            serialization[lineNumber] = "[layer:" + i + "]";
+            lineNumber++;
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    serialization[lineNumber] = l.layerCanvas[x][y].RGB[0] + "," +
+                            l.layerCanvas[x][y].RGB[1] + "," +
+                            l.layerCanvas[x][y].RGB[2] + "," +
+                            l.layerCanvas[x][y].RGB[3];
+                    lineNumber++;
+                }
             }
         }
-        serialization[lineNumber] = "[end]";
+
+
+        serialization[lineNumber] = "[end]"; //TODO: this might be causing problems
+
         return serialization;
     }
 
@@ -193,23 +221,22 @@ public class Project {
         this.colourPalette = newColourPalette;
     }
 
-    /**
-     * Set the drawing canvas, especially work for undo and redo function.
-     * @param newDrawingCanvas the newest pixel array of the drawing canvas.
-     */
-    public void setDrawingCanvas(Pixel[][] newDrawingCanvas) {
-        this.drawingCanvas = newDrawingCanvas;
-    }
+    public void setDrawingCanvas(Pixel[][] newDrawingCanvas) { this.currLayer.setLayerCanvas(newDrawingCanvas); }
+
+    public void setLayers(List<Layer> newLayers) { this.layers = newLayers; }
+
+    public void setCurrLayer(int layerIndex) {this.currLayer = layers.get(layerIndex);}
 
     /**
      * Return the current pixel array of this project.
      * @return the current pixel array of this project.
      */
     public Pixel[][] getPixelArray() {
-        Pixel[][] pixelArray = new Pixel[this.getWidth()][this.getHeight()];
+        Pixel[][] pixelArray = new Pixel[getWidth()]
+                [getHeight()];
         for (int x = 0; x < this.width; x++) {
             for (int y = 0; y < this.height; y++) {
-                int[] rgbValues = this.getPixelByCoord(x, y).getRGB();
+                int[] rgbValues = getPixelByCoord(x, y).getRGB();
                 Pixel pixel = new Pixel(rgbValues);
                 pixelArray[x][y] = pixel;
             }
