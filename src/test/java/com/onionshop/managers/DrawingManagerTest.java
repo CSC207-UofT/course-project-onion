@@ -59,7 +59,7 @@ public class DrawingManagerTest {
     @Test
     public void testUpdateCanvasAfterStroke() {
         int brushSize = 10;
-        int[] rgb = new int[]{123, 230, 3};
+        int[] rgb = new int[]{123, 230, 3, 255};
         Colour testColour = new Colour("Test", rgb);
         ToolStateManager.getInstance().setCurrentToolState(new Pen("round", brushSize));
         ToolStateManager.getInstance().setCurrentColourState(testColour);
@@ -80,7 +80,7 @@ public class DrawingManagerTest {
      */
     @Test
     public void testUpdateSelectedColour() {
-        int[] rgb = new int[]{244, 0, 130};
+        int[] rgb = new int[]{244, 0, 130, 255};
         Colour testColour = new Colour("Test", rgb);
         drawingManager.updateSelectedColour(testColour);
         int[] currentToolRgb = ToolStateManager.getInstance().getCurrentColourState().getRGB();
@@ -93,7 +93,7 @@ public class DrawingManagerTest {
     @Test
     public void testAddColourToPalette() {
         String testColourHex = "#062488";
-        int[] rgb = new int[]{6, 36, 136};
+        int[] rgb = new int[]{6, 36, 136, 255};
         Colour testColour = new Colour(testColourHex, rgb);
         drawingManager.addColourToPalette(testColour);
         int[] currentPaletteRGB = ProjectManager.getInstance().getCurrentProject().getColourPalette().
@@ -109,13 +109,13 @@ public class DrawingManagerTest {
     @Test
     public void testSelectColourFromPaletteColourFound() {
         String testColourHex = "#b5a1a1";
-        int[] rgb = new int[]{181, 161, 161};
+        int[] rgb = new int[]{181, 161, 161, 255};
         Colour testColour = new Colour(testColourHex, rgb);
         String testColourHex2 = "#21424a";
-        int[] rgb2 = new int[]{33, 66, 74};
+        int[] rgb2 = new int[]{33, 66, 74, 255};
         Colour testColour2 = new Colour(testColourHex2, rgb2);
         String testColourHex3 = "#bce0c3";
-        int[] rgb3 = new int[]{188, 224, 195};
+        int[] rgb3 = new int[]{188, 224, 195, 255};
         Colour testColour3 = new Colour(testColourHex3, rgb3);
 
         drawingManager.addColourToPalette(testColour);
@@ -133,13 +133,13 @@ public class DrawingManagerTest {
     @Test
     public void testSelectColourFromPaletteColourNotFound() {
         String testColourHex = "#b5a1a1";
-        int[] rgb = new int[]{181, 161, 161};
+        int[] rgb = new int[]{181, 161, 161, 255};
         Colour testColour = new Colour(testColourHex, rgb);
         String testColourHex2 = "#21424a";
-        int[] rgb2 = new int[]{33, 66, 74};
+        int[] rgb2 = new int[]{33, 66, 74, 255};
         Colour testColour2 = new Colour(testColourHex2, rgb2);
         String testColourHex3 = "#bce0c3";
-        int[] rgb3 = new int[]{188, 224, 195};
+        int[] rgb3 = new int[]{188, 224, 195, 255};
         Colour testColour3 = new Colour(testColourHex3, rgb3);
 
         drawingManager.addColourToPalette(testColour);
@@ -147,7 +147,7 @@ public class DrawingManagerTest {
         drawingManager.addColourToPalette(testColour3);
 
         int[] currentPaletteRGB = drawingManager.selectColourFromPalette("#ba2010");
-        assertArrayEquals(currentPaletteRGB, new int[]{0, 0, 0});
+        assertArrayEquals(currentPaletteRGB, new int[]{0, 0, 0, 255});
     }
 
     /**
@@ -171,7 +171,7 @@ public class DrawingManagerTest {
 
         drawingManager.removeColourFromPalette(testColourHex);
         int[] currentPaletteRGB = drawingManager.selectColourFromPalette(testColourHex);
-        assertArrayEquals(currentPaletteRGB, new int[]{0, 0, 0});
+        assertArrayEquals(currentPaletteRGB, new int[]{0, 0, 0, 255});
     }
 
     /**
@@ -182,13 +182,13 @@ public class DrawingManagerTest {
     @Test
     public void testRemoveColourFromPaletteColourNotFound() {
         String testColourHex = "#b5a1a1";
-        int[] rgb = new int[]{181, 161, 161};
+        int[] rgb = new int[]{181, 161, 161, 255};
         Colour testColour = new Colour(testColourHex, rgb);
         String testColourHex2 = "#21424a";
-        int[] rgb2 = new int[]{33, 66, 74};
+        int[] rgb2 = new int[]{33, 66, 74, 255};
         Colour testColour2 = new Colour(testColourHex2, rgb2);
         String testColourHex3 = "#bce0c3";
-        int[] rgb3 = new int[]{188, 224, 195};
+        int[] rgb3 = new int[]{188, 224, 195, 255};
         Colour testColour3 = new Colour(testColourHex3, rgb3);
 
         drawingManager.addColourToPalette(testColour);
