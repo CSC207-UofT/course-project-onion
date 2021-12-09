@@ -2,6 +2,7 @@ package com.onionshop.managers;
 
 import com.onionshop.entities.Layer;
 import com.onionshop.entities.Project;
+import com.onionshop.events.NewProjectEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -14,10 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LayerManagerTest {
 
-    Project currentProject;
+    NewProjectEvent newProjectEvent;
     LayerManager manager;
     List<Layer> layers;
-
 
     @TempDir
     Path tempDir1;
@@ -25,11 +25,10 @@ public class LayerManagerTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        Path tempFilePath = Files.createFile(tempDir1.resolve("project_name.onion"));
-        savePath = tempFilePath.toString();
-        currentProject = new Project(savePath, 2, 2);
+        newProjectEvent = new NewProjectEvent("beef","beefy", 100, 100);
         manager = new LayerManager();
-        layers = currentProject.getLayers();
+        manager.projectManager.newProject(newProjectEvent);
+        layers = manager.projectManager.getCurrentProject().getLayers();
     }
 
     @Test
@@ -50,30 +49,30 @@ public class LayerManagerTest {
 
     @Test
     public void testAddLayer() {
-        manager.addLayer(new Layer(currentProject.getWidth(), currentProject.getHeight(), new int[]{0, 0, 0, 0}));
+        manager.addLayer(new Layer(120, 430, new int[]{0, 0, 0, 0}));
 
-        assert 2 == currentProject.getLayers().size();
+        assert 2 == manager.projectManager.getCurrentProject().getLayers().size();
     }
 
     @Test
     public void testRemoveLayerByLayer() {
-        manager.removeLayer(new Layer(currentProject.getWidth(), currentProject.getHeight(), new int[]{0, 0, 0, 0}));
+        manager.removeLayer(new Layer(10, 220, new int[]{0, 0, 0, 0}));
 
-        assert 1 == currentProject.getLayers().size();
+        assert 1 == manager.projectManager.getCurrentProject().getLayers().size();
     }
 
     @Test
     public void testRemoveLayerByIndex() {
-        manager.addLayer(new Layer(currentProject.getWidth(), currentProject.getHeight(), new int[]{10, 0, 0, 0}));
+        manager.addLayer(new Layer(10, 220, new int[]{6, 9, 0, 0}));
         manager.removeLayer(1);
 
-        assert 1 == currentProject.getLayers().size();
+        assert 1 == manager.projectManager.getCurrentProject().getLayers().size();
     }
 
     @Test
     public void testSelectLayerByIndex() {
-        manager.addLayer(new Layer(currentProject.getWidth(), currentProject.getHeight(), new int[]{0, 2, 0, 0}));
-        manager.addLayer(new Layer(currentProject.getWidth(), currentProject.getHeight(), new int[]{0, 4, 0, 0}));
+        manager.addLayer(new Layer(10, 220, new int[]{6, 3, 5, 0}));
+        manager.addLayer(new Layer(10, 220, new int[]{2, 2, 2, 0}));
 
         manager.selectLayer(2);
 
@@ -82,8 +81,8 @@ public class LayerManagerTest {
 
     @Test
     public void testSelectLayerByLayer() {
-        manager.addLayer(new Layer(currentProject.getWidth(), currentProject.getHeight(), new int[]{0, 2, 0, 0}));
-        manager.addLayer(new Layer(currentProject.getWidth(), currentProject.getHeight(), new int[]{0, 4, 0, 0}));
+        manager.addLayer(new Layer(10, 220, new int[]{6, 3, 5, 0}));
+        manager.addLayer(new Layer(10, 220, new int[]{2, 2, 2, 0}));
 
         manager.selectLayer(2);
         Layer currentLayer = manager.getSelectedLayer();
