@@ -11,11 +11,17 @@ public class LayerEvents {
     //This is used to convert between our colours (0-255) and javaFx's colors (0.0-1.0)
     private final float conversionValue = 255;
 
+    /**
+     * Creates an instance of LayerEvents with the given DrawingManager
+     */
     public LayerEvents(DrawingManager projectDrawingManager){
         this.currentDrawingManager = projectDrawingManager;
         this.currentLayerManager = projectDrawingManager.getLayerManager();
     }
 
+    /**
+     * Adds a layer to the LayerManger
+     */
     public void processAddLayer() {
         currentLayerManager.newLayer();
         int lastSelectedLayer = currentLayerManager.getSelectedLayerIndex();
@@ -25,6 +31,10 @@ public class LayerEvents {
         currentLayerManager.selectLayer(lastSelectedLayer);
     }
 
+
+    /**
+     * Removes a layer from the LayerManger
+     */
     public void processRemoveLayer(int layerIndexToRemove) {
         int lastSelectedLayer = currentLayerManager.getSelectedLayerIndex();
         currentLayerManager.selectLayer(layerIndexToRemove);
@@ -35,6 +45,10 @@ public class LayerEvents {
 
     }
 
+
+    /**
+     * Makes a layer selected in the LayerManager
+     */
     public void processSelectLayer(int layerSelectedIndex) {
         currentLayerManager.selectLayer(layerSelectedIndex);
         projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray(),

@@ -31,7 +31,13 @@ public class ProjectManager {
      * @param newProjectEvent an event that describes the base properties of the new project.
      */
     public void newProject(NewProjectEvent newProjectEvent) throws Exception {
-        String path = newProjectEvent.getDirectory() + '/' + newProjectEvent.getProjectName() + ".onion";
+        String path;
+        String operatingSystem = System.getProperty("os.name");
+        if (operatingSystem.substring(0, 3).equals("Mac")) {
+            path = newProjectEvent.getDirectory() + '/' + newProjectEvent.getProjectName() + ".onion";
+        } else {
+            path = newProjectEvent.getDirectory() + '\\' + newProjectEvent.getProjectName() + ".onion";
+        }
         if (!OnionFileLoader.doesFileAlreadyExist(path)) {
             currentProject = new Project(path, newProjectEvent.getWidth(), newProjectEvent.getHeight());
             OnionFileLoader.saveProject(currentProject);

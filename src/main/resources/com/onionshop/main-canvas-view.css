@@ -52,3 +52,12 @@
     -fx-pref-width: 350;
     -fx-pref-height: 300;
 }
+
+.export-btn {
+    -fx-pref-width: 75;
+    -fx-pref-height: 30;
+    -fx-font-size: 10;
+    -fx-background-insets: 0 10px;
+    -fx-background-color: #9ddcdc;
+    -fx-font-weight: bold;
+}

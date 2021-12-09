@@ -18,13 +18,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 
+import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -57,7 +62,6 @@ public class ProjectStateController implements Initializable {
     private final LayerEvents layerInputProcessor = new LayerEvents(projectDrawingManager);
     private final ProjectManager projectManager = ProjectManager.getInstance();
     private Color currentCanvasColour = Color.BLACK;
-    //private boolean firstUserInteration;
 
 
     private int brushSize;
@@ -339,6 +343,7 @@ public class ProjectStateController implements Initializable {
         LayerControlUI layerControlUI = (LayerControlUI) mouseEvent.getSource();
 
         layerInputProcessor.processSelectLayer(layerControlUI.getIndex());
+
         selectedLayerUIControl.setAsInactive();
         selectedLayer = layerControlUI.getLayer();
         selectedLayerUIControl = layerControlUI;
@@ -417,7 +422,7 @@ public class ProjectStateController implements Initializable {
      * @param removeButtonClick The event triggered when the user clicks the remove button
      */
     public void onRemoveLayer(MouseEvent removeButtonClick) {
-        Button selectedRemoveButton =  (Button) removeButtonClick.getSource();
+        Button selectedRemoveButton = (Button) removeButtonClick.getSource();
         LayerControlUI layerToRemoveControlUI = (LayerControlUI) selectedRemoveButton.getParent();
         int removedLayerIndex = layerToRemoveControlUI.getIndex();
 
@@ -460,6 +465,7 @@ public class ProjectStateController implements Initializable {
             if (currentLayer.getIndex() > addedLayerIndex) {
                 currentLayer.setLayerIndex(currentLayer.getIndex() + 1);
             }
+
         }
     }
 }
