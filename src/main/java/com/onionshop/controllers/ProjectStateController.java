@@ -211,11 +211,6 @@ public class ProjectStateController implements Initializable {
      */
     @FXML
     protected void onCanvasMouseDragged(MouseEvent canvasMouseLocation) {
-        //Including this since we don't know which layer the user will first draw on for the initial state
-        /*if (firstUserInteration) {
-            projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray(), );
-            firstUserInteration = false;
-        }*/
         int[][] updatedPixels = canvasInputProcessor.processControllerDataForDrawingManager(canvasMouseLocation);
 
         PixelWriter canvasPixelWriter = selectedLayer.getGraphicsContext2D().getPixelWriter();
@@ -351,8 +346,9 @@ public class ProjectStateController implements Initializable {
 
     }
 
+
     public void selectLayerByIndex(int index) {
-        layerInputProcessor.processSelectLayer(index);
+        layerInputProcessor.processSelectLayerByIndex(index);
     }
 
     /**
@@ -371,11 +367,15 @@ public class ProjectStateController implements Initializable {
 
 
     public void addLayerAtIndex(int index) {
+        int numOfLayers = layersContainer.getChildren().size();
         Canvas newLayer = createNewLayer();
-        canvasCollection.getChildren().add(index, newLayer);
-        layersContainer.getChildren().add(index,
-                new LayerControlUI(layersContainer.getChildren().size(), this::onSelectLayer, this::onRemoveLayer,
-                        newLayer));
+        canvasCollection.getChildren().add(index + 1, newLayer);
+        LayerControlUI newLayerUI =  new LayerControlUI(layersContainer.getChildren().size(), this::onSelectLayer, this::onRemoveLayer,
+                newLayer);
+        newLayerUI.setLayerIndex(index);
+        newLayerUI.setName(index);
+        layersContainer.getChildren().add(numOfLayers - index,
+               newLayerUI);
 
         updateIndicesAfterLayerAdded(index);
     }
@@ -400,6 +400,14 @@ public class ProjectStateController implements Initializable {
         canvasCollection.getChildren().remove(layerToRemove);
         layersContainer.getChildren().remove(layerToRemoveControlUI);
 
+        if (projectManager.getCurrentLayerIndex() == -1 || projectManager.getCurrentLayerIndex() == index) {
+            selectLayerByIndex(0);
+            LayerControlUI baseLayerControlUI = (LayerControlUI) layersContainer.getChildren().get(
+                    layersContainer.getChildren().size() - 1);
+            selectedLayer = baseLayerControlUI.getLayer();
+            selectedLayerUIControl = baseLayerControlUI;
+            baseLayerControlUI.setAsActive();
+        }
         updateIndicesAfterLayerRemoved(index);
     }
 
@@ -426,6 +434,16 @@ public class ProjectStateController implements Initializable {
             updateIndicesAfterLayerRemoved(removedLayerIndex);
 
         }
+        //Select the base layer after removing th
+        if (projectManager.getCurrentLayerIndex() == -1) {
+            selectLayerByIndex(0);
+            LayerControlUI baseLayerControlUI = (LayerControlUI) layersContainer.getChildren().get(
+                    layersContainer.getChildren().size() - 1);
+            selectedLayer = baseLayerControlUI.getLayer();
+            selectedLayerUIControl = baseLayerControlUI;
+            baseLayerControlUI.setAsActive();
+        }
+
     }
 
     public void updateIndicesAfterLayerRemoved(int removedLayerIndex) {

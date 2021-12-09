@@ -167,10 +167,14 @@ public class ProjectManager {
                 return 2;
             }
         }
-        else {
+        else if (undoRedoState.getTopUndoStack().getLayerIndex() == topState.getLayerIndex()) {
             DrawingState lastState = undoRedoState.undo();
             currentProject.setDrawingCanvasByLayer(lastState.getState(), lastState.getLayerIndex(),
-                    lastState.getLayerCreated(), lastState.getLayerDeleted());
+                    topState.getLayerCreated(), topState.getLayerDeleted());
+            return 0;
+        }
+        else {
+            undoRedoState.undo();
             return 0;
         }
 

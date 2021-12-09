@@ -27,7 +27,7 @@ public class LayerEvents {
 
     public void processRemoveLayer(int layerIndexToRemove) {
         int lastSelectedLayer = currentLayerManager.getSelectedLayerIndex();
-        currentLayerManager.selectLayer(currentLayerManager.layers.size() - 1);
+        currentLayerManager.selectLayer(layerIndexToRemove);
         projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray(),
                 false, true);
         currentLayerManager.selectLayer(lastSelectedLayer);
@@ -36,6 +36,12 @@ public class LayerEvents {
     }
 
     public void processSelectLayer(int layerSelectedIndex) {
+        currentLayerManager.selectLayer(layerSelectedIndex);
+        projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray(),
+                false, false);
+    }
+
+    public void processSelectLayerByIndex(int layerSelectedIndex) {
         currentLayerManager.selectLayer(layerSelectedIndex);
     }
 }

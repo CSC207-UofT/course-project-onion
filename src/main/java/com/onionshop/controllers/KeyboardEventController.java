@@ -38,6 +38,7 @@ public class KeyboardEventController implements EventHandler<KeyEvent> {
         if (Undo.match(event)){
             int currentlySelectedLayer = projectManager.getCurrentLayerIndex();
             int updatedLayer = projectManager.getUndoDrawingStateIndex();
+
             int updateType = projectManager.undoDrawingState();
 
             if (updateType == 0) {
@@ -84,6 +85,7 @@ public class KeyboardEventController implements EventHandler<KeyEvent> {
                 projectStateController.selectLayerByIndex(updatedLayer);
                 projectStateController.updateCanvas(updatedLayer);
                 projectStateController.selectLayerByIndex(currentlySelectedLayer);
+
             }
         }
         else if (Save.match(event)){
