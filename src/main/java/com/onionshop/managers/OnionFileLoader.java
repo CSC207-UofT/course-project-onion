@@ -76,7 +76,6 @@ public class OnionFileLoader {
         Project loadedProject = generateProjectInstance(lines, path);
         loadedProject.setColourPalette(generateColourPalette(lines));
         loadedProject.setLayers(generateLayers(loadedProject.getWidth(), loadedProject.getHeight(), lines));
-        loadedProject.setCurrLayer(0);
         return loadedProject;
     }
 

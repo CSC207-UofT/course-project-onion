@@ -2,20 +2,12 @@ package com.onionshop.managers;
 
 import com.onionshop.controllers.KeyboardEventController;
 import com.onionshop.controllers.ProjectStateController;
-import com.onionshop.entities.DrawingState;
 import com.onionshop.entities.Pixel;
-import com.onionshop.entities.Project;
 import com.onionshop.events.NewProjectEvent;
 import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import org.junit.rules.TemporaryFolder;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -49,13 +41,13 @@ public class UndoRedoManagerTest {
         array1[0][1] = pixel1;
         array1[1][0] = pixel1;
         array1[1][1] = pixel1;
-        projectManager.updateDrawingCanvas(array1);
+//        projectManager.updateLayers(array1);
         Pixel[][] array2 = new Pixel[2][2];
         array2[0][0] = pixel2;
         array2[0][1] = pixel2;
         array2[1][0] = pixel1;
         array2[1][1] = pixel1;
-        projectManager.updateDrawingCanvas(array2);
+//        projectManager.updateLayers(array2);
     }
 
     /**

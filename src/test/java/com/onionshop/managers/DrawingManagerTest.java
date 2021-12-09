@@ -69,7 +69,7 @@ public class DrawingManagerTest {
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
         for (int i = x - brushSize; i < x + brushSize; i++) {
             for (int j = y - brushSize; j < y + brushSize; j++) {
-                assertArrayEquals(currentProject.getPixelByCoord(i, j).getRGB(), rgb);
+                assertArrayEquals(currentProject.getLayers().get(0).getPixelByCoord(i, j).getRGB(), rgb);
             }
         }
     }

@@ -68,5 +68,4 @@ public class UndoRedoManager {
             return undoStack.peek();
         }
     }
-
 }
