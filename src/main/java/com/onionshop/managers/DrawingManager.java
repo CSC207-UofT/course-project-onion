@@ -20,7 +20,7 @@ public class DrawingManager {
      */
     ToolStateManager toolStateManager = ToolStateManager.getInstance();
     ProjectManager projectManager = ProjectManager.getInstance();
-    LayerManager layerManager = new LayerManager(projectManager.getCurrentProject());
+    LayerManager layerManager = LayerManager.getInstance();
 
     public DrawingManager() {
     }

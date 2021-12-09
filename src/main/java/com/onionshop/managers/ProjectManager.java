@@ -1,12 +1,12 @@
 package com.onionshop.managers;
 
 import com.onionshop.entities.DrawingState;
-import com.onionshop.entities.Pixel;
 import com.onionshop.entities.Layer;
 import com.onionshop.entities.Project;
 import com.onionshop.events.NewProjectEvent;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectManager {
     /**
@@ -41,7 +41,7 @@ public class ProjectManager {
         if (!OnionFileLoader.doesFileAlreadyExist(path)) {
             currentProject = new Project(path, newProjectEvent.getWidth(), newProjectEvent.getHeight());
             OnionFileLoader.saveProject(currentProject);
-            this.updateDrawingCanvas(currentProject.getPixelArray());
+            this.updateLayers(currentProject.getLayers());
         } else {
             throw new Exception("Error: File with that name already exists!");
         }
@@ -53,7 +53,7 @@ public class ProjectManager {
      */
     public void loadProject(String selectedOnionFilePath) throws Exception {
         currentProject = OnionFileLoader.loadProject(selectedOnionFilePath);
-        this.updateDrawingCanvas(currentProject.getPixelArray());
+        this.updateLayers(currentProject.getLayers());
         System.out.println("Project:" + selectedOnionFilePath + " loaded");
     }
 
@@ -71,16 +71,20 @@ public class ProjectManager {
 
     /**
      * Update the project and UndoRedoManager with newest the pixel array.
-     * @param newCanvas a new Canvas which represent in 2d pixel array
+     * @param layers the current layers
      */
-    public void updateDrawingCanvas(Pixel[][] newCanvas) {
-        if (newCanvas.length == currentProject.getWidth() && newCanvas[0].length == currentProject.getHeight()) {
-            drawingState = new DrawingState(newCanvas);
-            undoRedoState.update(drawingState);
+    public void updateLayers(List<Layer> layers) {
+        List<Layer> layersCopy = new ArrayList<>();
+
+        for (Layer layer: layers) {
+            Layer layerCopy = new Layer(currentProject.getWidth(), currentProject.getHeight(), new int[]{0, 0, 0, 0});
+            layerCopy.setLayerCanvas(layer.layerCanvas);
+            layersCopy.add(layerCopy);
         }
-        else {
-            throw new IndexOutOfBoundsException("Updated drawingCanvas does not match initialized drawingCanvas size");
-        }
+
+        drawingState = new DrawingState(layersCopy);
+        undoRedoState.update(drawingState);
+        currentProject.setLayers(layersCopy);
     }
 
     /**
@@ -103,14 +107,16 @@ public class ProjectManager {
      * Update the canvas if undo the Drawing State.
      */
     public void undoDrawingState() {
-        currentProject.setDrawingCanvas(undoRedoState.undo().getState());
+        DrawingState drawing = undoRedoState.undo();
+        currentProject.setLayers(drawing.getState());
+        this.drawingState = drawing;
     }
 
     /**
      * Redo the drawing and restore the canvas.
      */
     public void restoreDrawingState(){
-        currentProject.setDrawingCanvas(undoRedoState.redo().getState());
+        currentProject.setLayers(undoRedoState.redo().getState());
     }
 
 }

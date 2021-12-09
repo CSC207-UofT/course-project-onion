@@ -19,8 +19,6 @@ public class Project {
 
     public List<Layer> layers;
 
-    private Layer currLayer;
-
     // An array that holds default and user created colours
     private ColourPalette colourPalette;
 
@@ -36,13 +34,10 @@ public class Project {
         this.width = width;
         this.height = height;
         this.layers = new ArrayList<>();
-
-
+        layers.add(new Layer(width, height, new int[]{255, 255, 255, 255}));
         this.colourPalette = new ColourPalette(new ArrayList<Colour>());
         // create a new layer in layers
         // set layer.layerCanvas to this
-        this.currLayer = new Layer(this.width, this.height, new int[]{255, 255, 255, 255});
-        this.layers.add(this.currLayer);
     }
 
     /**
@@ -57,12 +52,7 @@ public class Project {
         this.width = width;
         this.height = height;
         this.layers = new ArrayList<>();
-
-
         this.colourPalette = new ColourPalette(new ArrayList<Colour>());
-        // create a new layer in layers
-        // set layer.layerCanvas to this
-        this.currLayer = new Layer(this.width, this.height, new int[]{255, 255, 255, 255});
     }
 
     /**
@@ -78,12 +68,8 @@ public class Project {
         this.width = width;
         this.height = height;
         this.layers = new ArrayList<>();
-
+        layers.add(new Layer(width, height, new int[]{255, 255, 255, 255}));
         this.colourPalette = new ColourPalette(new ArrayList<Colour>());
-        this.currLayer = new Layer(this.width, this.height, backgroundRGB);
-        this.layers.add(currLayer);
-
-
     }
 
     /**
@@ -127,16 +113,6 @@ public class Project {
      */
     public int getHeight() {
         return height;
-    }
-
-    /**
-     * Returns the pixel located at the given x-y coordinates of this projects current layer
-     *
-     * @return the pixel located at the given x-y coordinates
-     */
-    public Pixel getPixelByCoord(int x, int y) {
-        return this.currLayer.layerCanvas[x][y];
-
     }
 
     /**
@@ -226,26 +202,5 @@ public class Project {
         this.colourPalette = newColourPalette;
     }
 
-    public void setDrawingCanvas(Pixel[][] newDrawingCanvas) { this.currLayer.setLayerCanvas(newDrawingCanvas); }
-
     public void setLayers(List<Layer> newLayers) { this.layers = newLayers; }
-
-    public void setCurrLayer(int layerIndex) {this.currLayer = layers.get(layerIndex);}
-
-    /**
-     * Return the current pixel array of this project.
-     * @return the current pixel array of this project.
-     */
-    public Pixel[][] getPixelArray() {
-        Pixel[][] pixelArray = new Pixel[getWidth()]
-                [getHeight()];
-        for (int x = 0; x < this.width; x++) {
-            for (int y = 0; y < this.height; y++) {
-                int[] rgbValues = getPixelByCoord(x, y).getRGB();
-                Pixel pixel = new Pixel(rgbValues);
-                pixelArray[x][y] = pixel;
-            }
-        }
-        return pixelArray;
-    }
 }

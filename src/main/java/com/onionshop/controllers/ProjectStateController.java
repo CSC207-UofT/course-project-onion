@@ -1,6 +1,5 @@
 package com.onionshop.controllers;
 
-import com.onionshop.entities.Layer;
 import com.onionshop.entities.Shape;
 import com.onionshop.events.CanvasEvents;
 import com.onionshop.events.LayerEvents;
@@ -8,6 +7,7 @@ import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.LayerManager;
 import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,18 +18,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.DirectoryChooser;
 
-import javax.imageio.ImageIO;
-import java.awt.image.RenderedImage;
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -63,6 +58,8 @@ public class ProjectStateController implements Initializable {
     private final ProjectManager projectManager = ProjectManager.getInstance();
     private Color currentCanvasColour = Color.BLACK;
 
+    private LayerManager layerManager = LayerManager.getInstance();
+
 
     private int brushSize;
 
@@ -81,13 +78,13 @@ public class ProjectStateController implements Initializable {
     /**
      * Initializes scene with each layer
      */
-    private void initLayers() {
+    public void initLayers() {
         int layerNumber = projectManager.getCurrentProject().layers.size();
-        System.out.println("Layer Num " + layerNumber);
         for (int currentLayer = 0; currentLayer < layerNumber; currentLayer++) {
             layerInputProcessor.processSelectLayer(currentLayer);
             initCanvas();
         }
+        System.out.println("Layer: " + layerNumber);
         selectedLayer = (Canvas) canvasCollection.getChildren().get(layerNumber);
         selectedLayerUIControl = (LayerControlUI) layersContainer.getChildren().get(0);
         selectedLayerUIControl.setAsActive();
@@ -97,8 +94,7 @@ public class ProjectStateController implements Initializable {
      * Initializes the canvas with current project's saved pixels
      * Sets the height and width of the canvas
      */
-
-    public void initCanvas() {
+    private void initCanvas() {
         double conversionValue = 255.0;
         int canvasHeight = projectManager.getCurrentProject().getHeight();
         int canvasWidth = projectManager.getCurrentProject().getWidth();
@@ -110,7 +106,7 @@ public class ProjectStateController implements Initializable {
         // set canvas pixels to match the pixels of the current project
         for (int x = 0; x < canvasWidth; x++) {
             for (int y = 0; y < canvasHeight; y++) {
-                int[] rgb = projectManager.getCurrentProject().getPixelByCoord(x, y).getRGB();
+                int[] rgb = layerManager.getSelectedLayer().getPixelByCoord(x, y).getRGB();
                 Color color = Color.rgb(rgb[0], rgb[1], rgb[2], (double) rgb[3] / conversionValue);
                 pixelWriter.setColor(x, y, color);
             }
@@ -219,6 +215,22 @@ public class ProjectStateController implements Initializable {
         }
     }
 
+    /**
+     * Refreshes JavaFX canvas layers
+     */
+    public void reInitLayers() {
+        removeAllLayers();
+        initLayers();
+    }
+
+    /**
+     * Helper method to reInitLayers
+     * Removes all JavaFX canvas layers from the front-end
+     */
+    private void removeAllLayers() {
+        canvasCollection.getChildren().removeAll(canvasCollection.getChildren());
+        layersContainer.getChildren().removeAll(layersContainer.getChildren());
+    }
 
     /**
      * Changes the brushes size when the user drags the slider
@@ -281,6 +293,9 @@ public class ProjectStateController implements Initializable {
         setSelectedToolButton(rectangle);
     }
 
+    /**
+     * Make the colour of the background of the selected tool darker
+     */
     private void setSelectedToolButton(Button button) {
         selectedToolButton.setStyle("-fx-background-color: #ddd;");
         selectedToolButton = button;
@@ -293,7 +308,7 @@ public class ProjectStateController implements Initializable {
      */
     public void onCanvasMouseReleased(MouseEvent mouseDragEvent) {
         updateShapeOnMouseRelease(mouseDragEvent);
-        projectManager.updateDrawingCanvas(projectManager.getCurrentProject().getPixelArray());
+        projectManager.updateLayers(projectManager.getCurrentProject().getLayers());
     }
 
     /**
@@ -315,10 +330,6 @@ public class ProjectStateController implements Initializable {
         }
     }
 
-
-    /*
-     * TODO: Link to backend layer manager and undo redo manager
-     */
     /**
      * Changes the selected layer to the one that one clicked on
      */
@@ -331,7 +342,6 @@ public class ProjectStateController implements Initializable {
         selectedLayer = layerControlUI.getLayer();
         selectedLayerUIControl = layerControlUI;
         layerControlUI.setAsActive();
-
     }
 
 

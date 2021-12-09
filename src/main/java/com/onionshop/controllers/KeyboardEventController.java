@@ -33,23 +33,22 @@ public class KeyboardEventController implements EventHandler<KeyEvent> {
         this.projectStateController = projectStateController;
     }
 
+    /**
+     * Interprets keyboard commands as events that are dealt with in their respective domains
+     * @param event
+     */
     @Override
     public void handle(KeyEvent event) {
+        /*
+         * TODO: fix undo redo bug
+         */
         if (Undo.match(event)){
-            projectManager.undoDrawingState();
-            projectStateController.initCanvas();
-            /*
-             * TODO: Make sure the layers are also reinitialized when we undo
-             *  so that creating and removing layers is undoable
-             */
+        // projectManager.undoDrawingState();
+        // projectStateController.reInitLayers();
         }
         else if (Redo.match(event)) {
-            projectManager.restoreDrawingState();
-            projectStateController.initCanvas();
-            /*
-             * TODO: Make sure the layers are also reinitialized when we redo
-             *  so that creating and removing layers is redo-able
-             */
+        // projectManager.restoreDrawingState();
+        // projectStateController.reInitLayers();
         }
         else if (Save.match(event)){
             try {

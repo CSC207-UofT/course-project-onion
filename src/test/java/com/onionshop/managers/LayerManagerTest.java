@@ -28,7 +28,7 @@ public class LayerManagerTest {
         Path tempFilePath = Files.createFile(tempDir1.resolve("project_name.onion"));
         savePath = tempFilePath.toString();
         currentProject = new Project(savePath, 2, 2);
-        manager = new LayerManager(currentProject);
+        manager = new LayerManager();
         layers = currentProject.getLayers();
     }
 
