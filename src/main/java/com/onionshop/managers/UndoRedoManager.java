@@ -6,10 +6,10 @@ import com.onionshop.entities.DrawingState;
 
 public class UndoRedoManager {
     /**
-     * Store up to five steps of Drawing instance and keep track on canvas state.
+     * Store up to five steps instances and keep track of canvas state.
      */
 
-    private int maxStackSize = 5 + 1 + 1; //number of previous states PLUS the current state (+1) Plus the initial state
+    private int maxStackSize = 5 + 1 + 1; //number of previous states PLUS the current state, plus the initial state
     public final Stack<DrawingState> undoStack = new Stack<>();
     public final Stack<DrawingState> redoStack = new Stack<>();
 
@@ -19,7 +19,7 @@ public class UndoRedoManager {
      * @param newSize the new number of undos
      */
     public void changeUndoStackSize(int newSize) {
-        maxStackSize = newSize + 1;
+        maxStackSize = newSize + 1 + 1;
     }
 
 

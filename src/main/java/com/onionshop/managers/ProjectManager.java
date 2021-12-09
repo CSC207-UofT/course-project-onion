@@ -5,6 +5,7 @@ import com.onionshop.entities.Layer;
 import com.onionshop.entities.Project;
 import com.onionshop.events.NewProjectEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectManager {
@@ -73,9 +74,17 @@ public class ProjectManager {
      * @param layers the current layers
      */
     public void updateLayers(List<Layer> layers) {
-        drawingState = new DrawingState(layers);
+        List<Layer> layersCopy = new ArrayList<>();
+
+        for (Layer layer: layers) {
+            Layer layerCopy = new Layer(currentProject.getWidth(), currentProject.getHeight(), new int[]{0, 0, 0, 0});
+            layerCopy.setLayerCanvas(layer.layerCanvas);
+            layersCopy.add(layerCopy);
+        }
+
+        drawingState = new DrawingState(layersCopy);
         undoRedoState.update(drawingState);
-        currentProject.setLayers(layers);
+        currentProject.setLayers(layersCopy);
     }
 
     /**
@@ -98,7 +107,9 @@ public class ProjectManager {
      * Update the canvas if undo the Drawing State.
      */
     public void undoDrawingState() {
-        currentProject.setLayers(undoRedoState.undo().getState());
+        DrawingState drawing = undoRedoState.undo();
+        currentProject.setLayers(drawing.getState());
+        this.drawingState = drawing;
     }
 
     /**

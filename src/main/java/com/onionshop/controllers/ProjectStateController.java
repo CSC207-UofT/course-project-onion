@@ -7,6 +7,7 @@ import com.onionshop.managers.DrawingManager;
 import com.onionshop.managers.LayerManager;
 import com.onionshop.managers.ProjectManager;
 import com.onionshop.managers.ToolStateManager;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -83,6 +84,7 @@ public class ProjectStateController implements Initializable {
             layerInputProcessor.processSelectLayer(currentLayer);
             initCanvas();
         }
+        System.out.println("Layer: " + layerNumber);
         selectedLayer = (Canvas) canvasCollection.getChildren().get(layerNumber);
         selectedLayerUIControl = (LayerControlUI) layersContainer.getChildren().get(0);
         selectedLayerUIControl.setAsActive();
@@ -213,44 +215,22 @@ public class ProjectStateController implements Initializable {
         }
     }
 
+    /**
+     * Refreshes JavaFX canvas layers
+     */
     public void reInitLayers() {
         removeAllLayers();
         initLayers();
     }
 
+    /**
+     * Helper method to reInitLayers
+     * Removes all JavaFX canvas layers from the front-end
+     */
     private void removeAllLayers() {
-        layersContainer.getChildren().removeAll();
-        canvasCollection.getChildren().removeAll();
+        canvasCollection.getChildren().removeAll(canvasCollection.getChildren());
+        layersContainer.getChildren().removeAll(layersContainer.getChildren());
     }
-
-
-//    public void updateLayers() {
-//        for (int i = 0; i < projectManager.getCurrentProject().getLayers().size(); i++) {
-//            updateLayer(i);
-//        }
-//    }
-//
-//    /**
-//     * Updates a single front-end layer (by index) from the backend layers
-//     *
-//     * @param index the index of the front-end layer to be updated
-//     */
-//    public void updateLayer(int index) {
-//        Canvas layerToUpdate = (Canvas) canvasCollection.getChildren().get(index);
-//        double conversionValue = 255.0;
-//        int canvasHeight = projectManager.getCurrentProject().getHeight();
-//        int canvasWidth = projectManager.getCurrentProject().getWidth();
-//
-//        PixelWriter pixelWriter = layerToUpdate.getGraphicsContext2D().getPixelWriter();
-//
-//        for (int x = 0; x < canvasWidth; x++) {
-//            for (int y = 0; y < canvasHeight; y++) {
-//                int[] rgb = layerManager.getSelectedLayer().getPixelByCoord(x, y).getRGB();
-//                Color color = Color.rgb(rgb[0], rgb[1], rgb[2], (double) rgb[3] / conversionValue);
-//                pixelWriter.setColor(x, y, color);
-//            }
-//        }
-//    }
 
     /**
      * Changes the brushes size when the user drags the slider
@@ -350,9 +330,6 @@ public class ProjectStateController implements Initializable {
         }
     }
 
-    /*
-     * TODO: Link to backend layer manager and undo redo manager
-     */
     /**
      * Changes the selected layer to the one that one clicked on
      */

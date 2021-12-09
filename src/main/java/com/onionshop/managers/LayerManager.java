@@ -12,7 +12,7 @@ public class LayerManager {
      */
 
     // the current layer selected by the user
-    private int selectedLayerIndex;
+    private int selectedLayerIndex = 0;
     ProjectManager projectManager = ProjectManager.getInstance();
     static LayerManager instance = new LayerManager();
 
