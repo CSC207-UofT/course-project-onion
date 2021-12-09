@@ -6,6 +6,7 @@ This is a directory for the project. Setup instructions are below the links sect
 
 - [Phase 0](/phase0)
 - [Phase 1](/phase1)
+- [Phase 2](/phase2)
 
 ## How do I get started?
 
