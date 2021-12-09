@@ -1,6 +1,6 @@
 # Phase 2
 
-This is a directory for phase 1 of the course project.
+This is a directory for phase 2 of the course project.
 
 ## Links
 
