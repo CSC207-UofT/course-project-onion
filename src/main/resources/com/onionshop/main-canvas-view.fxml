@@ -86,8 +86,6 @@
          <!-- Tool Size Slider -->
          <Slider fx:id="toolSizeSlider" max="70.0" onMouseReleased="#onToolSizeSliderMove"
                  styleClass="tool-slider"/>
-
-         <Button styleClass="export-btn">Export</Button>
    </HBox>
 
    <HBox spacing="40" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
